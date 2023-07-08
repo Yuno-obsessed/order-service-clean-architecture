@@ -14,14 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import sanity.nil.tourservice.SpringProjectApplication;
-import sanity.nil.tourservice.entity.City;
-import sanity.nil.tourservice.entity.Country;
-import sanity.nil.tourservice.entity.Tour;
+import sanity.nil.tourservice.infrastructure.database.model.City;
+import sanity.nil.tourservice.infrastructure.database.model.Country;
+import sanity.nil.tourservice.infrastructure.database.model.Tour;
 
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
-import static sanity.nil.tourservice.util.EntityGenerator.*;
+import static sanity.nil.tourservice.util.ModelGenerator.*;
 
 @SpringBootTest(classes = SpringProjectApplication.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -84,6 +84,7 @@ public class TourServiceTest {
         tourService.save(tour1);
         tour1.setCity(city2);
         tourService.update(tour1);
+        tourService.getAll().forEach(System.out::println);
         assertThat(tourService.get(tour1.getTourId())).isNotEqualTo(tour2);
     }
 

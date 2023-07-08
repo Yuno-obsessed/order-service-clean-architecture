@@ -1,7 +1,7 @@
-package sanity.nil.tourservice.dao;
+package sanity.nil.tourservice.infrastructure.database.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import sanity.nil.tourservice.entity.Image;
+import sanity.nil.tourservice.infrastructure.database.model.Image;
 
 import java.util.UUID;
 

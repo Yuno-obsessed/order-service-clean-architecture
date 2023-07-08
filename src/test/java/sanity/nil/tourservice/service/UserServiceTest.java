@@ -1,83 +1,96 @@
 package sanity.nil.tourservice.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static sanity.nil.tourservice.util.ModelGenerator.generateRole;
+import static sanity.nil.tourservice.util.ModelGenerator.generateUser;
 
+import jakarta.transaction.Transactional;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import sanity.nil.tourservice.dao.UserRepository;
-import sanity.nil.tourservice.entity.User;
-import sanity.nil.tourservice.service.impl.UserServiceImpl;
-import sanity.nil.tourservice.util.EntityGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import sanity.nil.tourservice.SpringProjectApplication;
+import sanity.nil.tourservice.infrastructure.database.model.Role;
+import sanity.nil.tourservice.infrastructure.database.model.User;
 
-import java.util.Optional;
+import java.util.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Testcontainers
-@ExtendWith(
+
+@SpringBootTest(classes = SpringProjectApplication.class)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@ExtendWith({
+        SpringExtension.class,
         MockitoExtension.class
-)
-class UserServiceTest {
+})
+public class UserServiceTest {
 
-    private static User user1;
-    private static User user2;
+    @Autowired
+    private UserService userService;
+    private Role role1;
+    private Role role2;
     @Captor
-    private ArgumentCaptor<Integer> argumentCaptor;
-    private ArgumentCaptor<User> userCaptor;
-    @Mock
-    private UserRepository repository;
-    @InjectMocks
-    private UserServiceImpl service;
+    private ArgumentCaptor<User> userArgumentCaptor;
 
     @BeforeEach
-    public void init(){
-//        this.repository = Mockito.mock(UserRepository.class);
-//        this.service = new UserServiceImpl(repository);
-        user1 = EntityGenerator.generateUser("newIdentifier1", "example@gmail.com");
-        user2 = EntityGenerator.generateUser("newIdentifier2", "example2@gmail.com");
+    public void initTest() {
+        role1 = generateRole();
+        role2 = generateRole();
     }
 
     @Test
-    @DisplayName("user will be created successfully because the object is valid")
-//    @CsvFileSource
-    public void successCreateUserTest(){
-        service.save(user1);
-        service.save(user2);
+    @DisplayName("tour saved if entity is valid")
+    @Transactional
+    public void successSaveValidTour() {
+        User user = generateUser();
+        userService.save(user);
 
-        System.out.println(service.getAll().size());
-        verify(repository).save(userCaptor.capture());
-        User capturedUser = userCaptor.getValue();
-        System.out.println(capturedUser);
-        service.getAll().forEach(u -> System.out.println(u));
-        assertThat(service.getAll().stream()
-                .filter(user -> user.getUserId().equals(user1.getUserId()))
-                .findFirst())
-                .isNotNull();
+        assertThat(userService.get(user.getUserId()).getUserId()).isEqualTo(user.getUserId());
+        assertThat(userService.get(user.getUserId())).isEqualTo(user);
     }
 
     @Test
-    public void successGetUserTest() {
-       service.save(user1);
-
-       doReturn(Optional.of(user1)).when(repository).getByUserId(user1.getUserId());
-
-       assertThat(service.get(user1.getUserId())).isEqualTo(user1);
-
-       verify(repository, times(1)).getByUserId(user1.getUserId());
+    @DisplayName("tours inserted are successfully extracted")
+    @Transactional
+    public void successGetAll() {
+        User user1 = generateUser();
+        User user2 = generateUser();
+        userService.save(user1);
+        userService.save(user2);
+        List<User> list = new ArrayList<>(Arrays.asList(user1,user2));
+        Set<User> set = new HashSet<>(list);
+        assertThat(userService.getAll()).hasSize(2);
+        assertThat(userService.getAll()).isEqualTo(list);
+        assertThat(new HashSet<>(userService.getAll())).isEqualTo(set);
     }
 
     @Test
-    public void successDeleteUserTest() {
-        service.save(user2);
+    @DisplayName("tour is updated successfully")
+    @Transactional
+    @SneakyThrows
+    public void successUpdate() {
+        User user1 = generateUser();
+        User user2 = (User) user1.clone();
+        assertThat(user1).isEqualTo(user2);
+        userService.save(user1);
+        user1.setRoles(Set.of(generateRole()));
+        userService.update(user1);
+        userService.getAll().forEach(System.out::println);
+        assertThat(userService.get(user1.getUserId())).isNotEqualTo(user2);
+    }
 
-        service.delete(user1.getUserId());
+    @Test
+    @DisplayName("tour deleted if entity with id exists")
+    @Transactional
+    public void successDeleteExistingTour(){
+        User user = generateUser();
+        userService.save(user);
+        assertThat(userService.get(user.getUserId())).isEqualTo(user);
+        userService.delete(user.getUserId());
 
-        assertThat(service.getAll().stream()
-                .filter(user -> user.getUserId().equals(user1.getUserId()))
-                .findAny())
-                .isNotPresent();
+        assertThat(userService.get(user.getUserId())).isNull();
     }
 }

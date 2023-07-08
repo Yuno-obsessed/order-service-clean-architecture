@@ -1,6 +1,6 @@
 package sanity.nil.tourservice.service;
 
-import sanity.nil.tourservice.entity.Tour;
+import sanity.nil.tourservice.infrastructure.database.model.Tour;
 
 import java.util.UUID;
 

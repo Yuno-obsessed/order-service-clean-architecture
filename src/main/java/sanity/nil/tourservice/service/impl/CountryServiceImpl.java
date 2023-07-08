@@ -3,8 +3,8 @@ package sanity.nil.tourservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import sanity.nil.tourservice.dao.CountryRepository;
-import sanity.nil.tourservice.entity.Country;
+import sanity.nil.tourservice.infrastructure.database.dao.country.repository.CountryRepository;
+import sanity.nil.tourservice.infrastructure.database.model.Country;
 import sanity.nil.tourservice.service.CountryService;
 
 import java.util.List;
@@ -17,8 +17,8 @@ public class CountryServiceImpl implements CountryService {
     private final CountryRepository countryRepository;
 
     @Override
-    public void save(Country entity) {
-        countryRepository.save(entity);
+    public void save(Country model) {
+        countryRepository.save(model);
     }
 
     @Override
@@ -32,13 +32,15 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public void update(Country entity) {
-        countryRepository.save(entity);
+    public void update(Country model) {
+        if (countryRepository.findById(model.getCountryId()).isPresent()) {
+            countryRepository.save(model);
+        }
+
     }
 
     @Override
-    public boolean delete(Integer id) {
+    public void delete(Integer id) {
         countryRepository.deleteById(id);
-        return !countryRepository.existsById(id);
     }
 }

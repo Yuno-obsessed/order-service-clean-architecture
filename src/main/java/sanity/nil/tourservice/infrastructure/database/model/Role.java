@@ -1,4 +1,4 @@
-package sanity.nil.tourservice.entity;
+package sanity.nil.tourservice.infrastructure.database.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,6 +21,8 @@ public class Role {
 
     @Column(name = "role_type", unique = true, length = 30)
     private String type;
+
+    // Add an enum with possible values
 
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();

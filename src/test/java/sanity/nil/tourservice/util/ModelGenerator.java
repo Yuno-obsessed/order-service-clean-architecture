@@ -1,18 +1,25 @@
 package sanity.nil.tourservice.util;
 
-import sanity.nil.tourservice.entity.*;
+import sanity.nil.tourservice.infrastructure.database.model.*;
+import sanity.nil.tourservice.infrastructure.database.model.model.*;
+import sanity.nil.tourservice.infrastructure.model.*;
+import sanity.nil.tourservice.model.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public class EntityGenerator {
+public class ModelGenerator {
 
     private static Random random = new Random();
 
     private static int randomInt() {
         return Math.abs(random.nextInt(15000));
+    }
+
+    private static int randomInt(Integer bound) {
+        return random.nextInt(bound);
     }
 
     private static double randomDouble() {
@@ -24,6 +31,10 @@ public class EntityGenerator {
             length = 36;
         }
         return UUID.randomUUID().toString().substring(0,length);
+    }
+
+    public static User generateUser() {
+        return generateUser(UUID.randomUUID().toString().substring(0,16), UUID.randomUUID().toString().substring(0,20));
     }
 
     public static User generateUser(String identifier, String email){
@@ -38,6 +49,13 @@ public class EntityGenerator {
         user.setUpdatedAt(LocalDateTime.now());
         user.setFirstName("Daniel");
         return user;
+    }
+
+    public static Role generateRole() {
+        Role role = new Role();
+        role.setId((short) randomInt(100));
+        role.setType("");
+        return role;
     }
 
     public static Tour generateTour(City city) {

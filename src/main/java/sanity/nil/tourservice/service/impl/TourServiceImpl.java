@@ -3,8 +3,8 @@ package sanity.nil.tourservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import sanity.nil.tourservice.dao.TourRepository;
-import sanity.nil.tourservice.entity.Tour;
+import sanity.nil.tourservice.infrastructure.database.dao.TourRepository;
+import sanity.nil.tourservice.infrastructure.database.model.Tour;
 import sanity.nil.tourservice.service.TourService;
 
 import java.util.List;
@@ -18,8 +18,8 @@ public class TourServiceImpl implements TourService {
     private final TourRepository tourRepository;
 
     @Override
-    public void save(Tour entity) {
-        tourRepository.save(entity);
+    public void save(Tour model) {
+        tourRepository.save(model);
     }
 
     @Override
@@ -33,13 +33,14 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
-    public void update(Tour entity) {
-        tourRepository.findById(entity.getTourId()).ifPresent(updatedTour -> tourRepository.save(entity));
+    public void update(Tour model) {
+        if (tourRepository.findById(model.getTourId()).isPresent()){
+            tourRepository.save(model);
+        }
     }
 
     @Override
-    public boolean delete(UUID id) {
+    public void delete(UUID id) {
         tourRepository.deleteById(id);
-        return !tourRepository.existsById(id);
     }
 }

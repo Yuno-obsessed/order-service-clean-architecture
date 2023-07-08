@@ -1,4 +1,4 @@
-package sanity.nil.tourservice.entity;
+package sanity.nil.tourservice.infrastructure.database.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +13,7 @@ import java.util.*;
 @ToString
 @Getter
 @Setter
-public class User {
+public class User implements Cloneable{
     @Id
     @Column(name = "user_id")
     private UUID userId;
@@ -42,7 +42,7 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -52,4 +52,25 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId.equals(user.userId) &&
+                identifier.equals(user.identifier) &&
+                email.equals(user.email) &&
+                roles.equals(user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, identifier, email, roles);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

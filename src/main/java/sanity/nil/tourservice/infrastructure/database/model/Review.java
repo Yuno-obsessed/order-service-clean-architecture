@@ -1,4 +1,4 @@
-package sanity.nil.tourservice.entity;
+package sanity.nil.tourservice.infrastructure.database.model;
 
 import jakarta.persistence.*;
 import lombok.*;

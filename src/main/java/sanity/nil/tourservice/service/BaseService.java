@@ -4,13 +4,13 @@ import java.util.List;
 
 public interface BaseService<T, I> {
 
-    void save(T entity);
+    void save(T model);
 
     T get(I id);
 
     List<T> getAll();
 
-    void update(T entity);
+    void update(T model);
 
-    boolean delete(I id);
+    void delete(I id);
 }

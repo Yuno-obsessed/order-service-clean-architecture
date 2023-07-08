@@ -3,8 +3,8 @@ package sanity.nil.tourservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import sanity.nil.tourservice.dao.UserRepository;
-import sanity.nil.tourservice.entity.User;
+import sanity.nil.tourservice.infrastructure.database.dao.UserRepository;
+import sanity.nil.tourservice.infrastructure.database.model.User;
 import sanity.nil.tourservice.service.UserService;
 
 import java.util.List;
@@ -18,8 +18,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public void save(User entity) {
-        userRepository.save(entity);
+    public void save(User model) {
+        userRepository.save(model);
     }
 
     @Override
@@ -39,17 +39,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isEmailVerified(UUID id) {
-        return false;
+        return userRepository.findById(id).map(User::isEmailConfirmed).orElse(false);
     }
 
     @Override
-    public void update(User entity) {
-
+    public void update(User model) {
+        if (userRepository.findById(model.getUserId()).isPresent()) {
+            userRepository.save(model);
+        }
     }
 
     @Override
-    public boolean delete(UUID id) {
+    public void delete(UUID id) {
         userRepository.deleteById(id);
-        return !userRepository.existsById(id);
     }
 }

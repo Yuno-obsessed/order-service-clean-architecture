@@ -1,9 +1,6 @@
 package sanity.nil.tourservice.util;
 
-import sanity.nil.tourservice.infrastructure.database.model.*;
-import sanity.nil.tourservice.infrastructure.database.model.model.*;
 import sanity.nil.tourservice.infrastructure.model.*;
-import sanity.nil.tourservice.model.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,71 +29,71 @@ public class ModelGenerator {
         }
         return UUID.randomUUID().toString().substring(0,length);
     }
-
-    public static User generateUser() {
-        return generateUser(UUID.randomUUID().toString().substring(0,16), UUID.randomUUID().toString().substring(0,20));
-    }
-
-    public static User generateUser(String identifier, String email){
-        User user = new User();
-        user.setUserId(UUID.randomUUID());
-        user.setIdentifier(identifier);
-        user.setEmail(email);
-        user.setRank(1);
-        user.setPassword("wordpass");
-        user.setEmailConfirmed(false);
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
-        user.setFirstName("Daniel");
-        return user;
-    }
-
-    public static Role generateRole() {
-        Role role = new Role();
-        role.setId((short) randomInt(100));
-        role.setType("");
-        return role;
-    }
-
-    public static Tour generateTour(City city) {
-        Tour tour = new Tour();
-        tour.setTourId(UUID.randomUUID());
-        tour.setShortDescription(randomString(20));
-        tour.setPrice(randomDouble());
-        tour.setCity(city);
-        tour.setReviews(null);
-        return tour;
-    }
-
-    public static City generateCity(Country country) {
-       return generateCity(country, null, null, null);
-    }
-
-    public static City generateCity(Country country, List<Image> images, List<Sight> sights, List<Review> reviews) {
-        City city = new City();
-        city.setCityId(randomInt());
-        city.setName(randomString(10));
-        city.setDescription(randomString(30));
-        city.setCountry(country);
-        city.setImages(images);
-        city.setSights(sights);
-        city.setReviews(reviews);
-        return city;
-    }
-
-    public static Country generateCountry() {
-        Country country = new Country();
-        country.setCountryId(randomInt());
-        country.setName(randomString(20));
-        country.setDescription(randomString(40));
-        return country;
-    }
-
-    public static Review generateReview() {
-        Review review = new Review();
-        review.setReviewId(UUID.randomUUID());
-        review.setDislikes(randomInt());
-        review.setLikes(randomInt());
-        return review;
-    }
+//
+//    public static UserModel generateUser() {
+//        return generateUser(UUID.randomUUID().toString().substring(0,16), UUID.randomUUID().toString().substring(0,20));
+//    }
+//
+//    public static UserModel generateUser(String identifier, String email){
+//        UserModel userModel = new UserModel();
+//        userModel.setUserId(UUID.randomUUID());
+//        userModel.setIdentifier(identifier);
+//        userModel.setEmail(email);
+//        userModel.setRank(1);
+//        userModel.setPassword("wordpass");
+//        userModel.setEmailConfirmed(false);
+//        userModel.setCreatedAt(LocalDateTime.now());
+//        userModel.setUpdatedAt(LocalDateTime.now());
+//        userModel.setFirstName("Daniel");
+//        return userModel;
+//    }
+//
+//    public static Role generateRole() {
+//        Role role = new Role();
+//        role.setId((short) randomInt(100));
+//        role.setType("");
+//        return role;
+//    }
+//
+//    public static Tour generateTour(CityModel cityModel) {
+//        Tour tour = new Tour();
+//        tour.setTourId(UUID.randomUUID());
+//        tour.setShortDescription(randomString(20));
+//        tour.setPrice(randomDouble());
+//        tour.setCityModel(cityModel);
+//        tour.setReviews(null);
+//        return tour;
+//    }
+//
+//    public static CityModel generateCity(CountryModel countryModel) {
+//       return generateCity(countryModel, null, null, null);
+//    }
+//
+//    public static CityModel generateCity(CountryModel countryModel, List<Image> images, List<Sight> sights, List<Review> reviews) {
+//        CityModel cityModel = new CityModel();
+//        cityModel.setCityId(randomInt());
+//        cityModel.setName(randomString(10));
+//        cityModel.setDescription(randomString(30));
+//        cityModel.setCountryModel(countryModel);
+//        cityModel.setImages(images);
+//        cityModel.setSights(sights);
+//        cityModel.setReviews(reviews);
+//        return cityModel;
+//    }
+//
+//    public static CountryModel generateCountry() {
+//        CountryModel countryModel = new CountryModel();
+//        countryModel.setCountryId(randomInt());
+//        countryModel.setName(randomString(20));
+//        countryModel.setDescription(randomString(40));
+//        return countryModel;
+//    }
+//
+//    public static Review generateReview() {
+//        Review review = new Review();
+//        review.setReviewId(UUID.randomUUID());
+//        review.setDislikes(randomInt());
+//        review.setLikes(randomInt());
+//        return review;
+//    }
 }

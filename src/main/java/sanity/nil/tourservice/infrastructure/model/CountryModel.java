@@ -11,27 +11,24 @@ import java.util.Objects;
 
 @With
 @Entity
-@Table(name = "country")
+@Table(name = "product")
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Setter
 @Getter
-public class CountryModel {
+public class ProductModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "country_id")
-    private Integer countryId;
+    private Integer productId;
 
     @Column(name = "description", nullable = false, length = 500)
     private String description;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
-
-    @OneToMany(mappedBy = "country")
-    private List<CityModel> cities = new ArrayList<>();
 
     @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;
@@ -45,13 +42,12 @@ public class CountryModel {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CountryModel countryModel = (CountryModel) o;
-        return countryId.equals(countryModel.countryId) &&
-                name.equals(countryModel.name);
+        ProductModel productModel = (ProductModel) o;
+        return productId.equals(productModel.productId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(countryId, name);
+        return Objects.hash(productId);
     }
 }

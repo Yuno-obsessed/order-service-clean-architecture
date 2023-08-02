@@ -1,16 +1,9 @@
 spring:
-#  application:
-#    name: pet-clinic
-#  main:
-#    banner-mode: console
-#  output:
-#    ansi:
-#      enabled: always
 #  jackson:
 #    date-format: 'dd.MM.yyyy'
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/tour-application
+    url: jdbc:postgresql://localhost:5432/online-shop
     username: sanity
     password: wordpass
   jpa:
@@ -34,7 +27,12 @@ spring:
 #      max-file-size: 1MB
 #      max-request-size: 10MB
 #
-#logging:
+logging:
+  level:
+    com.sanity: debug
+#    org.springframework: warn
+#    org.hibernate: error
+#    org.springframework.security: error
 #  file:
 #    name: './logs/application.log'
 #    logback:
@@ -46,12 +44,6 @@ spring:
 #  pattern:
 #    console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){faint} %clr(%-40.40logger{0}){cyan} %clr(:){faint} %clr(%m){faint}%n'
 #    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n'
-#  level:
-#    com.sanity: debug
-#    org.springframework: warn
-#    org.hibernate: error
-#    org.springframework.security: error
-#
 server:
   port: 8080
   error:

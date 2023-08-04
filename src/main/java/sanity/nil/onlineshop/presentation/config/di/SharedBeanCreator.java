@@ -9,9 +9,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import sanity.nil.onlineshop.presentation.api.middleware.CustomHandlerInterceptor;
-import sanity.nil.onlineshop.presentation.exception.request.RequestIdGenerator;
-import sanity.nil.onlineshop.presentation.exception.request.RequestIdHolder;
-import sanity.nil.onlineshop.presentation.exception.request.RequestImpl;
+import sanity.nil.onlineshop.presentation.api.exception.request.RequestIdGenerator;
+import sanity.nil.onlineshop.presentation.api.exception.request.RequestIdHolder;
+import sanity.nil.onlineshop.presentation.api.exception.request.RequestImpl;
 
 import javax.sql.DataSource;
 

@@ -24,4 +24,6 @@ public class DiscountDTO {
 
     @JsonProperty(value = "expired", required = true)
     private boolean isExpired;
+
+
 }

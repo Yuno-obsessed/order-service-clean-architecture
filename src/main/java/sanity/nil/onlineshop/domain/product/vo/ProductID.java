@@ -10,6 +10,10 @@ public class ProductID {
         this.id = UUID.randomUUID();
     }
 
+    public ProductID(UUID id) {
+        this.id = id;
+    }
+
     public UUID getId() {
         return id;
     }

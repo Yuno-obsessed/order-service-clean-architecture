@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import sanity.nil.onlineshop.infrastructure.model.UserModel;
+import sanity.nil.onlineshop.infrastructure.database.model.UserModel;
 
 import java.util.UUID;
 

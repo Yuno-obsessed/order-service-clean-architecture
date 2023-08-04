@@ -5,8 +5,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
-import sanity.nil.onlineshop.presentation.exception.request.RequestIdGenerator;
-import sanity.nil.onlineshop.presentation.exception.request.RequestIdHolder;
+import sanity.nil.onlineshop.presentation.api.exception.request.RequestIdGenerator;
+import sanity.nil.onlineshop.presentation.api.exception.request.RequestIdHolder;
 
 import java.util.UUID;
 

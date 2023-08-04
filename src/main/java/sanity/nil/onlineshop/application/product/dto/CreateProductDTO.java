@@ -18,6 +18,9 @@ public class CreateProductDTO {
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    @JsonProperty(value = "product_type_id", required = true)
+    private Integer typeId;
+
     @JsonProperty(value = "price", required = true)
     private BigDecimal price;
 

@@ -3,18 +3,20 @@ package sanity.nil.onlineshop.application.product.interactors;
 import lombok.RequiredArgsConstructor;
 import sanity.nil.onlineshop.application.product.dto.CreateProductDTO;
 import sanity.nil.onlineshop.application.product.dto.ProductDTO;
-import sanity.nil.onlineshop.application.product.interfaces.ProductRepository;
+import sanity.nil.onlineshop.application.product.interfaces.query.ProductDAO;
 import sanity.nil.onlineshop.application.product.interfaces.interactors.CreateProductInteractor;
+import sanity.nil.onlineshop.application.product.interfaces.query.ProductReader;
 import sanity.nil.onlineshop.domain.product.entity.Product;
-import sanity.nil.onlineshop.domain.product.methods.CreateProduct;
+import sanity.nil.onlineshop.domain.product.service.ProductService;
 
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 public class CreateProductInteractorImpl implements CreateProductInteractor {
 
-    private final ProductRepository productRepository;
-    private final CreateProduct createMethod;
+    private final ProductDAO productDAO;
+    private final ProductReader productReader;
+    private final ProductService service;
 
 
     @Override
@@ -27,8 +29,9 @@ public class CreateProductInteractorImpl implements CreateProductInteractor {
             startsAt = dto.getDiscountDTO().getStartsAt();
             endsAt = dto.getDiscountDTO().getEndsAt();
         }
-        Product product = createMethod.create(dto.getDescription(), dto.getName(), dto.getPrice(),
-                discountCode, startsAt, endsAt, dto.getQuantity());
-        return productRepository.createProduct(product);
+        Product product = service.create(dto.getDescription(), dto.getName(), dto.getPrice(),
+                discountCode, startsAt, endsAt, dto.getQuantity(), dto.getTypeId());
+        product = productDAO.createProduct(product);
+        return productReader.getProductDTOById(product.getProductId().getId());
     }
 }

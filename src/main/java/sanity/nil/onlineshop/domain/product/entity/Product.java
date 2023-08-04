@@ -1,7 +1,10 @@
 package sanity.nil.onlineshop.domain.product.entity;
 
 
+import sanity.nil.onlineshop.domain.product.entity.consts.ProductType;
+import sanity.nil.onlineshop.domain.product.vo.Discount;
 import sanity.nil.onlineshop.domain.product.vo.ProductID;
+import sanity.nil.onlineshop.domain.product.vo.State;
 
 import java.math.BigDecimal;
 
@@ -15,15 +18,13 @@ public class Product {
     private BigDecimal actualPrice;
     private Integer quantity;
     private boolean availability;
-    // TODO:
-//    private ProductType productType;
-//
-//    public enum ProductType {
-//
-//    }
+    private State state;
+    private ProductType productType;
+
+    public Product() {}
 
     public Product(ProductID productId, String description, String name, BigDecimal price, Discount discount,
-                   BigDecimal actualPrice, Integer quantity, boolean availability) {
+                   BigDecimal actualPrice, Integer quantity, boolean availability, State state, ProductType productType) {
         this.productId = productId;
         this.description = description;
         this.name = name;
@@ -32,22 +33,16 @@ public class Product {
         this.actualPrice = actualPrice;
         this.quantity = quantity;
         this.availability = availability;
+        this.state = state;
+        this.productType = productType;
     }
 
     public ProductID getProductId() {
         return productId;
     }
 
-    public void setProductId(ProductID productId) {
-        this.productId = productId;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getName() {
@@ -62,39 +57,31 @@ public class Product {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     public Discount getDiscount() {
         return discount;
-    }
-
-    public void setDiscount(Discount discount) {
-        this.discount = discount;
     }
 
     public BigDecimal getActualPrice() {
         return actualPrice;
     }
 
-    public void setActualPrice(BigDecimal actualPrice) {
-        this.actualPrice = actualPrice;
-    }
-
     public Integer getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
     }
 
     public boolean isAvailable() {
         return availability;
     }
 
-    public void setAvailability(boolean availability) {
-        this.availability = availability;
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public ProductType getProductType() {
+        return productType;
     }
 }

@@ -2,11 +2,12 @@ package sanity.nil.onlineshop.domain.product.service;
 
 
 import sanity.nil.onlineshop.domain.product.entity.Product;
-import sanity.nil.onlineshop.domain.product.entity.consts.ProductType;
+import sanity.nil.onlineshop.domain.product.consts.ProductType;
 import sanity.nil.onlineshop.domain.product.exceptions.UnsupportedPriceException;
 import sanity.nil.onlineshop.domain.product.exceptions.UnsupportedQuantityException;
 import sanity.nil.onlineshop.domain.product.vo.Discount;
 import sanity.nil.onlineshop.domain.product.vo.ProductID;
+import sanity.nil.onlineshop.domain.product.vo.ProductSubtype;
 import sanity.nil.onlineshop.domain.product.vo.State;
 
 import java.math.BigDecimal;
@@ -20,7 +21,7 @@ public class ProductService {
 
     public Product create(String description, String name, BigDecimal price,
                           Integer discountCode, LocalDateTime startsAt,
-                          LocalDateTime endsAt, Integer quantity, Integer typeId) {
+                          LocalDateTime endsAt, Integer quantity, ProductSubtype productSubtype) {
         boolean available = false;
         int discountInPercents = 0;
         BigDecimal newPrice = price;
@@ -60,12 +61,12 @@ public class ProductService {
 
 
         return new Product(new ProductID(), description, name, price, discount,
-                newPrice, quantity, available, new State(false), ProductType.getByTypeId(typeId));
+                newPrice, quantity, available, new State(false), productSubtype);
     }
 
     public Product update(UUID id, String description, String name, BigDecimal price,
                           Integer discountCode, LocalDateTime startsAt,
-                          LocalDateTime endsAt, Integer quantity, Integer typeId) {
+                          LocalDateTime endsAt, Integer quantity, ProductSubtype productSubtype) {
         boolean available = false;
         int discountInPercents = 0;
         BigDecimal newPrice = price;
@@ -105,7 +106,7 @@ public class ProductService {
 
 
         return new Product(new ProductID(id), description, name, price, discount,
-                newPrice, quantity, available, new State(false), ProductType.getByTypeId(typeId));
+                newPrice, quantity, available, new State(false), productSubtype);
     }
 
     public Product delete(Product product) {

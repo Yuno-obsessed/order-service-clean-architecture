@@ -15,9 +15,12 @@ import sanity.nil.onlineshop.application.product.interfaces.interactors.DeletePr
 import sanity.nil.onlineshop.application.product.interfaces.interactors.GetProductInteractor;
 import sanity.nil.onlineshop.application.product.interfaces.interactors.UpdateProductInteractor;
 import sanity.nil.onlineshop.application.product.interfaces.query.ProductReader;
+import sanity.nil.onlineshop.application.product.interfaces.query.ProductSubtypeReader;
 import sanity.nil.onlineshop.domain.product.service.ProductService;
+import sanity.nil.onlineshop.infrastructure.database.impl.ProductSubtypeDAOImpl;
 import sanity.nil.onlineshop.infrastructure.database.orm.ProductORM;
 import sanity.nil.onlineshop.infrastructure.database.impl.ProductDAOImpl;
+import sanity.nil.onlineshop.infrastructure.database.orm.ProductSubtypeORM;
 
 @Configuration
 @ComponentScans(value = {
@@ -39,15 +42,21 @@ public class ProductBeanCreator {
         return new ProductDAOImpl(productORM);
     }
 
-
     @Bean
-    public CreateProductInteractor createProductInteractor(ProductDAO productDAO, ProductReader productReader) {
-      return new CreateProductInteractorImpl(productDAO, productReader, new ProductService());
+    public ProductSubtypeReader productSubtypeReader(ProductSubtypeORM productSubtypeORM) {
+        return new ProductSubtypeDAOImpl(productSubtypeORM);
     }
 
     @Bean
-    public UpdateProductInteractor updateProductInteractor( ProductDAO productDAO, ProductReader productReader) {
-       return new UpdateProductInteractorImpl(productDAO, productReader, new ProductService());
+    public CreateProductInteractor createProductInteractor(ProductDAO productDAO, ProductReader productReader,
+                                                           ProductSubtypeReader productSubtypeReader) {
+      return new CreateProductInteractorImpl(productDAO, productReader, productSubtypeReader, new ProductService());
+    }
+
+    @Bean
+    public UpdateProductInteractor updateProductInteractor(ProductDAO productDAO, ProductReader productReader,
+                                                           ProductSubtypeReader productSubtypeReader) {
+       return new UpdateProductInteractorImpl(productDAO, productReader, productSubtypeReader, new ProductService());
     }
 
     @Bean

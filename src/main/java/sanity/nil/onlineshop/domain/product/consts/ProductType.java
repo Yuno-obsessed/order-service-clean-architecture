@@ -1,4 +1,4 @@
-package sanity.nil.onlineshop.domain.product.entity.consts;
+package sanity.nil.onlineshop.domain.product.consts;
 
 public enum ProductType {
     ELECTRONICS(0, "Electronics", "ELC"),

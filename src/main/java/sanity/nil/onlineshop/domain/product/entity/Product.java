@@ -1,9 +1,9 @@
 package sanity.nil.onlineshop.domain.product.entity;
 
 
-import sanity.nil.onlineshop.domain.product.entity.consts.ProductType;
 import sanity.nil.onlineshop.domain.product.vo.Discount;
 import sanity.nil.onlineshop.domain.product.vo.ProductID;
+import sanity.nil.onlineshop.domain.product.vo.ProductSubtype;
 import sanity.nil.onlineshop.domain.product.vo.State;
 
 import java.math.BigDecimal;
@@ -19,12 +19,12 @@ public class Product {
     private Integer quantity;
     private boolean availability;
     private State state;
-    private ProductType productType;
+    private ProductSubtype productSubtype;
 
     public Product() {}
 
     public Product(ProductID productId, String description, String name, BigDecimal price, Discount discount,
-                   BigDecimal actualPrice, Integer quantity, boolean availability, State state, ProductType productType) {
+                   BigDecimal actualPrice, Integer quantity, boolean availability, State state, ProductSubtype productSubtype) {
         this.productId = productId;
         this.description = description;
         this.name = name;
@@ -34,7 +34,7 @@ public class Product {
         this.quantity = quantity;
         this.availability = availability;
         this.state = state;
-        this.productType = productType;
+        this.productSubtype = productSubtype;
     }
 
     public ProductID getProductId() {
@@ -81,7 +81,7 @@ public class Product {
         return state;
     }
 
-    public ProductType getProductType() {
-        return productType;
+    public ProductSubtype getProductSubtype() {
+        return productSubtype;
     }
 }

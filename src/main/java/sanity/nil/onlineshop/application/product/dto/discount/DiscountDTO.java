@@ -1,4 +1,4 @@
-package sanity.nil.onlineshop.application.product.dto;
+package sanity.nil.onlineshop.application.product.dto.discount;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

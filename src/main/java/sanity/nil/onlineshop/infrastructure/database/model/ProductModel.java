@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -50,7 +52,13 @@ public class ProductModel {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
-    private ProductTypeModel productType;
+    private ProductSubtypeModel productSubtype;
+
+    @OneToOne(mappedBy = "product")
+    private ProductStatisticsModel productStatistics;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductImageModel> productImage = new ArrayList<>();
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;

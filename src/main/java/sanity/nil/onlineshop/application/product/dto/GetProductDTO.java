@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sanity.nil.onlineshop.application.product.dto.discount.DiscountDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -1,17 +1,15 @@
 package sanity.nil.onlineshop.infrastructure.database.orm.mapper;
 
-import sanity.nil.onlineshop.application.product.dto.DiscountDTO;
+import sanity.nil.onlineshop.application.product.dto.discount.DiscountDTO;
 import sanity.nil.onlineshop.application.product.dto.GetProductDTO;
 import sanity.nil.onlineshop.application.product.dto.ProductDTO;
 import sanity.nil.onlineshop.domain.product.entity.Product;
-import sanity.nil.onlineshop.domain.product.entity.consts.ProductType;
 import sanity.nil.onlineshop.domain.product.vo.Discount;
 import sanity.nil.onlineshop.domain.product.vo.ProductID;
 import sanity.nil.onlineshop.domain.product.vo.State;
 import sanity.nil.onlineshop.infrastructure.database.model.ProductModel;
 
 import static sanity.nil.onlineshop.domain.product.vo.Discount.DiscountType.getByDiscount;
-import static sanity.nil.onlineshop.infrastructure.database.orm.mapper.ProductTypeMapper.*;
 
 public class ProductMapper {
 
@@ -33,7 +31,7 @@ public class ProductMapper {
             model.setDeleted(product.getState().isDeleted());
             model.setDeletedAt(product.getState().getDeletedAt());
         }
-        model.setProductType(ProductTypeMapper.convertEntityToModel(product.getProductType()));
+        model.setProductSubtype(ProductSubtypeMapper.convertEntityToModel(product.getProductSubtype()));
         return model;
     }
 
@@ -44,14 +42,14 @@ public class ProductMapper {
                         model.getDiscountStart(), model.getDiscountEnd()),
                 model.getPriceWithDiscount(), model.getQuantity(), model.isAvailability(),
                 new State(model.isDeleted(), model.getDeletedAt()),
-                ProductType.getByTypeId(model.getProductType().getTypeId()));
+                ProductSubtypeMapper.convertModelToEntity(model.getProductSubtype()));
     }
 
     public static ProductDTO convertModelToProductDTO(ProductModel model) {
         return new ProductDTO(model.getProductId(), model.getDescription(),
                 model.getName(), model.getPrice(), new DiscountDTO(model.getDiscount(),
                     model.getDiscountStart(), model.getDiscountEnd(), model.isDiscountExpired()),
-                model.getPriceWithDiscount(), convertModelToProductTypeDTO(model.getProductType()),
+                model.getPriceWithDiscount(), ProductSubtypeMapper.convertModelToProductTypeDTO(model.getProductSubtype().getProductType()),
                 model.getQuantity(), model.isAvailability()
         );
     }
@@ -64,7 +62,7 @@ public class ProductMapper {
         }
         return new ProductDTO(entity.getProductId().getId(), entity.getDescription(),
                 entity.getName(), entity.getPrice(), discountDTO,
-                entity.getActualPrice(), convertEntityToProductTypeDTO(entity.getProductType()),
+                entity.getActualPrice(), ProductSubtypeMapper.convertEntityToProductTypeDTO(entity.getProductSubtype()),
                 entity.getQuantity(), entity.isAvailable()
         );
     }

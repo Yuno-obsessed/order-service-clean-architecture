@@ -6,6 +6,7 @@ import sanity.nil.onlineshop.application.product.dto.UpdateProductDTO;
 import sanity.nil.onlineshop.application.product.interfaces.query.ProductDAO;
 import sanity.nil.onlineshop.application.product.interfaces.interactors.UpdateProductInteractor;
 import sanity.nil.onlineshop.application.product.interfaces.query.ProductReader;
+import sanity.nil.onlineshop.application.product.interfaces.query.ProductSubtypeReader;
 import sanity.nil.onlineshop.domain.product.entity.Product;
 import sanity.nil.onlineshop.domain.product.service.ProductService;
 
@@ -16,6 +17,7 @@ public class UpdateProductInteractorImpl implements UpdateProductInteractor {
 
     private final ProductDAO productDAO;
     private final ProductReader productReader;
+    private final ProductSubtypeReader productSubtypeReader;
     private final ProductService service;
 
     @Override
@@ -23,13 +25,14 @@ public class UpdateProductInteractorImpl implements UpdateProductInteractor {
         Integer discountCode = null;
         LocalDateTime startsAt = null;
         LocalDateTime endsAt = null;
-        if (dto.getDiscountDTO() != null){
-            discountCode = dto.getDiscountDTO().getDiscountCode();
-            startsAt = dto.getDiscountDTO().getStartsAt();
-            endsAt = dto.getDiscountDTO().getEndsAt();
+        if (dto.discountDTO != null){
+            discountCode = dto.discountDTO.discountCode;
+            startsAt = dto.discountDTO.startsAt;
+            endsAt = dto.discountDTO.endsAt;
         }
-        Product product = service.update(dto.getId(), dto.getDescription(), dto.getName(), dto.getPrice(),
-                discountCode, startsAt, endsAt, dto.getQuantity(), dto.getTypeId());
+        Product product = service.update(dto.id, dto.description, dto.name, dto.price,
+                discountCode, startsAt, endsAt, dto.quantity,
+                productSubtypeReader.getBySubtypeId(dto.typeId));
         product = productDAO.updateProduct(product);
         return productReader.getProductDTOById(product.getProductId().getId());
     }

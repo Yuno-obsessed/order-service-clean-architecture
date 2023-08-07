@@ -3,41 +3,41 @@ package sanity.nil.onlineshop.application.product.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import sanity.nil.onlineshop.application.product.dto.discount.DiscountDTO;
+import sanity.nil.onlineshop.application.product.dto.types.ProductTypeDTO;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Getter
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ProductDTO {
 
     @JsonProperty(value = "product_id")
-    private UUID id;
+    public UUID id;
 
     @JsonProperty(value = "description", required = true)
-    private String description;
+    public String description;
 
     @JsonProperty(value = "name", required = true)
-    private String name;
+    public String name;
 
     @JsonProperty(value = "price", required = true)
-    private BigDecimal price;
+    public BigDecimal price;
 
     @JsonProperty(value = "discount")
-    private DiscountDTO discount;
+    public DiscountDTO discount;
 
     @JsonProperty(value = "actual_price")
-    private BigDecimal actualPrice;
+    public BigDecimal actualPrice;
 
     @JsonProperty(value = "product_type", required = true)
-    private ProductTypeDTO productType;
+    public ProductTypeDTO productType;
 
     @JsonProperty(value = "quantity", defaultValue = "0")
-    private Integer quantity;
+    public Integer quantity;
 
     @JsonProperty(value = "availability")
-    private boolean availability;
+    public boolean availability;
 
 }

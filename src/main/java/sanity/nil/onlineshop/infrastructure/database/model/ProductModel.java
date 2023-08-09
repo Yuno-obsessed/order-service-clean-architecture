@@ -2,6 +2,7 @@ package sanity.nil.onlineshop.infrastructure.database.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "products")
+@DynamicUpdate
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -41,7 +43,7 @@ public class ProductModel {
     @Column(name = "discount_end")
     private LocalDateTime discountEnd;
 
-    @Column(name = "price_with_discount")
+    @Column(name = "price_with_discount", nullable = false, precision = 19, scale = 2)
     private BigDecimal priceWithDiscount;
 
     @Column(name = "quantity", nullable = false)
@@ -54,11 +56,18 @@ public class ProductModel {
     @JoinColumn(name = "type_id")
     private ProductSubtypeModel productSubtype;
 
-    @OneToOne(mappedBy = "product")
-    private ProductStatisticsModel productStatistics;
+    @Column(name = "rate", precision = 16, scale = 15)
+    private BigDecimal rate;
 
-    @OneToMany(mappedBy = "product")
-    private List<ProductImageModel> productImage = new ArrayList<>();
+    @Column(name = "ratings")
+    private Integer ratings;
+
+    @Column(name = "in_wish_list")
+    private Integer inWishList;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "product_id")
+    private List<ProductImageModel> productImages = new ArrayList<>();
 
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
@@ -80,6 +89,12 @@ public class ProductModel {
 
     public boolean isLogicallyDeleted() {
         return this.deleted && this.deletedAt != null;
+    }
+
+    public void addProductImage(ProductImageModel productImage) {
+        if (productImage != null ) {
+            this.productImages.add(productImage);
+        }
     }
 
     @PrePersist

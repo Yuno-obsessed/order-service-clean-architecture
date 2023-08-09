@@ -7,10 +7,9 @@ import sanity.nil.onlineshop.application.product.dto.CreateProductDTO;
 import sanity.nil.onlineshop.application.product.dto.GetProductDTO;
 import sanity.nil.onlineshop.application.product.dto.ProductDTO;
 import sanity.nil.onlineshop.application.product.dto.UpdateProductDTO;
-import sanity.nil.onlineshop.application.product.interfaces.interactors.CreateProductInteractor;
-import sanity.nil.onlineshop.application.product.interfaces.interactors.DeleteProductInteractor;
-import sanity.nil.onlineshop.application.product.interfaces.interactors.GetProductInteractor;
-import sanity.nil.onlineshop.application.product.interfaces.interactors.UpdateProductInteractor;
+import sanity.nil.onlineshop.application.product.dto.statistics.ProductStatisticsDTO;
+import sanity.nil.onlineshop.application.product.dto.statistics.UpdateProductStatisticsDTO;
+import sanity.nil.onlineshop.application.product.interfaces.interactors.*;
 
 import java.util.UUID;
 
@@ -23,6 +22,7 @@ public class ProductController {
     private final GetProductInteractor getProductInteractor;
     private final UpdateProductInteractor updateProductInteractor;
     private final DeleteProductInteractor deleteProductInteractor;
+    private final UpdateProductStatisticsInteractor updateProductStatisticsInteractor;
 
     @GetMapping("/{id}")
     public ResponseEntity<GetProductDTO> getProductById(@PathVariable UUID id){
@@ -50,6 +50,20 @@ public class ProductController {
        return ResponseEntity
                .status(404)
                .body(deleteProductInteractor.delete(id));
+    }
+
+    @PutMapping("/statistics/addrate")
+    public ResponseEntity<ProductStatisticsDTO> addRating(@RequestBody UpdateProductStatisticsDTO productStatisticsDTO) {
+        return ResponseEntity
+                .status(200)
+                .body(updateProductStatisticsInteractor.addRating(productStatisticsDTO));
+    }
+
+    @PutMapping("/statistics/addtowishlist")
+    public ResponseEntity<ProductStatisticsDTO> addToWishList(@RequestBody UpdateProductStatisticsDTO productStatisticsDTO) {
+       return ResponseEntity
+               .status(200)
+               .body(updateProductStatisticsInteractor.addToWishList(productStatisticsDTO));
     }
 
 }

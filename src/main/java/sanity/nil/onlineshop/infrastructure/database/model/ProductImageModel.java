@@ -21,7 +21,4 @@ public class ProductImageModel {
     @Column(name = "image_name")
     private String imageName;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private ProductModel product;
 }

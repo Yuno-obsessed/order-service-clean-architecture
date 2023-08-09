@@ -30,10 +30,12 @@ public class UpdateProductInteractorImpl implements UpdateProductInteractor {
             startsAt = dto.discountDTO.startsAt;
             endsAt = dto.discountDTO.endsAt;
         }
-        Product product = service.update(dto.id, dto.description, dto.name, dto.price,
+        Product product = productReader.getProductById(dto.id);
+        product = service.update(dto.id, dto.description, dto.name, dto.price,
                 discountCode, startsAt, endsAt, dto.quantity,
-                productSubtypeReader.getBySubtypeId(dto.typeId));
-        product = productDAO.updateProduct(product);
+                productSubtypeReader.getBySubtypeId(dto.typeId),
+                product.getProductStatistics());
+        product = productDAO.updateProduct(product, dto.productImage.imageNames);
         return productReader.getProductDTOById(product.getProductId().getId());
     }
 }

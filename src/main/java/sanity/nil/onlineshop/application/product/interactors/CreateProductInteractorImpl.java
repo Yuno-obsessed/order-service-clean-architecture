@@ -35,7 +35,7 @@ public class CreateProductInteractorImpl implements CreateProductInteractor {
         Product product = service.create(dto.description, dto.name, dto.price,
                 discountCode, startsAt, endsAt, dto.quantity,
                 productSubtypeReader.getBySubtypeId(dto.subTypeId));
-        product = productDAO.createProduct(product);
+        product = productDAO.createProduct(product, dto.productImage.imageNames);
         return productReader.getProductDTOById(product.getProductId().getId());
     }
 }

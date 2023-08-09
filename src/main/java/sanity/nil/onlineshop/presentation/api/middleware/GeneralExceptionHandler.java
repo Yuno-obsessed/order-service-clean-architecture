@@ -1,6 +1,5 @@
 package sanity.nil.onlineshop.presentation.api.middleware;
 
-import jakarta.annotation.Priority;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,11 +27,12 @@ public class GeneralExceptionHandler {
 
     private final RequestIdHolder requestIdHolder;
 
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    @ExceptionHandler(Exception.class)
-//    public ErrorResponse handle(final Exception e) {
-//       return new ErrorResponse(requestIdHolder.mustGet(), INTERNAL_ERROR.getReason(), e.getClass().getCanonicalName());
-//    }
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ErrorResponse handle(final Exception e) {
+        printError(e);
+       return new ErrorResponse(requestIdHolder.mustGet(), INTERNAL_ERROR.getReason(), e.getClass().getCanonicalName());
+    }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ProductNotFound.class)

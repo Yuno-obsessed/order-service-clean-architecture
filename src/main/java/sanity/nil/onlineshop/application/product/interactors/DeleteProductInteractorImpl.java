@@ -19,7 +19,7 @@ public class DeleteProductInteractorImpl implements DeleteProductInteractor {
     @Override
     public UUID delete(UUID id) {
         Product product = productService.delete(productReader.getProductById(id));
-        productDAO.updateProduct(product);
+        productDAO.updateProduct(product, null);
         return id;
     }
 }

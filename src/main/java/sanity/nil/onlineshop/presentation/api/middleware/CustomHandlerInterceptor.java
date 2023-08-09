@@ -1,8 +1,5 @@
 package sanity.nil.onlineshop.presentation.api.middleware;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micrometer.core.instrument.util.IOUtils;
-import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +8,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import sanity.nil.onlineshop.presentation.api.exception.request.RequestIdGenerator;
 import sanity.nil.onlineshop.presentation.api.exception.request.RequestIdHolder;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @RequiredArgsConstructor

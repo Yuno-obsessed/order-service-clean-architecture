@@ -1,10 +1,8 @@
 package sanity.nil.onlineshop.domain.product.entity;
 
 
-import sanity.nil.onlineshop.domain.product.vo.Discount;
-import sanity.nil.onlineshop.domain.product.vo.ProductID;
-import sanity.nil.onlineshop.domain.product.vo.ProductSubtype;
-import sanity.nil.onlineshop.domain.product.vo.State;
+import lombok.Getter;
+import sanity.nil.onlineshop.domain.product.vo.*;
 
 import java.math.BigDecimal;
 
@@ -20,6 +18,7 @@ public class Product {
     private boolean availability;
     private State state;
     private ProductSubtype productSubtype;
+    private ProductStatistics productStatistics;
 
     public Product() {}
 
@@ -35,6 +34,21 @@ public class Product {
         this.availability = availability;
         this.state = state;
         this.productSubtype = productSubtype;
+    }
+
+    public Product(ProductID productId, String description, String name, BigDecimal price, Discount discount, BigDecimal actualPrice,
+                   Integer quantity, boolean availability, State state, ProductSubtype productSubtype, ProductStatistics productStatistics) {
+        this.productId = productId;
+        this.description = description;
+        this.name = name;
+        this.price = price;
+        this.discount = discount;
+        this.actualPrice = actualPrice;
+        this.quantity = quantity;
+        this.availability = availability;
+        this.state = state;
+        this.productSubtype = productSubtype;
+        this.productStatistics = productStatistics;
     }
 
     public ProductID getProductId() {
@@ -83,5 +97,13 @@ public class Product {
 
     public ProductSubtype getProductSubtype() {
         return productSubtype;
+    }
+
+    public void setProductStatistics(ProductStatistics productStatistics) {
+        this.productStatistics = productStatistics;
+    }
+
+    public ProductStatistics getProductStatistics() {
+        return productStatistics;
     }
 }

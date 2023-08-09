@@ -5,15 +5,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import sanity.nil.onlineshop.application.product.interactors.CreateProductInteractorImpl;
-import sanity.nil.onlineshop.application.product.interactors.DeleteProductInteractorImpl;
-import sanity.nil.onlineshop.application.product.interactors.GetProductInteractorImpl;
-import sanity.nil.onlineshop.application.product.interactors.UpdateProductInteractorImpl;
+import sanity.nil.onlineshop.application.product.interactors.*;
+import sanity.nil.onlineshop.application.product.interfaces.interactors.*;
 import sanity.nil.onlineshop.application.product.interfaces.query.ProductDAO;
-import sanity.nil.onlineshop.application.product.interfaces.interactors.CreateProductInteractor;
-import sanity.nil.onlineshop.application.product.interfaces.interactors.DeleteProductInteractor;
-import sanity.nil.onlineshop.application.product.interfaces.interactors.GetProductInteractor;
-import sanity.nil.onlineshop.application.product.interfaces.interactors.UpdateProductInteractor;
 import sanity.nil.onlineshop.application.product.interfaces.query.ProductReader;
 import sanity.nil.onlineshop.application.product.interfaces.query.ProductSubtypeReader;
 import sanity.nil.onlineshop.domain.product.service.ProductService;
@@ -56,17 +50,22 @@ public class ProductBeanCreator {
     @Bean
     public UpdateProductInteractor updateProductInteractor(ProductDAO productDAO, ProductReader productReader,
                                                            ProductSubtypeReader productSubtypeReader) {
-       return new UpdateProductInteractorImpl(productDAO, productReader, productSubtypeReader, new ProductService());
+        return new UpdateProductInteractorImpl(productDAO, productReader, productSubtypeReader, new ProductService());
     }
 
     @Bean
     public GetProductInteractor getProductInteractor(ProductReader productReader) {
-      return new GetProductInteractorImpl(productReader);
+        return new GetProductInteractorImpl(productReader);
     }
 
     @Bean
     public DeleteProductInteractor deleteProductInteractor(ProductDAO productDAO, ProductReader productReader) {
         return new DeleteProductInteractorImpl(productDAO, productReader, new ProductService());
+    }
+
+    @Bean
+    public UpdateProductStatisticsInteractor updateProductStatisticsInteractor(ProductDAO productDAO, ProductReader productReader) {
+        return new UpdateProductStatisticsInteractorImpl(productDAO, productReader, new ProductService());
     }
 
 }

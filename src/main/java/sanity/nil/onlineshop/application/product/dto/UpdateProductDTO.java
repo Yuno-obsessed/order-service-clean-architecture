@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import sanity.nil.onlineshop.application.product.dto.discount.CreateDiscountDTO;
+import sanity.nil.onlineshop.application.product.dto.image.CreateProductImageDTO;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -18,7 +19,7 @@ public class UpdateProductDTO {
     @JsonProperty(value = "description", required = true)
     public String description;
 
-    @JsonProperty(value = "product_type_id", required = true)
+    @JsonProperty(value = "subtype_id", required = true)
     public Integer typeId;
 
     @JsonProperty(value = "name", required = true)
@@ -29,6 +30,9 @@ public class UpdateProductDTO {
 
     @JsonProperty(value = "discount")
     public CreateDiscountDTO discountDTO;
+
+    @JsonProperty(value = "images")
+    public CreateProductImageDTO productImage;
 
     @JsonProperty(value = "quantity", defaultValue = "0")
     public Integer quantity;

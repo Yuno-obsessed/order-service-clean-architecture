@@ -2,7 +2,8 @@ package sanity.nil.onlineshop.domain.product.service;
 
 
 import sanity.nil.onlineshop.domain.product.entity.Product;
-import sanity.nil.onlineshop.domain.product.consts.ProductType;
+import sanity.nil.onlineshop.domain.product.exceptions.UnsupportedRateException;
+import sanity.nil.onlineshop.domain.product.vo.ProductStatistics;
 import sanity.nil.onlineshop.domain.product.exceptions.UnsupportedPriceException;
 import sanity.nil.onlineshop.domain.product.exceptions.UnsupportedQuantityException;
 import sanity.nil.onlineshop.domain.product.vo.Discount;
@@ -11,7 +12,9 @@ import sanity.nil.onlineshop.domain.product.vo.ProductSubtype;
 import sanity.nil.onlineshop.domain.product.vo.State;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import static sanity.nil.onlineshop.domain.product.vo.Discount.DiscountType.BUY_TWO_PRICE_FOR_ONE;
@@ -61,12 +64,14 @@ public class ProductService {
 
 
         return new Product(new ProductID(), description, name, price, discount,
-                newPrice, quantity, available, new State(false), productSubtype);
+                newPrice, quantity, available, new State(false), productSubtype,
+                new ProductStatistics(BigDecimal.ZERO, 0, 0));
     }
 
     public Product update(UUID id, String description, String name, BigDecimal price,
                           Integer discountCode, LocalDateTime startsAt,
-                          LocalDateTime endsAt, Integer quantity, ProductSubtype productSubtype) {
+                          LocalDateTime endsAt, Integer quantity, ProductSubtype productSubtype,
+                          ProductStatistics productStatistics) {
         boolean available = false;
         int discountInPercents = 0;
         BigDecimal newPrice = price;
@@ -106,7 +111,28 @@ public class ProductService {
 
 
         return new Product(new ProductID(id), description, name, price, discount,
-                newPrice, quantity, available, new State(false), productSubtype);
+                newPrice, quantity, available, new State(false), productSubtype,
+                productStatistics);
+    }
+
+    public Product addRating(Product product, BigDecimal addedRating) {
+        if (addedRating.compareTo(BigDecimal.valueOf(5)) > 0 || addedRating.compareTo(BigDecimal.ONE) < 0) {
+            throw UnsupportedRateException.throwEx(addedRating);
+        }
+        ProductStatistics productStatistics = Objects.requireNonNull(product.getProductStatistics());
+        BigDecimal rate = productStatistics.getRate()
+                .multiply(BigDecimal.valueOf(productStatistics.getRatings()))
+                .add(addedRating)
+                .divide(BigDecimal.valueOf(productStatistics.getRatings() + 1), RoundingMode.UNNECESSARY);
+        productStatistics.setRate(rate);
+        productStatistics.setRatings(productStatistics.getRatings() + 1);
+        product.setProductStatistics(productStatistics);
+        return product;
+    }
+
+    public Product updateInWishList(Product product) {
+        product.getProductStatistics().setInWishList(product.getProductStatistics().getInWishList() + 1);
+        return product;
     }
 
     public Product delete(Product product) {

@@ -7,9 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sanity.nil.onlineshop.application.product.dto.discount.DiscountDTO;
+import sanity.nil.onlineshop.application.product.dto.image.ProductImageDTO;
+import sanity.nil.onlineshop.application.product.dto.statistics.ProductStatisticsDTO;
+import sanity.nil.onlineshop.application.product.dto.types.ProductTypeDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -41,6 +45,15 @@ public class GetProductDTO {
 
     @JsonProperty(value = "availability")
     private boolean availability;
+
+    @JsonProperty(value = "product_type")
+    private ProductTypeDTO productType;
+
+    @JsonProperty(value = "product_statistics")
+    private ProductStatisticsDTO productStatistics;
+
+    @JsonProperty(value = "images")
+    public List<ProductImageDTO> productImages;
 
     @JsonProperty(value = "created_at")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

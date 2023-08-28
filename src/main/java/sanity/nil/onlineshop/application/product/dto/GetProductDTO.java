@@ -16,50 +16,49 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class GetProductDTO {
 
     @JsonProperty(value = "product_id")
-    private UUID id;
+    public UUID id;
 
     @JsonProperty(value = "description", required = true)
-    private String description;
+    public String description;
 
     @JsonProperty(value = "name", required = true)
-    private String name;
+    public String name;
 
     @JsonProperty(value = "price", required = true)
-    private BigDecimal price;
+    public BigDecimal price;
 
     @JsonProperty(value = "discount")
-    private DiscountDTO discount;
+    public DiscountDTO discount;
 
     @JsonProperty(value = "actual_price")
-    private BigDecimal actualPrice;
+    public BigDecimal actualPrice;
 
     @JsonProperty(value = "quantity", defaultValue = "0")
-    private Integer quantity;
+    public Integer quantity;
 
     @JsonProperty(value = "availability")
-    private boolean availability;
+    public boolean availability;
 
     @JsonProperty(value = "product_type")
-    private ProductTypeDTO productType;
+    public ProductTypeDTO productType;
 
     @JsonProperty(value = "product_statistics")
-    private ProductStatisticsDTO productStatistics;
+    public ProductStatisticsDTO productStatistics;
 
     @JsonProperty(value = "images")
     public List<ProductImageDTO> productImages;
 
     @JsonProperty(value = "created_at")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime createdAt;
+    public LocalDateTime createdAt;
 
     @JsonProperty(value = "updated_at")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime updatedAt;
+    public LocalDateTime updatedAt;
 }

@@ -23,7 +23,6 @@ import sanity.nil.onlineshop.infrastructure.database.orm.ProductSubtypeORM;
         @ComponentScan("sanity.nil.onlineshop.application"),
         @ComponentScan("sanity.nil.onlineshop.presentation")
 })
-@EnableJpaRepositories("sanity.nil.onlineshop.infrastructure.database.orm")
 public class ProductBeanCreator {
 
     @Bean

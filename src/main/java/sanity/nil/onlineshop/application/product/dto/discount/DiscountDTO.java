@@ -7,23 +7,22 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Getter
 @AllArgsConstructor
 public class DiscountDTO {
 
     @JsonProperty(value = "discount_percent", required = true)
-    private Integer discountPercent;
+    public Integer discountPercent;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @JsonProperty(value = "starts_at", required = true)
-    private LocalDateTime startsAt;
+    public LocalDateTime startsAt;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @JsonProperty(value = "ends_at", required = true)
-    private LocalDateTime endsAt;
+    public LocalDateTime endsAt;
 
     @JsonProperty(value = "expired", required = true)
-    private boolean isExpired;
+    public boolean isExpired;
 
 
 }

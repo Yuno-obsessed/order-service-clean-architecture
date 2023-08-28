@@ -27,21 +27,21 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<GetProductDTO> getProductById(@PathVariable UUID id){
         return ResponseEntity
-                .status(201)
+                .status(200)
                 .body(getProductInteractor.getById(id));
     }
 
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody CreateProductDTO createDTO) {
         return ResponseEntity
-                .status(200)
+                .status(201)
                 .body(createProductInteractor.create(createDTO));
     }
 
     @PutMapping
     public ResponseEntity<ProductDTO> updateProduct(@RequestBody UpdateProductDTO updateDTO) {
         return ResponseEntity
-                .status(200)
+                .status(201)
                 .body(updateProductInteractor.update(updateDTO));
     }
 
@@ -55,14 +55,14 @@ public class ProductController {
     @PutMapping("/statistics/addrate")
     public ResponseEntity<ProductStatisticsDTO> addRating(@RequestBody UpdateProductStatisticsDTO productStatisticsDTO) {
         return ResponseEntity
-                .status(200)
+                .status(201)
                 .body(updateProductStatisticsInteractor.addRating(productStatisticsDTO));
     }
 
     @PutMapping("/statistics/addtowishlist")
     public ResponseEntity<ProductStatisticsDTO> addToWishList(@RequestBody UpdateProductStatisticsDTO productStatisticsDTO) {
        return ResponseEntity
-               .status(200)
+               .status(201)
                .body(updateProductStatisticsInteractor.addToWishList(productStatisticsDTO));
     }
 

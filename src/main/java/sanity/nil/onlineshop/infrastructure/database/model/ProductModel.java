@@ -53,7 +53,7 @@ public class ProductModel {
     private boolean availability;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "subtype_id")
     private ProductSubtypeModel productSubtype;
 
     @Column(name = "rate", precision = 16, scale = 15)

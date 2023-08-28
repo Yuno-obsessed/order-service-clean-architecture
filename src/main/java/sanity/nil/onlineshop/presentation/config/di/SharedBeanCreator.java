@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,6 +18,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @Component
+@EnableJpaRepositories("sanity.nil.onlineshop.infrastructure.database.orm")
 public class SharedBeanCreator {
 
     @Value("${spring.datasource.url}")

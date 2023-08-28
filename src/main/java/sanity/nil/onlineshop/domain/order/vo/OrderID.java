@@ -1,16 +1,16 @@
-package sanity.nil.onlineshop.domain.address.vo;
+package sanity.nil.onlineshop.domain.order.vo;
 
 import java.util.UUID;
 
-public class AddressID {
+public class OrderID {
 
     private UUID id;
 
-    public AddressID() {
-        this.id = UUID.randomUUID();
+    public OrderID() {
+        id = UUID.randomUUID();
     }
 
-    public AddressID(UUID id) {
+    public OrderID(UUID id) {
         this.id = id;
     }
 

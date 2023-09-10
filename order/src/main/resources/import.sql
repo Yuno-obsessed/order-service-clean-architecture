@@ -1,0 +1,2 @@
+INSERT INTO product_types (type_name, prefix) VALUES ('Electronics', 'ELC')
+INSERT INTO product_subtypes (subtype_id, subtype_name, subtype_prefix, type_name) VALUES (1, 'Computers', 'CMP', 'Electronics');

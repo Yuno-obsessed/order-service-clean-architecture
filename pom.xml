@@ -11,6 +11,10 @@
     <groupId>sanity.nil</groupId>
     <artifactId>online-shop</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>order</module>
+    </modules>
     <properties>
         <java.version>17</java.version>
         <projectlombok.version>1.18.26</projectlombok.version>
@@ -126,6 +130,10 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
     </dependencies>
 

@@ -12,4 +12,13 @@ public enum PaymentOption {
        this.code = code;
        this.value = value;
     }
+
+    public static PaymentOption fromString(String value) {
+        for (PaymentOption paymentOption : values()) {
+            if (paymentOption.value.equals(value)) {
+                return paymentOption;
+            }
+        }
+        return null;
+    }
 }

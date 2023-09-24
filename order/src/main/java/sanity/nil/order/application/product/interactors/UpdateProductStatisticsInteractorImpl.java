@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import sanity.nil.order.application.product.dto.statistics.ProductStatisticsDTO;
 import sanity.nil.order.application.product.dto.statistics.UpdateProductStatisticsDTO;
 import sanity.nil.order.application.product.interfaces.interactors.UpdateProductStatisticsInteractor;
-import sanity.nil.order.application.product.interfaces.query.ProductDAO;
-import sanity.nil.order.application.product.interfaces.query.ProductReader;
+import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
+import sanity.nil.order.application.product.interfaces.persistence.ProductReader;
 import sanity.nil.order.domain.product.entity.Product;
 import sanity.nil.order.domain.product.service.ProductService;
 

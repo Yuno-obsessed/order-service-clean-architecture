@@ -6,7 +6,7 @@ import sanity.nil.order.application.order.exceptions.AddressNotFound;
 import sanity.nil.order.application.order.interfaces.persistence.AddressDAO;
 import sanity.nil.order.application.order.interfaces.persistence.AddressReader;
 import sanity.nil.order.domain.order.entity.Address;
-import sanity.nil.order.infrastructure.database.model.AddressModel;
+import sanity.nil.order.infrastructure.database.models.AddressModel;
 import sanity.nil.order.infrastructure.database.orm.AddressORM;
 import sanity.nil.order.infrastructure.database.orm.mapper.AddressMapper;
 

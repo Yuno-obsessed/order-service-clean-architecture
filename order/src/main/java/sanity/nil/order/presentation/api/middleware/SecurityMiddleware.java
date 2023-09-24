@@ -9,8 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import sanity.nil.onlineshop.presentation.config.security.AuthEntryPoint;
-import sanity.nil.onlineshop.presentation.config.security.UserDetailsServiceImpl;
+import sanity.nil.order.presentation.config.security.AuthEntryPoint;
+import sanity.nil.order.presentation.config.security.UserDetailsServiceImpl;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 

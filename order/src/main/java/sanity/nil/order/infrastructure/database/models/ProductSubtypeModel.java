@@ -1,4 +1,4 @@
-package sanity.nil.order.infrastructure.database.model;
+package sanity.nil.order.infrastructure.database.models;
 
 import jakarta.persistence.*;
 import lombok.*;

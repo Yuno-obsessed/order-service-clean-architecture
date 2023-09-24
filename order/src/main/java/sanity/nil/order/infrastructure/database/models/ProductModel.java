@@ -1,4 +1,4 @@
-package sanity.nil.order.infrastructure.database.model;
+package sanity.nil.order.infrastructure.database.models;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "products")
@@ -65,9 +64,6 @@ public class ProductModel extends BaseModel {
     @JoinColumn(name = "product_id")
     private List<ProductImageModel> productImages = new ArrayList<>();
 
-    @Column(name = "deleted", nullable = false)
-    private boolean deleted;
-
     public boolean isDiscountExpired() {
         LocalDateTime now = LocalDateTime.now();
         return this.getDiscountStart().isBefore(now) &&
@@ -75,7 +71,7 @@ public class ProductModel extends BaseModel {
     }
 
     public boolean isLogicallyDeleted() {
-        return this.deleted && this.getDeletedAt() != null;
+        return this.isDeleted() && this.getDeletedAt() != null;
     }
 
     public void addProductImage(ProductImageModel productImage) {

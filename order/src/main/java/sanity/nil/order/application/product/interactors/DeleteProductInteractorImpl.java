@@ -2,8 +2,8 @@ package sanity.nil.order.application.product.interactors;
 
 import lombok.RequiredArgsConstructor;
 import sanity.nil.order.application.product.interfaces.interactors.DeleteProductInteractor;
-import sanity.nil.order.application.product.interfaces.query.ProductDAO;
-import sanity.nil.order.application.product.interfaces.query.ProductReader;
+import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
+import sanity.nil.order.application.product.interfaces.persistence.ProductReader;
 import sanity.nil.order.domain.product.entity.Product;
 import sanity.nil.order.domain.product.service.ProductService;
 

@@ -6,12 +6,11 @@ import sanity.nil.order.application.product.dto.GetProductDTO;
 import sanity.nil.order.application.product.dto.ProductDTO;
 import sanity.nil.order.application.product.exceptions.ProductIsDeleted;
 import sanity.nil.order.application.product.exceptions.ProductNotFound;
-import sanity.nil.order.application.product.interfaces.query.ProductDAO;
-import sanity.nil.order.application.product.interfaces.query.ProductReader;
-import sanity.nil.order.domain.order.entity.OrderProduct;
+import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
+import sanity.nil.order.application.product.interfaces.persistence.ProductReader;
 import sanity.nil.order.domain.product.entity.Product;
-import sanity.nil.order.infrastructure.database.model.ProductImageModel;
-import sanity.nil.order.infrastructure.database.model.ProductModel;
+import sanity.nil.order.infrastructure.database.models.ProductImageModel;
+import sanity.nil.order.infrastructure.database.models.ProductModel;
 import sanity.nil.order.infrastructure.database.orm.ProductORM;
 import sanity.nil.order.infrastructure.database.orm.mapper.ProductMapper;
 
@@ -35,12 +34,12 @@ public class ProductDAOImpl implements ProductDAO, ProductReader {
     }
 
     @Override
-    public List<OrderProduct> getProductsByIds(List<UUID> ids) {
+    public List<Product> getProductsByIds(List<UUID> ids) {
         List<ProductModel> productModels = productORM.getAllByIdIn(ids);
         if (productModels.isEmpty()) {
             throw ProductNotFound.throwEx(ids);
         }
-        return ProductMapper.convertModelsToOrderEntities(productModels);
+        return ProductMapper.convertModelsToEntities(productModels);
     }
 
     @Override

@@ -7,7 +7,7 @@ import sanity.nil.order.domain.common.event.Event;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class OrderDeletedProductEvent implements Event {
+public class OrderDeletedProductEvent implements OrderEvent {
 
     private BaseEvent baseEvent;
 
@@ -17,18 +17,18 @@ public class OrderDeletedProductEvent implements Event {
 
     private UUID productID;
 
-    private BigDecimal productPrice;
-
     private BigDecimal totalPrice;
 
+    private int quantity;
+
     public OrderDeletedProductEvent(UUID id, UUID clientID, UUID productID,
-                                    BigDecimal productPrice, BigDecimal totalPrice) {
+                                    BigDecimal totalPrice, int quantity) {
         baseEvent = new BaseEvent("OrderDeletedProduct");
         this.id = id;
         this.clientID = clientID;
         this.productID = productID;
-        this.productPrice = productPrice;
         this.totalPrice = totalPrice;
+        this.quantity = quantity;
     }
 
     @Override
@@ -40,4 +40,15 @@ public class OrderDeletedProductEvent implements Event {
     public UUID uniqueAggregateID() {
         return this.id;
     }
+
+    @Override
+    public String getRouteAddition() {
+        return "DeleteProduct";
+    }
+
+    @Override
+    public int getStatus() {
+        return 0;
+    }
+
 }

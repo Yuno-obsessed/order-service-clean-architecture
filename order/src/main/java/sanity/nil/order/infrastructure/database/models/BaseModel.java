@@ -1,4 +1,4 @@
-package sanity.nil.order.infrastructure.database.model;
+package sanity.nil.order.infrastructure.database.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,6 +23,9 @@ public abstract class BaseModel {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @Column(name = "deleted")
+    private boolean deleted;
 
     @PrePersist
     protected void onCreate() {

@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import sanity.nil.order.application.product.dto.CreateProductDTO;
 import sanity.nil.order.application.product.dto.ProductDTO;
 import sanity.nil.order.application.product.interfaces.interactors.CreateProductInteractor;
-import sanity.nil.order.application.product.interfaces.query.ProductDAO;
-import sanity.nil.order.application.product.interfaces.query.ProductReader;
-import sanity.nil.order.application.product.interfaces.query.ProductSubtypeReader;
+import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
+import sanity.nil.order.application.product.interfaces.persistence.ProductReader;
+import sanity.nil.order.application.product.interfaces.persistence.ProductSubtypeReader;
 import sanity.nil.order.domain.product.entity.Product;
 import sanity.nil.order.domain.product.service.ProductService;
 

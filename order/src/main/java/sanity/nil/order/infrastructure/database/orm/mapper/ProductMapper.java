@@ -6,20 +6,20 @@ import sanity.nil.order.application.product.dto.ProductDTO;
 import sanity.nil.order.application.product.dto.discount.DiscountDTO;
 import sanity.nil.order.application.product.dto.image.ProductImageDTO;
 import sanity.nil.order.application.product.dto.statistics.ProductStatisticsDTO;
+import sanity.nil.order.domain.common.vo.Deleted;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.product.entity.Product;
-import sanity.nil.order.domain.product.vo.Discount;
+import sanity.nil.order.domain.common.vo.Discount;
 import sanity.nil.order.domain.product.vo.ProductID;
 import sanity.nil.order.domain.product.vo.ProductStatistics;
-import sanity.nil.order.domain.product.vo.State;
-import sanity.nil.order.infrastructure.database.model.ProductImageModel;
-import sanity.nil.order.infrastructure.database.model.ProductModel;
+import sanity.nil.order.infrastructure.database.models.ProductImageModel;
+import sanity.nil.order.infrastructure.database.models.ProductModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static sanity.nil.order.domain.product.vo.Discount.DiscountType.getByDiscount;
+import static sanity.nil.order.domain.common.vo.Discount.DiscountType.getByDiscount;
 
 
 public class ProductMapper {
@@ -38,9 +38,9 @@ public class ProductMapper {
         model.setPriceWithDiscount(entity.getActualPrice());
         model.setQuantity(entity.getQuantity());
         model.setAvailability(entity.isAvailable());
-        if (entity.getState() != null) {
-            model.setDeleted(entity.getState().isDeleted());
-            model.setDeletedAt(entity.getState().getDeletedAt());
+        if (entity.getDeleted() != null) {
+            model.setDeleted(entity.getDeleted().isDeleted());
+            model.setDeletedAt(entity.getDeleted().getDeletedAt());
         }
         model.setProductSubtype(ProductSubtypeMapper.convertEntityToModel(entity.getProductSubtype()));
         model.setRate(entity.getProductStatistics().getRate());
@@ -56,7 +56,7 @@ public class ProductMapper {
                 new Discount(getByDiscount(model.getDiscount()),
                         model.getDiscountStart(), model.getDiscountEnd()),
                 model.getPriceWithDiscount(), model.getQuantity(), model.isAvailability(),
-                new State(model.isDeleted(), model.getDeletedAt()),
+                new Deleted(model.isDeleted(), model.getDeletedAt()),
                 ProductSubtypeMapper.convertModelToEntity(model.getProductSubtype()),
                 new ProductStatistics(model.getRate(), model.getRatings(), model.getInWishList()));
     }
@@ -68,7 +68,9 @@ public class ProductMapper {
     }
 
     public static OrderProduct convertModelToOrderEntity(ProductModel model) {
-        return new OrderProduct(model.getId(), model.getName(), model.getPrice(), model.getDiscount());
+        return new OrderProduct(model.getId(), model.getName(), model.getPrice(),
+                new Discount(getByDiscount(model.getDiscount()),
+                        model.getDiscountEnd(), model.getDiscountStart()), model.getQuantity());
     }
 
     public static List<OrderProduct> convertModelsToOrderEntities(List<ProductModel> models) {

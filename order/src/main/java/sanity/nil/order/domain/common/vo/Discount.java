@@ -1,4 +1,4 @@
-package sanity.nil.order.domain.product.vo;
+package sanity.nil.order.domain.common.vo;
 
 import java.time.LocalDateTime;
 
@@ -45,13 +45,6 @@ public class Discount {
         }
     }
 
-    public Discount(DiscountType discountType, LocalDateTime startsAt, LocalDateTime endsAt, boolean expired) {
-        this.discountType = discountType;
-        this.startsAt = startsAt;
-        this.endsAt = endsAt;
-        this.expired = expired;
-    }
-
     public Discount(DiscountType discountType, LocalDateTime startsAt, LocalDateTime endsAt) {
         this.discountType = discountType;
         this.startsAt = startsAt;
@@ -69,6 +62,10 @@ public class Discount {
 
     public LocalDateTime getEndsAt() {
         return endsAt;
+    }
+
+    public Integer getDiscountInt() {
+        return discountType.getDiscount();
     }
 
     public boolean isExpired() {

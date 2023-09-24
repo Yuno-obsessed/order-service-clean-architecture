@@ -1,8 +1,7 @@
 package sanity.nil.order.infrastructure.database.orm;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import sanity.nil.order.infrastructure.database.model.OutboxModel;
+import sanity.nil.order.infrastructure.database.models.OutboxModel;
 
 import java.util.List;
 import java.util.UUID;

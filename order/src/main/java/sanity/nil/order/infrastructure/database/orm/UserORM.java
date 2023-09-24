@@ -1,7 +1,7 @@
 package sanity.nil.order.infrastructure.database.orm;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import sanity.nil.order.infrastructure.database.model.UserModel;
+import sanity.nil.order.infrastructure.database.models.UserModel;
 
 import java.util.UUID;
 

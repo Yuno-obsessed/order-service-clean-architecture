@@ -1,4 +1,4 @@
-package sanity.nil.order.infrastructure.database.model;
+package sanity.nil.order.infrastructure.database.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
@@ -19,11 +17,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class OrderModel extends BaseModel{
+public class OrderModel extends BaseModel {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
-    private AddressModel deliveryAddress;
+    private AddressModel address;
 
     @ManyToMany
     @JoinTable(name = "order_product",
@@ -33,7 +31,7 @@ public class OrderModel extends BaseModel{
     private List<ProductModel> products;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", unique = true)
     private UserModel user;
 
     @Column(name = "order_status", nullable = false)

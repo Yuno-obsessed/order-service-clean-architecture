@@ -2,17 +2,16 @@ package sanity.nil.order.domain.order.events;
 
 import sanity.nil.order.domain.common.Utils;
 import sanity.nil.order.domain.common.event.BaseEvent;
-import sanity.nil.order.domain.common.event.Event;
 import sanity.nil.order.domain.order.vo.OrderID;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class OrderAddProductEvent implements Event {
+public class OrderAddedProductEvent implements OrderEvent {
 
     private BaseEvent baseEvent;
 
-    private OrderID orderID;
+    private UUID orderID;
 
     private UUID clientID;
 
@@ -20,19 +19,19 @@ public class OrderAddProductEvent implements Event {
 
     private String productName;
 
-    private BigDecimal productPrice;
-
     private BigDecimal totalPrice;
 
-    public OrderAddProductEvent(OrderID orderID, UUID clientID, UUID productID, String productName,
-                                BigDecimal productPrice, BigDecimal totalPrice) {
+    private int quantity;
+
+    public OrderAddedProductEvent(UUID orderID, UUID clientID, UUID productID, String productName,
+                                  BigDecimal totalPrice, int quantity) {
         this.baseEvent = new BaseEvent("OrderAddProduct");
         this.orderID = orderID;
         this.clientID = clientID;
         this.productID = productID;
         this.productName = productName;
-        this.productPrice = productPrice;
         this.totalPrice = totalPrice;
+        this.quantity = quantity;
     }
 
     @Override
@@ -42,6 +41,16 @@ public class OrderAddProductEvent implements Event {
 
     @Override
     public UUID uniqueAggregateID() {
-        return this.orderID.getId();
+        return this.orderID;
+    }
+
+    @Override
+    public String getRouteAddition() {
+        return "AddProduct";
+    }
+
+    @Override
+    public int getStatus() {
+        return 0;
     }
 }

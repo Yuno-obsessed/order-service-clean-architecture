@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import sanity.nil.order.application.common.consts.EventStatus;
 import sanity.nil.order.application.relay.dto.OutboxMessage;
 import sanity.nil.order.application.relay.interfaces.persistence.OutboxDAO;
-import sanity.nil.order.infrastructure.database.model.OutboxModel;
+import sanity.nil.order.domain.common.event.Event;
+import sanity.nil.order.infrastructure.database.models.OutboxModel;
 import sanity.nil.order.infrastructure.database.orm.OutboxORM;
 import sanity.nil.order.infrastructure.database.orm.mapper.OutboxMapper;
 
@@ -38,5 +39,10 @@ public class OutboxDAOImpl implements OutboxDAO {
            model.setEventStatus(status.getCode());
        }
        outboxORM.saveAll(modelsToUpdate);
+    }
+
+    @Override
+    public void addEvents(List<Event> events) {
+        outboxORM.saveAll(OutboxMapper.convertEventsToModels(events));
     }
 }

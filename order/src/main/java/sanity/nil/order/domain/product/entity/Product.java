@@ -1,5 +1,7 @@
 package sanity.nil.order.domain.product.entity;
 
+import sanity.nil.order.domain.common.vo.Deleted;
+import sanity.nil.order.domain.common.vo.Discount;
 import sanity.nil.order.domain.product.vo.*;
 
 import java.math.BigDecimal;
@@ -14,28 +16,14 @@ public class Product {
     private BigDecimal actualPrice;
     private Integer quantity;
     private boolean availability;
-    private State state;
+    private Deleted deleted;
     private ProductSubtype productSubtype;
     private ProductStatistics productStatistics;
 
     public Product() {}
 
-    public Product(ProductID productId, String description, String name, BigDecimal price, Discount discount,
-                   BigDecimal actualPrice, Integer quantity, boolean availability, State state, ProductSubtype productSubtype) {
-        this.productId = productId;
-        this.description = description;
-        this.name = name;
-        this.price = price;
-        this.discount = discount;
-        this.actualPrice = actualPrice;
-        this.quantity = quantity;
-        this.availability = availability;
-        this.state = state;
-        this.productSubtype = productSubtype;
-    }
-
     public Product(ProductID productId, String description, String name, BigDecimal price, Discount discount, BigDecimal actualPrice,
-                   Integer quantity, boolean availability, State state, ProductSubtype productSubtype, ProductStatistics productStatistics) {
+                   Integer quantity, boolean availability, Deleted deleted, ProductSubtype productSubtype, ProductStatistics productStatistics) {
         this.productId = productId;
         this.description = description;
         this.name = name;
@@ -44,7 +32,7 @@ public class Product {
         this.actualPrice = actualPrice;
         this.quantity = quantity;
         this.availability = availability;
-        this.state = state;
+        this.deleted = deleted;
         this.productSubtype = productSubtype;
         this.productStatistics = productStatistics;
     }
@@ -85,12 +73,12 @@ public class Product {
         return availability;
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setDeleted(Deleted deleted) {
+        this.deleted = deleted;
     }
 
-    public State getState() {
-        return state;
+    public Deleted getDeleted() {
+        return deleted;
     }
 
     public ProductSubtype getProductSubtype() {

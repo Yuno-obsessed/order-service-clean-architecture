@@ -1,4 +1,4 @@
-package sanity.nil.order.application.product.interfaces.query;
+package sanity.nil.order.application.product.interfaces.persistence;
 
 
 import sanity.nil.order.application.product.dto.GetProductDTO;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface ProductReader {
 
-    List<OrderProduct> getProductsByIds(List<UUID> ids);
+    List<Product> getProductsByIds(List<UUID> ids);
 
     GetProductDTO getGETProductDTOById(UUID id);
 

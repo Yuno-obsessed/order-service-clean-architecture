@@ -16,16 +16,25 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import sanity.nil.order.application.order.interactors.CreateAddressInteractorImpl;
+import sanity.nil.order.application.order.interactors.CreateOrderInteractorImpl;
 import sanity.nil.order.application.order.interactors.UpdateAddressInteractorImpl;
 import sanity.nil.order.application.order.interfaces.interactors.CreateAddressInteractor;
+import sanity.nil.order.application.order.interfaces.interactors.CreateOrderInteractor;
 import sanity.nil.order.application.order.interfaces.interactors.GetAddressInteractor;
 import sanity.nil.order.application.order.interfaces.interactors.UpdateAddressInteractor;
 import sanity.nil.order.application.order.interfaces.persistence.AddressDAO;
 import sanity.nil.order.application.order.interfaces.persistence.AddressReader;
 import sanity.nil.order.application.order.interactors.GetAddressInteractorImpl;
+import sanity.nil.order.application.order.interfaces.persistence.OrderDAO;
+import sanity.nil.order.application.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.domain.order.services.AddressService;
+import sanity.nil.order.domain.order.services.OrderService;
 import sanity.nil.order.infrastructure.database.impl.AddressDAOImpl;
+import sanity.nil.order.infrastructure.database.impl.OrderDaoImpl;
 import sanity.nil.order.infrastructure.database.orm.AddressORM;
+import sanity.nil.order.infrastructure.database.orm.OrderORM;
+import sanity.nil.order.infrastructure.database.orm.ProductORM;
+import sanity.nil.order.infrastructure.database.orm.UserORM;
 import sanity.nil.order.infrastructure.messageBroker.interactors.OrderTemplateImpl;
 import sanity.nil.order.infrastructure.messageBroker.interfaces.BrokerTemplate;
 
@@ -50,6 +59,11 @@ public class OrderBeanCreator {
     @Bean
     public AddressDAO addressDAO(AddressORM addressORM) {
         return new AddressDAOImpl(addressORM);
+    }
+
+    @Bean
+    public OrderDAO orderDAO(ProductORM productORM, OrderORM orderORM, AddressORM addressORM, UserORM userORM) {
+        return new OrderDaoImpl(productORM, orderORM, addressORM, userORM);
     }
 
     @Bean
@@ -88,13 +102,18 @@ public class OrderBeanCreator {
     }
 
     @Bean
-    public CreateAddressInteractor createAddressInteractor(AddressDAO addressDAO, AddressReader addressReader) {
-        return new CreateAddressInteractorImpl(addressDAO, addressReader, new AddressService());
+    public CreateOrderInteractor createOrderInteractor(OrderDAO orderDAO, OutboxDAO outboxDAO, BrokerTemplate brokerTemplate) {
+        return new CreateOrderInteractorImpl(orderDAO, outboxDAO, new OrderService(), brokerTemplate);
     }
 
     @Bean
-    public UpdateAddressInteractor updateAddressInteractor(AddressDAO addressDAO, AddressReader addressReader) {
-        return new UpdateAddressInteractorImpl(addressDAO, addressReader, new AddressService());
+    public CreateAddressInteractor createAddressInteractor(AddressDAO addressDAO) {
+        return new CreateAddressInteractorImpl(addressDAO, new AddressService());
+    }
+
+    @Bean
+    public UpdateAddressInteractor updateAddressInteractor(AddressDAO addressDAO) {
+        return new UpdateAddressInteractorImpl(addressDAO, new AddressService());
     }
 
     @Bean

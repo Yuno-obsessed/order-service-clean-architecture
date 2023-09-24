@@ -17,7 +17,7 @@ public class CreateOrderDTO {
     @JsonProperty(value = "user_id", required = true)
     public UUID userID;
 
-    @JsonProperty(value = "user_id")
+    @JsonProperty(value = "product_ids")
     public List<UUID> productIDs;
 
     @JsonProperty(value = "payment_method")

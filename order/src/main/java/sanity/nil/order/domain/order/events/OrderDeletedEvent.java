@@ -7,7 +7,7 @@ import sanity.nil.order.domain.order.vo.OrderID;
 
 import java.util.UUID;
 
-public class OrderDeletedEvent implements Event {
+public class OrderDeletedEvent implements OrderEvent {
 
     private BaseEvent baseEvent;
 
@@ -26,5 +26,15 @@ public class OrderDeletedEvent implements Event {
     @Override
     public UUID uniqueAggregateID() {
         return this.id;
+    }
+
+    @Override
+    public String getRouteAddition() {
+        return "Delete";
+    }
+
+    @Override
+    public int getStatus() {
+        return 0;
     }
 }

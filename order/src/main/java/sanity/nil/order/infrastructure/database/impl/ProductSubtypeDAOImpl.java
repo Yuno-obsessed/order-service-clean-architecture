@@ -2,9 +2,9 @@ package sanity.nil.order.infrastructure.database.impl;
 
 import lombok.RequiredArgsConstructor;
 import sanity.nil.order.application.product.exceptions.SubtypeNotFound;
-import sanity.nil.order.application.product.interfaces.query.ProductSubtypeReader;
+import sanity.nil.order.application.product.interfaces.persistence.ProductSubtypeReader;
 import sanity.nil.order.domain.product.vo.ProductSubtype;
-import sanity.nil.order.infrastructure.database.model.ProductSubtypeModel;
+import sanity.nil.order.infrastructure.database.models.ProductSubtypeModel;
 import sanity.nil.order.infrastructure.database.orm.ProductSubtypeORM;
 import sanity.nil.order.infrastructure.database.orm.mapper.ProductSubtypeMapper;
 

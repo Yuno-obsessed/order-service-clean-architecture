@@ -2,6 +2,8 @@ package sanity.nil.order.domain.product.service;
 
 
 
+import sanity.nil.order.domain.common.vo.Deleted;
+import sanity.nil.order.domain.common.vo.Discount;
 import sanity.nil.order.domain.product.entity.Product;
 import sanity.nil.order.domain.product.exceptions.UnsupportedPriceException;
 import sanity.nil.order.domain.product.exceptions.UnsupportedQuantityException;
@@ -14,8 +16,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-import static sanity.nil.order.domain.product.vo.Discount.DiscountType.BUY_TWO_PRICE_FOR_ONE;
-import static sanity.nil.order.domain.product.vo.Discount.DiscountType.getByCode;
+import static sanity.nil.order.domain.common.vo.Discount.DiscountType.BUY_TWO_PRICE_FOR_ONE;
+import static sanity.nil.order.domain.common.vo.Discount.DiscountType.getByCode;
 
 
 public class ProductService {
@@ -29,12 +31,10 @@ public class ProductService {
         Discount discount = null;
         if (discountCode != null) {
             LocalDateTime now = LocalDateTime.now();
-            boolean expired = startsAt.isAfter(now) && endsAt.isBefore(now);
             discount = new Discount(
                     getByCode(discountCode),
                     startsAt,
-                    endsAt,
-                    expired
+                    endsAt
             );
         }
         if (quantity < 0) {
@@ -62,7 +62,7 @@ public class ProductService {
 
 
         return new Product(new ProductID(), description, name, price, discount,
-                newPrice, quantity, available, new State(false), productSubtype,
+                newPrice, quantity, available, new Deleted(), productSubtype,
                 new ProductStatistics(BigDecimal.ZERO, 0, 0));
     }
 
@@ -76,12 +76,10 @@ public class ProductService {
         Discount discount = null;
         if (discountCode != null) {
             LocalDateTime now = LocalDateTime.now();
-            boolean expired = startsAt.isAfter(now) && endsAt.isBefore(now);
             discount = new Discount(
                     getByCode(discountCode),
                     startsAt,
-                    endsAt,
-                    expired
+                    endsAt
             );
         }
         if (quantity < 0) {
@@ -109,7 +107,7 @@ public class ProductService {
 
 
         return new Product(new ProductID(id), description, name, price, discount,
-                newPrice, quantity, available, new State(false), productSubtype,
+                newPrice, quantity, available, new Deleted(), productSubtype,
                 productStatistics);
     }
 
@@ -134,7 +132,7 @@ public class ProductService {
     }
 
     public Product delete(Product product) {
-        product.setState(new State(true));
+        product.setDeleted(new Deleted(true, LocalDateTime.now()));
         return product;
     }
 

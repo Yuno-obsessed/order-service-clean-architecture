@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import sanity.nil.order.infrastructure.database.model.UserModel;
+import sanity.nil.order.infrastructure.database.models.UserModel;
 
 import java.util.Collection;
 

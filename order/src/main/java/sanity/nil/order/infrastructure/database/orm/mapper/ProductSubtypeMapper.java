@@ -5,8 +5,8 @@ import sanity.nil.order.application.product.dto.types.ProductSubtypeDTO;
 import sanity.nil.order.application.product.dto.types.ProductTypeDTO;
 import sanity.nil.order.domain.product.vo.ProductSubtype;
 import sanity.nil.order.domain.product.vo.ProductType;
-import sanity.nil.order.infrastructure.database.model.ProductSubtypeModel;
-import sanity.nil.order.infrastructure.database.model.ProductTypeModel;
+import sanity.nil.order.infrastructure.database.models.ProductSubtypeModel;
+import sanity.nil.order.infrastructure.database.models.ProductTypeModel;
 
 public class ProductSubtypeMapper {
 

@@ -11,15 +11,15 @@ import sanity.nil.order.domain.order.exceptions.OrderProductAlreadyIsContained;
 import sanity.nil.order.domain.order.exceptions.OrderProductNotExists;
 import sanity.nil.order.domain.order.exceptions.OrderWasDeliveredException;
 import sanity.nil.order.domain.order.vo.OrderID;
-import sanity.nil.order.domain.order.vo.OrderInfo;
+import sanity.nil.order.domain.common.vo.Deleted;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class Order {
+public class Order extends BaseAggregate{
 
-    private BaseAggregate aggregate;
     private OrderID orderID;
     private UUID addressID;
     private UUID clientID;
@@ -27,13 +27,13 @@ public class Order {
     private OrderStatus orderStatus;
     private PaymentMethod paymentMethod;
     private PaymentOption paymentOption;
-    private OrderInfo orderInfo;
+    private Deleted deleted;
     private BigDecimal totalPrice;
     private boolean closed;
 
     public void preprocessOrder() {
-        if (orderInfo.isDeleted()) {
-            throw OrderIsDeletedException.throwEx(orderInfo.getDeletedAt());
+        if (deleted.isDeleted()) {
+            throw OrderIsDeletedException.throwEx(deleted.getDeletedAt());
         }
 
         if (orderStatus.equals(OrderStatus.DELIVERED)) {
@@ -68,7 +68,9 @@ public class Order {
 
     public void deleteOrder() {
         this.preprocessOrder();
-        this.aggregate.recordEvent(new OrderDeletedEvent(this.orderID.getId()));
+        this.deleted.setDeleted(true);
+        this.deleted.setDeletedAt(LocalDateTime.now());
+        this.recordEvent(new OrderDeletedEvent(this.orderID.getId()));
     }
 
     public Order(OrderID orderID, UUID addressID, UUID clientID, List<OrderProduct> products,
@@ -80,13 +82,10 @@ public class Order {
         this.orderStatus = orderStatus;
         this.paymentMethod = paymentMethod;
         this.paymentOption = paymentOption;
-        this.orderInfo = new OrderInfo();
+        this.deleted = new Deleted();
         this.closed = false;
     }
 
-    public BaseAggregate getAggregate() {
-        return aggregate;
-    }
 
     public OrderID getOrderID() {
         return orderID;
@@ -116,25 +115,47 @@ public class Order {
         return paymentOption;
     }
 
-    public OrderInfo getOrderInfo() {
-        return orderInfo;
+    public Deleted getOrderInfo() {
+        return deleted;
+    }
+
+    public List<UUID> getProductIDs() {
+        return products.stream().map(OrderProduct::getProductID).collect(Collectors.toList());
     }
 
     public BigDecimal getTotalPrice() {
-        BigDecimal totalPrice = new BigDecimal(0);
-        BigDecimal totalDiscount = new BigDecimal(0);
-        for (OrderProduct product : this.products) {
-            totalPrice = totalPrice.add(product.getPrice());
-            totalDiscount = totalDiscount.add(BigDecimal.valueOf(product.getDiscount()));
+        return products.stream()
+                .map(OrderProduct::getTotalPrice)
+                .reduce(BigDecimal::add).get();
+    }
+
+    public Map<OrderProduct, Integer> getMatchingProducts(List<OrderProduct> productsToFindFrom, List<OrderProduct> productsToFind) {
+        Map<OrderProduct, Integer> result = new HashMap<>();
+        for (OrderProduct oldProduct : productsToFindFrom) {
+            OrderProduct matchingProduct = productsToFind.stream()
+                    .filter(product -> product.getProductID().equals(oldProduct.getProductID()))
+                    .findFirst()
+                    .orElse(null);
+            if (matchingProduct != null) {
+                int quantityInOld = matchingProduct.getQuantity();
+                int quantityDiff = oldProduct.getQuantity() - quantityInOld;
+
+                if (quantityDiff > 0) {
+                    result.put(oldProduct, quantityDiff);
+                }
+            } else {
+                result.put(oldProduct, oldProduct.getQuantity());
+            }
         }
-        return totalPrice
-                .subtract(totalDiscount
-                        .divide(BigDecimal.valueOf(100))
-                        .multiply(BigDecimal.valueOf(100))
-                );
+        return result;
     }
 
     public boolean isClosed() {
         return closed;
     }
+
+    public void setAddressID(UUID addressID) {
+        this.addressID = addressID;
+    }
+
 }

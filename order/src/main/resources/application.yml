@@ -3,7 +3,7 @@ spring:
 #    date-format: 'dd.MM.yyyy'
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/online-shop
+    url: jdbc:postgresql://localhost:15432/online-shop
     username: sanity
     password: wordpass
   jpa:
@@ -60,6 +60,6 @@ exception:
   trace: true
 application:
   order:
-    topic: topic.order
+    topic: Orders
     queue: order
     routing-key: rout.order

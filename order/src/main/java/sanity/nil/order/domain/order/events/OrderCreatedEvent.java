@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-public class OrderCreatedEvent implements Event {
+public class OrderCreatedEvent implements OrderEvent {
 
     private BaseEvent baseEvent;
 
@@ -54,4 +54,15 @@ public class OrderCreatedEvent implements Event {
     public UUID uniqueAggregateID() {
         return this.id;
     }
+
+    @Override
+    public String getRouteAddition() {
+        return "Create";
+    }
+
+    @Override
+    public int getStatus() {
+        return 0;
+    }
+
 }

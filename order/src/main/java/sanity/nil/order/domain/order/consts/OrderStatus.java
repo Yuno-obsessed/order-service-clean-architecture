@@ -13,4 +13,13 @@ public enum OrderStatus {
 
     private int code;
     private String value;
+
+    public static OrderStatus fromString(String value) {
+        for (OrderStatus orderStatus : values()) {
+            if (orderStatus.value.equals(value)) {
+                return orderStatus;
+            }
+        }
+        return null;
+    }
 }

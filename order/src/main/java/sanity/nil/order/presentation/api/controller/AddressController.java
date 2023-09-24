@@ -3,6 +3,7 @@ package sanity.nil.order.presentation.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sanity.nil.order.application.order.dto.address.AddressCreatedDTO;
 import sanity.nil.order.application.order.dto.address.AddressDTO;
 import sanity.nil.order.application.order.dto.address.CreateAddressDTO;
 import sanity.nil.order.application.order.dto.address.UpdateAddressDTO;
@@ -22,14 +23,14 @@ public class AddressController {
     private final GetAddressInteractor getAddressInteractor;
 
     @PostMapping
-    public ResponseEntity<AddressDTO> createAddress(@RequestBody CreateAddressDTO createDTO) {
+    public ResponseEntity<AddressCreatedDTO> createAddress(@RequestBody CreateAddressDTO createDTO) {
         return ResponseEntity
                 .status(201)
                 .body(createAddressInteractor.create(createDTO));
     }
 
     @PutMapping
-    public ResponseEntity<AddressDTO> updateAddress(@RequestBody UpdateAddressDTO updateDTO) {
+    public ResponseEntity<AddressCreatedDTO> updateAddress(@RequestBody UpdateAddressDTO updateDTO) {
         return ResponseEntity
                 .status(201)
                 .body(updateAddressInteractor.update(updateDTO));

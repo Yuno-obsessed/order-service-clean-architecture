@@ -2,8 +2,11 @@ package sanity.nil.order.infrastructure.database.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import sanity.nil.order.application.product.dto.GetProductDTO;
-import sanity.nil.order.application.product.dto.ProductDTO;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import sanity.nil.order.application.common.dto.BaseFilters;
+import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
+import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
 import sanity.nil.order.application.product.exceptions.ProductIsDeleted;
 import sanity.nil.order.application.product.exceptions.ProductNotFound;
 import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
@@ -34,45 +37,6 @@ public class ProductDAOImpl implements ProductDAO, ProductReader {
     }
 
     @Override
-    public List<Product> getProductsByIds(List<UUID> ids) {
-        List<ProductModel> productModels = productORM.getAllByIdIn(ids);
-        if (productModels.isEmpty()) {
-            throw ProductNotFound.throwEx(ids);
-        }
-        return ProductMapper.convertModelsToEntities(productModels);
-    }
-
-    @Override
-    public GetProductDTO getGETProductDTOById(UUID id) {
-        ProductModel maybeModel = productORM.findById(id).orElseThrow(
-                () -> ProductNotFound.throwEx(id));
-        if (maybeModel.isLogicallyDeleted()) {
-            throw ProductIsDeleted.throwEx(id);
-        }
-        return ProductMapper.convertModelToGetProductDTO(maybeModel);
-    }
-
-    @Override
-    public ProductDTO getProductDTOById(UUID id) {
-         ProductModel maybeModel = productORM.findById(id).orElseThrow(
-                () -> ProductNotFound.throwEx(id));
-        if (maybeModel.isLogicallyDeleted()) {
-            throw ProductIsDeleted.throwEx(id);
-        }
-        return ProductMapper.convertModelToProductDTO(maybeModel);
-    }
-
-    @Override
-    public Product getProductById(UUID id) {
-        ProductModel maybeModel = productORM.findById(id).orElseThrow(
-                () -> ProductNotFound.throwEx(id));
-        if (maybeModel.isLogicallyDeleted()) {
-            throw ProductIsDeleted.throwEx(id);
-        }
-        return ProductMapper.convertModelToEntity(maybeModel);
-    }
-
-    @Override
     @Transactional
     public Product updateProduct(Product entity, List<String> imageNames) {
         UUID id = entity.getProductId().getId();
@@ -92,8 +56,46 @@ public class ProductDAOImpl implements ProductDAO, ProductReader {
     }
 
     @Override
-    @Transactional
-    public void deleteByProductId(UUID id) {
-        productORM.deleteById(id);
+    public List<ProductQueryDTO> getProductsQueriesWithPagination(BaseFilters filters) {
+        Pageable pageable = PageRequest.of(filters.offset, filters.limit);
+        return ProductMapper.convertListOfModelsToProductQueryDTOs(
+                productORM.findAllWithPagination(pageable, filters.order.toString()));
+    }
+
+    @Override
+    public ProductQueryDTO getProductQueryById(UUID id) {
+        ProductModel maybeModel = productORM.findById(id).orElseThrow(
+                () -> ProductNotFound.throwEx(id));
+        if (maybeModel.isLogicallyDeleted()) {
+            throw ProductIsDeleted.throwEx(id);
+        }
+        return ProductMapper.convertModelToProductQueryDTO(maybeModel);
+    }
+
+    @Override
+    public ProductQueryDTO getProductQueryByName(String name) {
+        ProductModel maybeModel = productORM.getByName(name).orElseThrow(
+                () -> ProductNotFound.throwEx(name));
+        if (maybeModel.isLogicallyDeleted()) {
+            throw ProductIsDeleted.throwEx(name);
+        }
+        return ProductMapper.convertModelToProductQueryDTO(maybeModel);
+    }
+
+    @Override
+    public List<ProductQueryDTO> getProductQueriesWithFilters(ProductQueryFilters filters) {
+        Pageable pageable = PageRequest.of(filters.offset, filters.limit);
+        return ProductMapper.convertListOfModelsToProductQueryDTOs(
+                productORM.findByFilters(filters, pageable));
+    }
+
+    @Override
+    public Product getProductById(UUID id) {
+        ProductModel maybeModel = productORM.findById(id).orElseThrow(
+                () -> ProductNotFound.throwEx(id));
+        if (maybeModel.isLogicallyDeleted()) {
+            throw ProductIsDeleted.throwEx(id);
+        }
+        return ProductMapper.convertModelToEntity(maybeModel);
     }
 }

@@ -1,10 +1,10 @@
 package sanity.nil.order.domain.order.services;
 
 
+import sanity.nil.order.domain.order.aggregate.Order;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
-import sanity.nil.order.domain.order.aggregate.Order;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.order.events.*;
 import sanity.nil.order.domain.order.exceptions.OrderProductsEmptyException;

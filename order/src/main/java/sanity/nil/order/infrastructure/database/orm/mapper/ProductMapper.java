@@ -1,15 +1,16 @@
 package sanity.nil.order.infrastructure.database.orm.mapper;
 
 
-import sanity.nil.order.application.product.dto.GetProductDTO;
-import sanity.nil.order.application.product.dto.ProductDTO;
-import sanity.nil.order.application.product.dto.discount.DiscountDTO;
-import sanity.nil.order.application.product.dto.image.ProductImageDTO;
-import sanity.nil.order.application.product.dto.statistics.ProductStatisticsDTO;
+import sanity.nil.order.application.product.dto.boundary.DiscountDTO;
+import sanity.nil.order.application.product.dto.boundary.ProductDTO;
+import sanity.nil.order.application.product.dto.boundary.ProductImageDTO;
+import sanity.nil.order.application.product.dto.boundary.ProductStatisticsDTO;
+import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
+import sanity.nil.order.application.product.dto.query.ProductStatisticsQueryDTO;
 import sanity.nil.order.domain.common.vo.Deleted;
+import sanity.nil.order.domain.common.vo.Discount;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.product.entity.Product;
-import sanity.nil.order.domain.common.vo.Discount;
 import sanity.nil.order.domain.product.vo.ProductID;
 import sanity.nil.order.domain.product.vo.ProductStatistics;
 import sanity.nil.order.infrastructure.database.models.ProductImageModel;
@@ -35,7 +36,6 @@ public class ProductMapper {
             model.setDiscountStart(entity.getDiscount().getStartsAt());
             model.setDiscountEnd(entity.getDiscount().getEndsAt());
         }
-        model.setPriceWithDiscount(entity.getActualPrice());
         model.setQuantity(entity.getQuantity());
         model.setAvailability(entity.isAvailable());
         if (entity.getDeleted() != null) {
@@ -55,7 +55,7 @@ public class ProductMapper {
                 model.getDescription(), model.getName(), model.getPrice(),
                 new Discount(getByDiscount(model.getDiscount()),
                         model.getDiscountStart(), model.getDiscountEnd()),
-                model.getPriceWithDiscount(), model.getQuantity(), model.isAvailability(),
+                 model.getQuantity(), model.isAvailability(),
                 new Deleted(model.isDeleted(), model.getDeletedAt()),
                 ProductSubtypeMapper.convertModelToEntity(model.getProductSubtype()),
                 new ProductStatistics(model.getRate(), model.getRatings(), model.getInWishList()));
@@ -79,46 +79,37 @@ public class ProductMapper {
                 .collect(Collectors.toList());
     }
 
-    public static ProductDTO convertModelToProductDTO(ProductModel model) {
-        return new ProductDTO(model.getId(), model.getDescription(),
-                model.getName(), model.getPrice(), new DiscountDTO(model.getDiscount(),
-                    model.getDiscountStart(), model.getDiscountEnd(), model.isDiscountExpired()),
-                model.getPriceWithDiscount(), ProductSubtypeMapper.convertModelToProductTypeDTO(model.getProductSubtype().getProductType()),
-                new ProductStatisticsDTO(model.getRate(), model.getRatings(), model.getInWishList()),
-                model.getQuantity(), model.isAvailability()
-        );
-    }
-
-    public static ProductDTO convertEntityToProductDTO(Product entity) {
-        DiscountDTO discountDTO = null;
-        if (entity.getDiscount() != null) {
-            discountDTO = new DiscountDTO(entity.getDiscount().getDiscountType().getDiscount(),
-                    entity.getDiscount().startsAt, entity.getDiscount().endsAt, entity.getDiscount().isExpired());
-        }
-        return new ProductDTO(entity.getProductId().getId(), entity.getDescription(),
-                entity.getName(), entity.getPrice(), discountDTO,
-                entity.getActualPrice(), ProductSubtypeMapper.convertEntityToProductTypeDTO(entity.getProductSubtype()),
-                new ProductStatisticsDTO(entity.getProductStatistics().getRate(), entity.getProductStatistics().getRatings(),
-                        entity.getProductStatistics().getInWishList()),
-                entity.getQuantity(), entity.isAvailable()
-        );
-    }
-
-    public static GetProductDTO convertModelToGetProductDTO(ProductModel model) {
+    public static ProductQueryDTO convertModelToProductQueryDTO(ProductModel model) {
         List<ProductImageDTO> productImages = new ArrayList<>();
         if (model.getProductImages() != null || !model.getProductImages().isEmpty()) {
             for (ProductImageModel image : model.getProductImages()) {
                 productImages.add(new ProductImageDTO(image.getImageName(), image.getImageName()));
             }
         }
-        return new GetProductDTO(model.getId(), model.getDescription(),
+        return new ProductQueryDTO(model.getId(), model.getDescription(),
                 model.getName(), model.getPrice(), new DiscountDTO(model.getDiscount(),
                 model.getDiscountStart(), model.getDiscountEnd(), model.isDiscountExpired()),
-                model.getPriceWithDiscount(), model.getQuantity(), model.isAvailability(),
+                model.getQuantity(), model.isAvailability(),
                 ProductSubtypeMapper.convertModelToProductTypeDTO(model.getProductSubtype().getProductType()),
                 new ProductStatisticsDTO(model.getRate(), model.getRatings(), model.getInWishList()),
                 productImages,
                 model.getCreatedAt(), model.getUpdatedAt()
         );
+    }
+
+    public static List<ProductQueryDTO> convertListOfModelsToProductQueryDTOs(List<ProductModel> models) {
+        return models.stream()
+                .map(ProductMapper::convertModelToProductQueryDTO)
+                .collect(Collectors.toList());
+    }
+
+    public static ProductDTO convertEntityToBoundary(Product product) {
+        return new ProductDTO(product.getProductId().getId());
+    }
+
+    public static ProductStatisticsQueryDTO convertEntityToProductStatisticsQueryDTO(Product product) {
+        return new ProductStatisticsQueryDTO(product.getProductId().getId(),
+                product.getProductStatistics().getRate(), product.getProductStatistics().getRatings(),
+                product.getProductStatistics().getInWishList());
     }
 }

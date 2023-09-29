@@ -1,21 +1,21 @@
-package sanity.nil.order.onlineshop.dao;
-
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import sanity.nil.onlineshop.SpringProjectApplication;
-import sanity.nil.onlineshop.infrastructure.model.CountryModel;
-
-@SpringBootTest(classes = SpringProjectApplication.class)
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
-@ExtendWith({
-        SpringExtension.class,
-        MockitoExtension.class
-})
-public class TourServiceTest {
-
+//package sanity.nil.order.onlineshop.dao;
+//
+//import org.junit.jupiter.api.TestInstance;
+//import org.junit.jupiter.api.extension.ExtendWith;
+//import org.mockito.junit.jupiter.MockitoExtension;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.test.context.junit.jupiter.SpringExtension;
+//import sanity.nil.onlineshop.SpringProjectApplication;
+//import sanity.nil.onlineshop.infrastructure.model.CountryModel;
+//
+//@SpringBootTest(classes = SpringProjectApplication.class)
+//@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+//@ExtendWith({
+//        SpringExtension.class,
+//        MockitoExtension.class
+//})
+//public class TourServiceTest {
+//
 //    @Autowired
 //    private TourService tourService;
 //    @Captor
@@ -84,4 +84,4 @@ public class TourServiceTest {
 //
 //        assertThat(tourService.get(tour.getTourId())).isNull();
 //    }
-}
+//}

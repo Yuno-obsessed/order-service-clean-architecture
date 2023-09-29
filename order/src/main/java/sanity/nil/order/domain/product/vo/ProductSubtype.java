@@ -1,5 +1,7 @@
 package sanity.nil.order.domain.product.vo;
 
+import java.util.Objects;
+
 public class ProductSubtype {
 
     private Integer subtypeId;
@@ -47,6 +49,19 @@ public class ProductSubtype {
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductSubtype that = (ProductSubtype) o;
+        return Objects.equals(subtypeId, that.subtypeId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(subtypeId);
     }
 }
 

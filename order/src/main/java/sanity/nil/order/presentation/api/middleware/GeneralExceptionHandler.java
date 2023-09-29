@@ -14,7 +14,6 @@ import sanity.nil.order.domain.product.exceptions.UnsupportedQuantityException;
 import sanity.nil.order.presentation.api.exception.request.RequestIdHolder;
 import sanity.nil.order.presentation.api.exception.response.ErrorResponse;
 
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 

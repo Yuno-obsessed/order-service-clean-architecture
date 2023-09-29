@@ -2,11 +2,9 @@ package sanity.nil.order.domain.order.events;
 
 import sanity.nil.order.domain.common.Utils;
 import sanity.nil.order.domain.common.event.BaseEvent;
-import sanity.nil.order.domain.common.event.Event;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
-import sanity.nil.order.domain.order.vo.OrderID;
 
 import java.math.BigDecimal;
 import java.util.List;

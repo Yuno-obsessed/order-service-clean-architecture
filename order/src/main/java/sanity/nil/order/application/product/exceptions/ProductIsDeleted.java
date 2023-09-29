@@ -9,6 +9,11 @@ public class ProductIsDeleted extends RuntimeException{
         return new ProductIsDeleted(message);
     }
 
+    public static ProductIsDeleted throwEx(String name) {
+        String message = String.format("Product with name = %s is deleted.", name);
+        return new ProductIsDeleted(message);
+    }
+
     public ProductIsDeleted(String message) {
         super(message);
     }

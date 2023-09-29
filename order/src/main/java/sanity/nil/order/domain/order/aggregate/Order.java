@@ -1,6 +1,7 @@
 package sanity.nil.order.domain.order.aggregate;
 
 import sanity.nil.order.domain.common.aggregate.BaseAggregate;
+import sanity.nil.order.domain.common.vo.Deleted;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
@@ -11,11 +12,13 @@ import sanity.nil.order.domain.order.exceptions.OrderProductAlreadyIsContained;
 import sanity.nil.order.domain.order.exceptions.OrderProductNotExists;
 import sanity.nil.order.domain.order.exceptions.OrderWasDeliveredException;
 import sanity.nil.order.domain.order.vo.OrderID;
-import sanity.nil.order.domain.common.vo.Deleted;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Order extends BaseAggregate{

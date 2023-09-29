@@ -10,6 +10,11 @@ public class ProductNotFound extends RuntimeException{
         return new ProductNotFound(message);
     }
 
+    public static ProductNotFound throwEx(String name) {
+        String message = String.format("Product with name = %s wasn't found.", name);
+        return new ProductNotFound(message);
+    }
+
     public static ProductNotFound throwEx(List<UUID> ids) {
         String message = String.format("Products with ids = %s weren't found.", ids);
         return new ProductNotFound(message);

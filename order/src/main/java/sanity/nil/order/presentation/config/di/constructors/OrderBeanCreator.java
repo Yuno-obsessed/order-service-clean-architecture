@@ -17,6 +17,7 @@ import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import sanity.nil.order.application.order.interactors.CreateAddressInteractorImpl;
 import sanity.nil.order.application.order.interactors.CreateOrderInteractorImpl;
+import sanity.nil.order.application.order.interactors.GetAddressInteractorImpl;
 import sanity.nil.order.application.order.interactors.UpdateAddressInteractorImpl;
 import sanity.nil.order.application.order.interfaces.interactors.CreateAddressInteractor;
 import sanity.nil.order.application.order.interfaces.interactors.CreateOrderInteractor;
@@ -24,7 +25,6 @@ import sanity.nil.order.application.order.interfaces.interactors.GetAddressInter
 import sanity.nil.order.application.order.interfaces.interactors.UpdateAddressInteractor;
 import sanity.nil.order.application.order.interfaces.persistence.AddressDAO;
 import sanity.nil.order.application.order.interfaces.persistence.AddressReader;
-import sanity.nil.order.application.order.interactors.GetAddressInteractorImpl;
 import sanity.nil.order.application.order.interfaces.persistence.OrderDAO;
 import sanity.nil.order.application.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.domain.order.services.AddressService;

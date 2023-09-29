@@ -1,6 +1,9 @@
 package sanity.nil.order.domain.common.vo;
 
+import sanity.nil.order.domain.product.exceptions.DiscountNotFoundException;
+
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Discount {
 
@@ -28,7 +31,7 @@ public class Discount {
                     return enumValue;
                 }
             }
-            throw new RuntimeException("No discount with discount = " + discount + "% found.");
+            throw DiscountNotFoundException.throwEx(discount, "discount percent");
         }
 
         public static DiscountType getByCode(Integer code) {
@@ -37,11 +40,15 @@ public class Discount {
                     return enumValue;
                 }
             }
-            throw new RuntimeException("No discount with code = " + code + "% found.");
+            throw DiscountNotFoundException.throwEx(code, "code");
         }
 
         public Integer getDiscount() {
             return discount;
+        }
+
+        public Integer getCode() {
+            return code;
         }
     }
 
@@ -71,5 +78,20 @@ public class Discount {
     public boolean isExpired() {
         LocalDateTime now = LocalDateTime.now();
         return startsAt.isBefore(now) && endsAt.isAfter(now);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Discount discount = (Discount) o;
+        return discountType == discount.discountType &&
+                Objects.equals(startsAt, discount.startsAt) &&
+                Objects.equals(endsAt, discount.endsAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(discountType, startsAt, endsAt);
     }
 }

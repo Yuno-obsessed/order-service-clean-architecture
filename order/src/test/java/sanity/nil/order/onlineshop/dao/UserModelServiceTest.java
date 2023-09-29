@@ -1,21 +1,20 @@
-package sanity.nil.order.onlineshop.dao;
-
-
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import sanity.nil.onlineshop.SpringProjectApplication;
-
-
-@SpringBootTest(classes = SpringProjectApplication.class)
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
-@ExtendWith({
-        SpringExtension.class,
-        MockitoExtension.class
-})
-public class UserModelServiceTest {
+//package sanity.nil.order.onlineshop.dao;
+//
+//
+//import org.junit.jupiter.api.*;
+//import org.junit.jupiter.api.extension.ExtendWith;
+//import org.mockito.junit.jupiter.MockitoExtension;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.test.context.junit.jupiter.SpringExtension;
+//
+//
+//@SpringBootTest(classes = SpringProjectApplication.class)
+//@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+//@ExtendWith({
+//        SpringExtension.class,
+//        MockitoExtension.class
+//})
+//public class UserModelServiceTest {
 
 //    @Autowired
 //    private UserService userService;
@@ -82,4 +81,4 @@ public class UserModelServiceTest {
 //
 //        assertThat(userService.get(user.getUserId())).isNull();
 //    }
-}
+//}

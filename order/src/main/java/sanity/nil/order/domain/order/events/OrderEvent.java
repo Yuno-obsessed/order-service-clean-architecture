@@ -2,8 +2,6 @@ package sanity.nil.order.domain.order.events;
 
 import sanity.nil.order.domain.common.event.Event;
 
-import java.util.UUID;
-
 public interface OrderEvent extends Event {
 
     @Override

@@ -6,6 +6,7 @@
 - [ ] Add minio to store product images
 - [ ] Add auth service (with auth table to store sessions(with auth table to store sessions)
 - [ ] Add user service  
+- [ ] Write unit tests for BL (domain)
 
 ---
 

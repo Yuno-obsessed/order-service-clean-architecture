@@ -2,9 +2,12 @@ package sanity.nil.order.domain.product.entity;
 
 import sanity.nil.order.domain.common.vo.Deleted;
 import sanity.nil.order.domain.common.vo.Discount;
-import sanity.nil.order.domain.product.vo.*;
+import sanity.nil.order.domain.product.vo.ProductID;
+import sanity.nil.order.domain.product.vo.ProductStatistics;
+import sanity.nil.order.domain.product.vo.ProductSubtype;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Product {
 
@@ -13,7 +16,6 @@ public class Product {
     private String name;
     private BigDecimal price;
     private Discount discount;
-    private BigDecimal actualPrice;
     private Integer quantity;
     private boolean availability;
     private Deleted deleted;
@@ -22,14 +24,13 @@ public class Product {
 
     public Product() {}
 
-    public Product(ProductID productId, String description, String name, BigDecimal price, Discount discount, BigDecimal actualPrice,
+    public Product(ProductID productId, String description, String name, BigDecimal price, Discount discount,
                    Integer quantity, boolean availability, Deleted deleted, ProductSubtype productSubtype, ProductStatistics productStatistics) {
         this.productId = productId;
         this.description = description;
         this.name = name;
         this.price = price;
         this.discount = discount;
-        this.actualPrice = actualPrice;
         this.quantity = quantity;
         this.availability = availability;
         this.deleted = deleted;
@@ -61,10 +62,6 @@ public class Product {
         return discount;
     }
 
-    public BigDecimal getActualPrice() {
-        return actualPrice;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
@@ -92,4 +89,26 @@ public class Product {
     public ProductStatistics getProductStatistics() {
         return productStatistics;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(productId, product.productId) &&
+                Objects.equals(description, product.description) &&
+                Objects.equals(name, product.name) &&
+                Objects.equals(price, product.price) &&
+                Objects.equals(discount, product.discount) &&
+                Objects.equals(quantity, product.quantity) &&
+                Objects.equals(deleted, product.deleted) &&
+                Objects.equals(productSubtype, product.productSubtype) &&
+                Objects.equals(productStatistics, product.productStatistics);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, description, name, price, discount, quantity, deleted, productSubtype, productStatistics);
+    }
+
 }

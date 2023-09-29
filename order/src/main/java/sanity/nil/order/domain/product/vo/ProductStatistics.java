@@ -1,6 +1,7 @@
 package sanity.nil.order.domain.product.vo;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class ProductStatistics {
 
@@ -38,5 +39,20 @@ public class ProductStatistics {
 
     public void setInWishList(Integer inWishList) {
         this.inWishList = inWishList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductStatistics that = (ProductStatistics) o;
+        return Objects.equals(rate, that.rate) &&
+                Objects.equals(ratings, that.ratings) &&
+                Objects.equals(inWishList, that.inWishList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rate, ratings, inWishList);
     }
 }

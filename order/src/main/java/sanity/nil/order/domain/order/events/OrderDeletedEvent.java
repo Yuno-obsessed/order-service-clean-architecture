@@ -2,8 +2,6 @@ package sanity.nil.order.domain.order.events;
 
 import sanity.nil.order.domain.common.Utils;
 import sanity.nil.order.domain.common.event.BaseEvent;
-import sanity.nil.order.domain.common.event.Event;
-import sanity.nil.order.domain.order.vo.OrderID;
 
 import java.util.UUID;
 

@@ -1,14 +1,15 @@
 package sanity.nil.order.domain.product.service;
 
 
-
 import sanity.nil.order.domain.common.vo.Deleted;
 import sanity.nil.order.domain.common.vo.Discount;
 import sanity.nil.order.domain.product.entity.Product;
 import sanity.nil.order.domain.product.exceptions.UnsupportedPriceException;
 import sanity.nil.order.domain.product.exceptions.UnsupportedQuantityException;
 import sanity.nil.order.domain.product.exceptions.UnsupportedRateException;
-import sanity.nil.order.domain.product.vo.*;
+import sanity.nil.order.domain.product.vo.ProductID;
+import sanity.nil.order.domain.product.vo.ProductStatistics;
+import sanity.nil.order.domain.product.vo.ProductSubtype;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -62,7 +63,7 @@ public class ProductService {
 
 
         return new Product(new ProductID(), description, name, price, discount,
-                newPrice, quantity, available, new Deleted(), productSubtype,
+                quantity, available, new Deleted(), productSubtype,
                 new ProductStatistics(BigDecimal.ZERO, 0, 0));
     }
 
@@ -107,7 +108,7 @@ public class ProductService {
 
 
         return new Product(new ProductID(id), description, name, price, discount,
-                newPrice, quantity, available, new Deleted(), productSubtype,
+                quantity, available, new Deleted(), productSubtype,
                 productStatistics);
     }
 

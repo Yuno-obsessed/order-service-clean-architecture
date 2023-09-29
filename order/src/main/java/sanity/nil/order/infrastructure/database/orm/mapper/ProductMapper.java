@@ -112,4 +112,10 @@ public class ProductMapper {
                 product.getProductStatistics().getRate(), product.getProductStatistics().getRatings(),
                 product.getProductStatistics().getInWishList());
     }
+
+    public static ProductStatisticsDTO convertEntityToProductStatisticsDTO(Product product) {
+        return new ProductStatisticsDTO(product.getProductStatistics().getRate(),
+                product.getProductStatistics().getRatings(),
+                product.getProductStatistics().getInWishList());
+    }
 }

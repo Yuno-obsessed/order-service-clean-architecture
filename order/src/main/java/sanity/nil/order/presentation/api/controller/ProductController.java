@@ -4,19 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sanity.nil.order.application.product.dto.boundary.ProductDTO;
+import sanity.nil.order.application.product.dto.boundary.ProductStatisticsDTO;
 import sanity.nil.order.application.product.dto.command.CreateProductCommandDTO;
 import sanity.nil.order.application.product.dto.command.UpdateProductCommandDTO;
-import sanity.nil.order.application.product.dto.command.UpdateProductStatisticsDTO;
+import sanity.nil.order.application.product.dto.command.UpdateProductRateDTO;
+import sanity.nil.order.application.product.dto.command.UpdateProductWishListDTO;
 import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
-import sanity.nil.order.application.product.dto.query.ProductStatisticsQueryDTO;
-import sanity.nil.order.application.product.interfaces.command.CreateProductCommand;
-import sanity.nil.order.application.product.interfaces.command.DeleteProductCommand;
-import sanity.nil.order.application.product.interfaces.command.UpdateProductCommand;
-import sanity.nil.order.application.product.interfaces.command.UpdateProductStatisticsCommand;
-import sanity.nil.order.application.product.interfaces.query.GetAllProductsQuery;
-import sanity.nil.order.application.product.interfaces.query.GetProductByIdQuery;
-import sanity.nil.order.application.product.interfaces.query.GetProductByNameQuery;
+import sanity.nil.order.application.product.service.ProductCommandService;
+import sanity.nil.order.application.product.service.ProductQueryService;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,19 +24,14 @@ import static sanity.nil.order.application.common.dto.BaseFilters.Order.valueOf;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final CreateProductCommand createProductCommand;
-    private final UpdateProductCommand updateProductCommand;
-    private final DeleteProductCommand deleteProductCommand;
-    private final UpdateProductStatisticsCommand updateProductStatisticsCommand;
-    private final GetAllProductsQuery getAllProductsQuery;
-    private final GetProductByIdQuery getProductByIdQuery;
-    private final GetProductByNameQuery getProductByNameQuery;
+    private final ProductCommandService productCommandService;
+    private final ProductQueryService productQueryService;
 
     @GetMapping("/search/{id}")
     public ResponseEntity<ProductQueryDTO> getProductById(@PathVariable UUID id){
         return ResponseEntity
                 .status(200)
-                .body(getProductByIdQuery.get(id));
+                .body(productQueryService.getProductByIdQuery.handle(id));
     }
 
     @GetMapping("/search")
@@ -56,49 +47,49 @@ public class ProductController {
                 productType, productSubtype, priceBelow, priceAbove);
         return ResponseEntity
                 .status(200)
-                .body(getAllProductsQuery.getAllProductsWithProductFilters(filters));
+                .body(productQueryService.getAllProductsQuery.handle(filters));
     }
 
     @GetMapping("/{name}")
     public ResponseEntity<ProductQueryDTO> getProductByName(@PathVariable String name){
         return ResponseEntity
                 .status(200)
-                .body(getProductByNameQuery.get(name));
+                .body(productQueryService.getProductsByNameQuery.handle(name));
     }
 
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody CreateProductCommandDTO createDTO) {
         return ResponseEntity
                 .status(201)
-                .body(createProductCommand.create(createDTO));
+                .body(productCommandService.createProductCommand.handle(createDTO));
     }
 
     @PutMapping
     public ResponseEntity<ProductDTO> updateProduct(@RequestBody UpdateProductCommandDTO updateDTO) {
         return ResponseEntity
                 .status(201)
-                .body(updateProductCommand.update(updateDTO));
+                .body(productCommandService.updateProductCommand.handle(updateDTO));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UUID> deleteProductById(@PathVariable UUID id) {
        return ResponseEntity
                .status(404)
-               .body(deleteProductCommand.delete(id));
+               .body(productCommandService.deleteProductCommand.handle(id));
     }
 
     @PutMapping("/statistics/addrate")
-    public ResponseEntity<ProductStatisticsQueryDTO> addRating(@RequestBody UpdateProductStatisticsDTO productStatisticsDTO) {
+    public ResponseEntity<ProductStatisticsDTO> addRating(@RequestBody UpdateProductRateDTO productStatisticsDTO) {
         return ResponseEntity
                 .status(201)
-                .body(updateProductStatisticsCommand.addRating(productStatisticsDTO));
+                .body(productCommandService.updateProductStatisticsCommand.handle(productStatisticsDTO));
     }
 
     @PutMapping("/statistics/addtowishlist")
-    public ResponseEntity<ProductStatisticsQueryDTO> addToWishList(@RequestBody UpdateProductStatisticsDTO productStatisticsDTO) {
+    public ResponseEntity<ProductStatisticsDTO> addToWishList(@RequestBody UpdateProductWishListDTO productStatisticsDTO) {
        return ResponseEntity
                .status(201)
-               .body(updateProductStatisticsCommand.addToWishList(productStatisticsDTO));
+               .body(productCommandService.updateProductStatisticsCommand.handle(productStatisticsDTO));
     }
 
 }

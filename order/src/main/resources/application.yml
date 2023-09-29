@@ -35,20 +35,6 @@ spring:
 logging:
   level:
     com.sanity: debug
-#    org.springframework: warn
-#    org.hibernate: error
-#    org.springframework.security: error
-#  file:
-#    name: './logs/application.log'
-#    logback:
-#      rollingpolicy:
-#        max-file-size: 1MB
-#        total-size-cap: 10MB
-#        max-history: 30
-#        clean-history-on-start: true
-#  pattern:
-#    console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){faint} %clr(%-40.40logger{0}){cyan} %clr(:){faint} %clr(%m){faint}%n'
-#    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n'
 server:
   port: 8080
   error:

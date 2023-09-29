@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateProductStatisticsDTO {
+public class UpdateProductRateDTO {
 
     @JsonProperty(value = "product_id", required = true)
     public UUID productId;
@@ -17,6 +17,4 @@ public class UpdateProductStatisticsDTO {
     @JsonProperty(value = "add_rate", required = true)
     public BigDecimal addRate;
 
-    @JsonProperty(value = "add_in_wish_list", defaultValue = "false")
-    public boolean addInWishList;
 }

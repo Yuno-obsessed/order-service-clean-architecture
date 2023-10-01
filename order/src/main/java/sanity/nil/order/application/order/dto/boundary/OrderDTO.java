@@ -1,4 +1,4 @@
-package sanity.nil.order.application.order.dto;
+package sanity.nil.order.application.order.dto.boundary;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderCreatedDTO {
+public class OrderDTO {
 
     @JsonProperty(value = "order_id", required = true)
     public UUID orderID;

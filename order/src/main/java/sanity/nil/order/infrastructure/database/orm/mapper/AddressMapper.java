@@ -1,6 +1,7 @@
 package sanity.nil.order.infrastructure.database.orm.mapper;
 
-import sanity.nil.order.application.order.dto.address.AddressDTO;
+import sanity.nil.order.application.order.dto.boundary.AddressDTO;
+import sanity.nil.order.application.order.dto.query.AddressQueryDTO;
 import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.domain.order.vo.AddressID;
 import sanity.nil.order.infrastructure.database.models.AddressModel;
@@ -19,8 +20,12 @@ public class AddressMapper {
         return model;
     }
 
-    public static AddressDTO convertModelToAddressDTO(AddressModel model) {
-        return new AddressDTO(model.getId(), model.getCountry(), model.getCity(),
+    public static AddressQueryDTO convertModelToAddressQueryDTO(AddressModel model) {
+        return new AddressQueryDTO(model.getId(), model.getCountry(), model.getCity(),
                 model.getStreetName(), model.getBuildingNumber(), model.getPostalCode());
+    }
+
+    public static AddressDTO convertEntityToAddressDTO(Address entity) {
+        return new AddressDTO(entity.getAddressID().getId(), entity.getFullAddress());
     }
 }

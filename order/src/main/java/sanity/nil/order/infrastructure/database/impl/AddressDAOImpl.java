@@ -1,7 +1,7 @@
 package sanity.nil.order.infrastructure.database.impl;
 
 import lombok.RequiredArgsConstructor;
-import sanity.nil.order.application.order.dto.address.AddressDTO;
+import sanity.nil.order.application.order.dto.query.AddressQueryDTO;
 import sanity.nil.order.application.order.exceptions.AddressNotFound;
 import sanity.nil.order.application.order.interfaces.persistence.AddressDAO;
 import sanity.nil.order.application.order.interfaces.persistence.AddressReader;
@@ -33,7 +33,7 @@ public class AddressDAOImpl implements AddressDAO, AddressReader {
     }
 
     @Override
-    public AddressDTO getAddressDTOById(UUID id) {
+    public AddressQueryDTO getAddressQueryByID(UUID id) {
         AddressModel maybeModel = addressORM.findById(id).orElseThrow(
                 () -> AddressNotFound.throwEx(id));
         return AddressMapper.convertModelToAddressDTO(maybeModel);

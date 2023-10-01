@@ -1,11 +1,9 @@
-package sanity.nil.order.application.order.dto;
+package sanity.nil.order.application.order.dto.query;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import sanity.nil.order.application.order.dto.address.AddressDTO;
-import sanity.nil.order.application.order.dto.product.ProductOrderDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,16 +11,16 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDTO {
+public class OrderQueryDTO {
 
     @JsonProperty(value = "address", required = true)
-    public AddressDTO address;
+    public AddressQueryDTO address;
 
     @JsonProperty(value = "user_id", required = true)
     public UUID userID;
 
     @JsonProperty(value = "products")
-    public List<ProductOrderDTO> products;
+    public List<ProductQueryDTO> products;
 
     @JsonProperty(value = "payment_method")
     public String paymentMethod;

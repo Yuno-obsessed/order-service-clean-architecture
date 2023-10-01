@@ -22,6 +22,21 @@ public class Address {
         this.postalCode = postalCode;
     }
 
+    public String getFullAddress() {
+        StringBuilder sb = new StringBuilder()
+                .append(country)
+                .append(',')
+                .append(city)
+                .append(',')
+                .append(streetName)
+                .append(',')
+                .append(',')
+                .append(buildingNumber)
+                .append(',')
+                .append(postalCode);
+        return sb.toString();
+    }
+
     public AddressID getAddressID() {
         return addressID;
     }

@@ -13,6 +13,8 @@ import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
 import sanity.nil.order.application.product.service.ProductCommandService;
 import sanity.nil.order.application.product.service.ProductQueryService;
+import sanity.nil.order.domain.product.entity.Product;
+import sanity.nil.order.infrastructure.database.orm.mapper.ProductMapper;
 
 import java.util.List;
 import java.util.UUID;
@@ -59,16 +61,18 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody CreateProductCommandDTO createDTO) {
+        Product product = productCommandService.createProductCommand.handle(createDTO);
         return ResponseEntity
                 .status(201)
-                .body(productCommandService.createProductCommand.handle(createDTO));
+                .body(ProductMapper.convertEntityToBoundary(product));
     }
 
     @PutMapping
     public ResponseEntity<ProductDTO> updateProduct(@RequestBody UpdateProductCommandDTO updateDTO) {
+        Product product = productCommandService.updateProductCommand.handle(updateDTO);
         return ResponseEntity
                 .status(201)
-                .body(productCommandService.updateProductCommand.handle(updateDTO));
+                .body(ProductMapper.convertEntityToBoundary(product));
     }
 
     @DeleteMapping("/{id}")
@@ -80,16 +84,18 @@ public class ProductController {
 
     @PutMapping("/statistics/addrate")
     public ResponseEntity<ProductStatisticsDTO> addRating(@RequestBody UpdateProductRateDTO productStatisticsDTO) {
+        Product product = productCommandService.updateProductStatisticsCommand.handle(productStatisticsDTO);
         return ResponseEntity
                 .status(201)
-                .body(productCommandService.updateProductStatisticsCommand.handle(productStatisticsDTO));
+                .body(ProductMapper.convertEntityToProductStatisticsDTO(product));
     }
 
     @PutMapping("/statistics/addtowishlist")
     public ResponseEntity<ProductStatisticsDTO> addToWishList(@RequestBody UpdateProductWishListDTO productStatisticsDTO) {
+        Product product = productCommandService.updateProductStatisticsCommand.handle(productStatisticsDTO);
        return ResponseEntity
                .status(201)
-               .body(productCommandService.updateProductStatisticsCommand.handle(productStatisticsDTO));
+               .body(ProductMapper.convertEntityToProductStatisticsDTO(product));
     }
 
 }

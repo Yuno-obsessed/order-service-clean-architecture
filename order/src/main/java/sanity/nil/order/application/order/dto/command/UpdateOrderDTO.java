@@ -1,4 +1,4 @@
-package sanity.nil.order.application.order.dto;
+package sanity.nil.order.application.order.dto.command;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

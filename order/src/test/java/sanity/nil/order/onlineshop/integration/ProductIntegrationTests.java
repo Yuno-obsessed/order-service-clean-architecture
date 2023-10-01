@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import sanity.nil.order.OrderApplication;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = OrderApplication.class)

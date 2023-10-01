@@ -15,20 +15,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
-import sanity.nil.order.application.order.interactors.CreateAddressInteractorImpl;
-import sanity.nil.order.application.order.interactors.CreateOrderInteractorImpl;
-import sanity.nil.order.application.order.interactors.GetAddressInteractorImpl;
-import sanity.nil.order.application.order.interactors.UpdateAddressInteractorImpl;
-import sanity.nil.order.application.order.interfaces.interactors.CreateAddressInteractor;
-import sanity.nil.order.application.order.interfaces.interactors.CreateOrderInteractor;
-import sanity.nil.order.application.order.interfaces.interactors.GetAddressInteractor;
-import sanity.nil.order.application.order.interfaces.interactors.UpdateAddressInteractor;
+import sanity.nil.order.application.order.command.CreateAddressCommand;
+import sanity.nil.order.application.order.command.UpdateAddressCommand;
 import sanity.nil.order.application.order.interfaces.persistence.AddressDAO;
 import sanity.nil.order.application.order.interfaces.persistence.AddressReader;
 import sanity.nil.order.application.order.interfaces.persistence.OrderDAO;
-import sanity.nil.order.application.relay.interfaces.persistence.OutboxDAO;
+import sanity.nil.order.application.order.query.GetAddressQuery;
+import sanity.nil.order.application.order.service.AddressCommandService;
+import sanity.nil.order.application.order.service.AddressQueryService;
 import sanity.nil.order.domain.order.services.AddressService;
-import sanity.nil.order.domain.order.services.OrderService;
 import sanity.nil.order.infrastructure.database.impl.AddressDAOImpl;
 import sanity.nil.order.infrastructure.database.impl.OrderDaoImpl;
 import sanity.nil.order.infrastructure.database.orm.AddressORM;
@@ -102,22 +97,17 @@ public class OrderBeanCreator {
     }
 
     @Bean
-    public CreateOrderInteractor createOrderInteractor(OrderDAO orderDAO, OutboxDAO outboxDAO, BrokerTemplate brokerTemplate) {
-        return new CreateOrderInteractorImpl(orderDAO, outboxDAO, new OrderService(), brokerTemplate);
+    public AddressCommandService addressCommandService(AddressDAO addressDAO) {
+        return new AddressCommandService(
+                new CreateAddressCommand(addressDAO, new AddressService()),
+                new UpdateAddressCommand(addressDAO, new AddressService())
+        );
     }
 
     @Bean
-    public CreateAddressInteractor createAddressInteractor(AddressDAO addressDAO) {
-        return new CreateAddressInteractorImpl(addressDAO, new AddressService());
-    }
-
-    @Bean
-    public UpdateAddressInteractor updateAddressInteractor(AddressDAO addressDAO) {
-        return new UpdateAddressInteractorImpl(addressDAO, new AddressService());
-    }
-
-    @Bean
-    public GetAddressInteractor getAddressInteractor(AddressReader addressReader) {
-        return new GetAddressInteractorImpl(addressReader);
+    public AddressQueryService addressQueryService(AddressReader addressReader) {
+        return new AddressQueryService(
+                 new GetAddressQuery(addressReader)
+        );
     }
 }

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "addresses")
 @AllArgsConstructor
@@ -30,4 +32,21 @@ public class AddressModel extends BaseModel {
 
     @Column(name = "postal_code")
     private String postalCode;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AddressModel that = (AddressModel) o;
+        return Objects.equals(country, that.country) &&
+                Objects.equals(city, that.city) &&
+                Objects.equals(streetName, that.streetName) &&
+                Objects.equals(buildingNumber, that.buildingNumber) &&
+                Objects.equals(postalCode, that.postalCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(country, city, streetName, buildingNumber, postalCode);
+    }
 }

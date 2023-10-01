@@ -1,4 +1,4 @@
-package sanity.nil.order.application.order.dto.address;
+package sanity.nil.order.application.order.dto.query;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressDTO {
+public class AddressQueryDTO {
 
     @JsonProperty(value = "address_id", required = true)
     public UUID addressID;

@@ -36,6 +36,6 @@ public class AddressDAOImpl implements AddressDAO, AddressReader {
     public AddressQueryDTO getAddressQueryByID(UUID id) {
         AddressModel maybeModel = addressORM.findById(id).orElseThrow(
                 () -> AddressNotFound.throwEx(id));
-        return AddressMapper.convertModelToAddressDTO(maybeModel);
+        return AddressMapper.convertModelToAddressQueryDTO(maybeModel);
     }
 }

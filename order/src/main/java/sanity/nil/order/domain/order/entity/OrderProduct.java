@@ -4,6 +4,7 @@ import sanity.nil.order.domain.common.vo.Discount;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Objects;
 import java.util.UUID;
 
 public class OrderProduct {
@@ -42,17 +43,37 @@ public class OrderProduct {
         return quantity;
     }
 
-    public BigDecimal getTotalPrice() {
-        BigDecimal totalPrice = price.multiply(BigDecimal.valueOf(quantity));
-        BigDecimal priceAfterDiscount = totalPrice
-                .subtract(totalPrice
-                        .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)
-                        .multiply(BigDecimal.valueOf(discount.getDiscountInt())));
-        return priceAfterDiscount;
-    }
-
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
+    public BigDecimal getTotalPrice() {
+        int discountInt = 0;
+        if (discount.isActive()) {
+            discountInt = discount.getDiscountInt();
+        }
+        BigDecimal totalPrice = price.multiply(BigDecimal.valueOf(quantity));
+        BigDecimal priceAfterDiscount = totalPrice
+                .subtract(totalPrice
+                        .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)
+                        .multiply(BigDecimal.valueOf(discountInt)));
+        return priceAfterDiscount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderProduct product = (OrderProduct) o;
+        return quantity == product.quantity &&
+                Objects.equals(productID, product.productID) &&
+                Objects.equals(name, product.name) &&
+                Objects.equals(price, product.price) &&
+                Objects.equals(discount, product.discount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productID, name, price, discount, quantity);
+    }
 }

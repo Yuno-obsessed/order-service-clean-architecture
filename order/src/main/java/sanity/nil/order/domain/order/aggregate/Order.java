@@ -7,18 +7,12 @@ import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.order.events.OrderDeletedEvent;
-import sanity.nil.order.domain.order.exceptions.OrderIsDeletedException;
-import sanity.nil.order.domain.order.exceptions.OrderProductAlreadyIsContained;
-import sanity.nil.order.domain.order.exceptions.OrderProductNotExists;
-import sanity.nil.order.domain.order.exceptions.OrderWasDeliveredException;
+import sanity.nil.order.domain.order.exceptions.*;
 import sanity.nil.order.domain.order.vo.OrderID;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Order extends BaseAggregate{
@@ -42,6 +36,10 @@ public class Order extends BaseAggregate{
         if (orderStatus.equals(OrderStatus.DELIVERED)) {
             throw OrderWasDeliveredException.throwEx();
         }
+
+        if (orderStatus.equals(OrderStatus.CANCELED)) {
+            throw OrderIsCanceledException.throwEx();
+        }
     }
 
     public void addProduct(OrderProduct product) {
@@ -51,6 +49,7 @@ public class Order extends BaseAggregate{
                         .equals(product.getProductID()))) {
             throw OrderProductAlreadyIsContained.throwEx(product.getProductID());
         }
+        this.products.add(product);
     }
 
     public void removeProduct(OrderProduct product) {
@@ -62,7 +61,6 @@ public class Order extends BaseAggregate{
     }
 
     public void updateStatus(OrderStatus status) {
-        this.preprocessOrder();
         this.orderStatus = status;
         if (status.equals(OrderStatus.DELIVERED) || status.equals(OrderStatus.CANCELED)) {
             this.closed = true;
@@ -89,6 +87,32 @@ public class Order extends BaseAggregate{
         this.closed = false;
     }
 
+    public BigDecimal getTotalPrice() {
+        return products.stream()
+                .map(OrderProduct::getTotalPrice)
+                .reduce(BigDecimal::add).get();
+    }
+
+    public Map<OrderProduct, Integer> getMatchingProducts(List<OrderProduct> productsToFindFrom, List<OrderProduct> productsToFind) {
+        Map<OrderProduct, Integer> result = new HashMap<>();
+        for (OrderProduct oldProduct : productsToFindFrom) {
+            OrderProduct matchingProduct = productsToFind.stream()
+                    .filter(product -> product.getProductID().equals(oldProduct.getProductID()))
+                    .findFirst()
+                    .orElse(null);
+            if (matchingProduct != null) {
+                int quantityInOld = matchingProduct.getQuantity();
+                int quantityDiff = oldProduct.getQuantity() - quantityInOld;
+
+                if (quantityDiff > 0) {
+                    result.put(oldProduct, quantityDiff);
+                }
+            } else {
+                result.put(oldProduct, oldProduct.getQuantity());
+            }
+        }
+        return result;
+    }
 
     public OrderID getOrderID() {
         return orderID;
@@ -125,34 +149,6 @@ public class Order extends BaseAggregate{
     public List<UUID> getProductIDs() {
         return products.stream().map(OrderProduct::getProductID).collect(Collectors.toList());
     }
-
-    public BigDecimal getTotalPrice() {
-        return products.stream()
-                .map(OrderProduct::getTotalPrice)
-                .reduce(BigDecimal::add).get();
-    }
-
-    public Map<OrderProduct, Integer> getMatchingProducts(List<OrderProduct> productsToFindFrom, List<OrderProduct> productsToFind) {
-        Map<OrderProduct, Integer> result = new HashMap<>();
-        for (OrderProduct oldProduct : productsToFindFrom) {
-            OrderProduct matchingProduct = productsToFind.stream()
-                    .filter(product -> product.getProductID().equals(oldProduct.getProductID()))
-                    .findFirst()
-                    .orElse(null);
-            if (matchingProduct != null) {
-                int quantityInOld = matchingProduct.getQuantity();
-                int quantityDiff = oldProduct.getQuantity() - quantityInOld;
-
-                if (quantityDiff > 0) {
-                    result.put(oldProduct, quantityDiff);
-                }
-            } else {
-                result.put(oldProduct, oldProduct.getQuantity());
-            }
-        }
-        return result;
-    }
-
     public boolean isClosed() {
         return closed;
     }
@@ -161,4 +157,16 @@ public class Order extends BaseAggregate{
         this.addressID = addressID;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(orderID, order.orderID) && Objects.equals(addressID, order.addressID) && Objects.equals(clientID, order.clientID) && Objects.equals(products, order.products) && orderStatus == order.orderStatus && paymentMethod == order.paymentMethod && paymentOption == order.paymentOption && Objects.equals(deleted, order.deleted) && Objects.equals(totalPrice, order.totalPrice);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderID, addressID, clientID, products, orderStatus, paymentMethod, paymentOption, deleted, totalPrice);
+    }
 }

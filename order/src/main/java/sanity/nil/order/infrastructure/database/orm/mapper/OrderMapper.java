@@ -31,8 +31,8 @@ public class OrderMapper {
     public static Order modelToEntity(OrderModel model) {
         Order order = new Order(new OrderID(model.getId()), model.getAddress().getId(),
                 model.getUser().getId(), ProductMapper.convertModelsToOrderEntities(model.getProducts()),
-                OrderStatus.fromString(model.getOrderStatus()),PaymentMethod.fromString(model.getPaymentMethod()),
-                PaymentOption.fromString(model.getPaymentOption()));
+                OrderStatus.valueOf(model.getOrderStatus()),PaymentMethod.valueOf(model.getPaymentMethod()),
+                PaymentOption.valueOf(model.getPaymentOption()));
         return order;
     }
 }

@@ -2,6 +2,9 @@ package sanity.nil.order.onlineshop.util;
 
 import sanity.nil.order.domain.common.vo.Deleted;
 import sanity.nil.order.domain.common.vo.Discount;
+import sanity.nil.order.domain.order.entity.Address;
+import sanity.nil.order.domain.order.entity.OrderProduct;
+import sanity.nil.order.domain.order.vo.AddressID;
 import sanity.nil.order.domain.product.entity.Product;
 import sanity.nil.order.domain.product.vo.ProductID;
 import sanity.nil.order.domain.product.vo.ProductStatistics;
@@ -60,7 +63,7 @@ public class EntityGenerator {
     public static Product generateProduct(UUID id, String name, double price, Discount discount) {
         return new Product(new ProductID(id), "desc", name,
                 BigDecimal.valueOf(price), discount,
-                2, true, new Deleted(),
+                4, true, new Deleted(),
                 generateProductSubtype(1), generateProductStatistics());
     }
 
@@ -69,4 +72,10 @@ public class EntityGenerator {
                 product.getPrice(), product.getDiscount(), product.getQuantity(), product.isAvailable(),
                 product.getDeleted(),product.getProductSubtype(),product.getProductStatistics());
     }
+
+    public static Address generateAddress(UUID id) {
+        return new Address(new AddressID(id), "Italy", "Rome",
+                "via Venezia", 3, "00183");
+    }
+
 }

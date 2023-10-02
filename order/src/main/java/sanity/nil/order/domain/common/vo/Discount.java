@@ -56,7 +56,7 @@ public class Discount {
         this.discountType = discountType;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
-        this.expired = isExpired();
+        this.expired = !isActive();
     }
 
     public DiscountType getDiscountType() {
@@ -75,7 +75,7 @@ public class Discount {
         return discountType.getDiscount();
     }
 
-    public boolean isExpired() {
+    public boolean isActive() {
         LocalDateTime now = LocalDateTime.now();
         return startsAt.isBefore(now) && endsAt.isAfter(now);
     }
@@ -86,8 +86,7 @@ public class Discount {
         if (o == null || getClass() != o.getClass()) return false;
         Discount discount = (Discount) o;
         return discountType == discount.discountType &&
-                Objects.equals(startsAt, discount.startsAt) &&
-                Objects.equals(endsAt, discount.endsAt);
+                Objects.equals(expired, discount.expired);
     }
 
     @Override

@@ -70,7 +70,7 @@ public class ProductMapper {
     public static OrderProduct convertModelToOrderEntity(ProductModel model) {
         return new OrderProduct(model.getId(), model.getName(), model.getPrice(),
                 new Discount(getByDiscount(model.getDiscount()),
-                        model.getDiscountEnd(), model.getDiscountStart()), model.getQuantity());
+                        model.getDiscountStart(), model.getDiscountEnd()), model.getQuantity());
     }
 
     public static List<OrderProduct> convertModelsToOrderEntities(List<ProductModel> models) {

@@ -1,6 +1,6 @@
 package sanity.nil.order.domain.order.entity;
 
-import sanity.nil.order.domain.common.vo.Discount;
+import sanity.nil.common.domain.vo.Discount;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -1,10 +1,10 @@
 package sanity.nil.order.infrastructure.database.impl;
 
 import lombok.RequiredArgsConstructor;
-import sanity.nil.order.application.order.exceptions.AddressNotFound;
-import sanity.nil.order.application.order.exceptions.UserNotFound;
-import sanity.nil.order.application.order.interfaces.persistence.OrderDAO;
-import sanity.nil.order.application.order.interfaces.persistence.OrderReader;
+import sanity.nil.order.application.exceptions.AddressNotFound;
+import sanity.nil.order.application.exceptions.UserNotFound;
+import sanity.nil.order.application.interfaces.persistence.OrderDAO;
+import sanity.nil.order.application.interfaces.persistence.OrderReader;
 import sanity.nil.order.domain.order.aggregate.Order;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.infrastructure.database.models.OrderModel;

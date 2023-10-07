@@ -3,23 +3,23 @@ package sanity.nil.order.presentation.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sanity.nil.order.application.product.dto.boundary.ProductDTO;
-import sanity.nil.order.application.product.dto.boundary.ProductStatisticsDTO;
-import sanity.nil.order.application.product.dto.command.CreateProductCommandDTO;
-import sanity.nil.order.application.product.dto.command.UpdateProductCommandDTO;
-import sanity.nil.order.application.product.dto.command.UpdateProductRateDTO;
-import sanity.nil.order.application.product.dto.command.UpdateProductWishListDTO;
-import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
-import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
-import sanity.nil.order.application.product.service.ProductCommandService;
-import sanity.nil.order.application.product.service.ProductQueryService;
-import sanity.nil.order.domain.product.entity.Product;
+import sanity.nil.product.application.dto.boundary.ProductDTO;
+import sanity.nil.product.application.dto.boundary.ProductStatisticsDTO;
+import sanity.nil.product.application.dto.command.CreateProductCommandDTO;
+import sanity.nil.product.application.dto.command.UpdateProductCommandDTO;
+import sanity.nil.product.application.dto.command.UpdateProductRateDTO;
+import sanity.nil.product.application.dto.command.UpdateProductWishListDTO;
+import sanity.nil.product.application.dto.query.ProductQueryDTO;
+import sanity.nil.product.application.dto.query.ProductQueryFilters;
+import sanity.nil.product.application.service.ProductCommandService;
+import sanity.nil.product.application.service.ProductQueryService;
+import sanity.nil.product.domain.entity.Product;
 import sanity.nil.order.infrastructure.database.orm.mapper.ProductMapper;
 
 import java.util.List;
 import java.util.UUID;
 
-import static sanity.nil.order.application.common.dto.BaseFilters.Order.valueOf;
+import static sanity.nil.common.application.dto.BaseFilters.Order.valueOf;
 
 @RestController
 @RequestMapping("/api/v1/product")

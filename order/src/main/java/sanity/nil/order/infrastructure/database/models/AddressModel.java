@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import sanity.nil.common.infrastructure.database.models.BaseModel;
 
 import java.util.Objects;
 

@@ -2,6 +2,7 @@ package sanity.nil.order.presentation.config.di;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +11,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import sanity.nil.common.application.interfaces.broker.MessageBroker;
 import sanity.nil.order.infrastructure.messageBroker.config.RabbitConfig;
 import sanity.nil.order.infrastructure.messageBroker.config.Receiver;
+import sanity.nil.order.infrastructure.messageBroker.interactors.MessageBrokerImpl;
 import sanity.nil.order.presentation.api.exception.request.RequestIdGenerator;
 import sanity.nil.order.presentation.api.exception.request.RequestIdHolder;
 import sanity.nil.order.presentation.api.exception.request.RequestImpl;
@@ -72,6 +75,11 @@ public class SharedBeanCreator {
     public HandlerInterceptor handlerInterceptor(RequestIdGenerator requestIdGenerator,
                                                  RequestIdHolder requestIdHolder) {
         return new CustomHandlerInterceptor(requestIdHolder, requestIdGenerator);
+    }
+
+    @Bean
+    public MessageBroker messageBroker(RabbitTemplate rabbitTemplate, ObjectMapper objectMapper) {
+        return new MessageBrokerImpl(rabbitTemplate, objectMapper);
     }
 
 }

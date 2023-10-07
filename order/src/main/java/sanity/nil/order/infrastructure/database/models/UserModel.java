@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
+import sanity.nil.common.infrastructure.database.models.BaseModel;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @ToString
 @Getter
 @Setter
-public class UserModel extends BaseModel{
+public class UserModel extends BaseModel {
 
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;

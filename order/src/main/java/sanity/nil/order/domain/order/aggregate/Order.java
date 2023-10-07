@@ -1,7 +1,7 @@
 package sanity.nil.order.domain.order.aggregate;
 
-import sanity.nil.order.domain.common.aggregate.BaseAggregate;
-import sanity.nil.order.domain.common.vo.Deleted;
+import sanity.nil.common.domain.aggregate.BaseAggregate;
+import sanity.nil.common.domain.vo.Deleted;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
@@ -162,7 +162,15 @@ public class Order extends BaseAggregate{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(orderID, order.orderID) && Objects.equals(addressID, order.addressID) && Objects.equals(clientID, order.clientID) && Objects.equals(products, order.products) && orderStatus == order.orderStatus && paymentMethod == order.paymentMethod && paymentOption == order.paymentOption && Objects.equals(deleted, order.deleted) && Objects.equals(totalPrice, order.totalPrice);
+        return Objects.equals(orderID, order.orderID) &&
+                Objects.equals(addressID, order.addressID) &&
+                Objects.equals(clientID, order.clientID) &&
+                Objects.equals(products, order.products) &&
+                orderStatus == order.orderStatus &&
+                paymentMethod == order.paymentMethod &&
+                paymentOption == order.paymentOption &&
+                Objects.equals(deleted, order.deleted) &&
+                Objects.equals(totalPrice, order.totalPrice);
     }
 
     @Override

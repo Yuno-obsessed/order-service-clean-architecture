@@ -3,7 +3,6 @@ package sanity.nil.order.infrastructure.database.models;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import sanity.nil.common.infrastructure.database.models.BaseModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

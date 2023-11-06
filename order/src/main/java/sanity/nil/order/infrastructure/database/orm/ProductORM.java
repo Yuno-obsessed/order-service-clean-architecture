@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import sanity.nil.product.application.dto.query.ProductQueryFilters;
+import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
 import sanity.nil.order.infrastructure.database.models.ProductModel;
 
 import java.util.List;

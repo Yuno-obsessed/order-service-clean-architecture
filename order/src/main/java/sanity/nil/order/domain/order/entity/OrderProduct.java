@@ -1,6 +1,6 @@
 package sanity.nil.order.domain.order.entity;
 
-import sanity.nil.common.domain.vo.Discount;
+import sanity.nil.order.application.common.domain.vo.Discount;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,6 +20,11 @@ public class OrderProduct {
         this.name = name;
         this.price = price;
         this.discount = discount;
+        this.quantity = quantity;
+    }
+
+    public OrderProduct(UUID productID, int quantity) {
+        this.productID = productID;
         this.quantity = quantity;
     }
 

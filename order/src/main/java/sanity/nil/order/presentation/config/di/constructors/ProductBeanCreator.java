@@ -4,19 +4,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
-import sanity.nil.product.application.command.CreateProductCommand;
-import sanity.nil.product.application.command.DeleteProductCommand;
-import sanity.nil.product.application.command.UpdateProductCommand;
-import sanity.nil.product.application.command.UpdateProductStatisticsCommand;
-import sanity.nil.product.application.interfaces.persistence.ProductDAO;
-import sanity.nil.product.application.interfaces.persistence.ProductReader;
-import sanity.nil.product.application.interfaces.persistence.ProductSubtypeReader;
-import sanity.nil.product.application.query.GetAllProductsQuery;
-import sanity.nil.product.application.query.GetProductByIdQuery;
-import sanity.nil.product.application.query.GetProductsByNameQuery;
-import sanity.nil.product.application.service.ProductCommandService;
-import sanity.nil.product.application.service.ProductQueryService;
-import sanity.nil.product.domain.service.ProductService;
+import sanity.nil.order.application.product.command.CreateProductCommand;
+import sanity.nil.order.application.product.command.DeleteProductCommand;
+import sanity.nil.order.application.product.command.UpdateProductCommand;
+import sanity.nil.order.application.product.command.UpdateProductStatisticsCommand;
+import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
+import sanity.nil.order.application.product.interfaces.persistence.ProductReader;
+import sanity.nil.order.application.product.interfaces.persistence.ProductSubtypeReader;
+import sanity.nil.order.application.product.query.GetAllProductsQuery;
+import sanity.nil.order.application.product.query.GetProductByIdQuery;
+import sanity.nil.order.application.product.query.GetProductsByNameQuery;
+import sanity.nil.order.application.product.service.ProductCommandService;
+import sanity.nil.order.application.product.service.ProductQueryService;
+import sanity.nil.order.domain.product.service.ProductService;
 import sanity.nil.order.infrastructure.database.impl.ProductDAOImpl;
 import sanity.nil.order.infrastructure.database.impl.ProductSubtypeDAOImpl;
 import sanity.nil.order.infrastructure.database.orm.ProductORM;
@@ -25,7 +25,7 @@ import sanity.nil.order.infrastructure.database.orm.ProductSubtypeORM;
 @Configuration
 @ComponentScans(value = {
         @ComponentScan("sanity.nil.order.infrastructure"),
-        @ComponentScan("sanity.nil.order.domain"),
+        @ComponentScan("sanity.nil.order.domain.product"),
         @ComponentScan("sanity.nil.order.application.product"),
         @ComponentScan("sanity.nil.order.presentation")
 })

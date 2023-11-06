@@ -13,21 +13,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import sanity.nil.common.application.interfaces.broker.MessageBroker;
-import sanity.nil.order.application.command.CreateAddressCommand;
-import sanity.nil.order.application.command.CreateOrderCommand;
-import sanity.nil.order.application.command.UpdateAddressCommand;
-import sanity.nil.order.application.dto.query.OrderQueryDTO;
-import sanity.nil.order.application.interfaces.persistence.AddressDAO;
-import sanity.nil.order.application.interfaces.persistence.AddressReader;
-import sanity.nil.order.application.interfaces.persistence.OrderCacheDAO;
-import sanity.nil.order.application.interfaces.persistence.OrderDAO;
-import sanity.nil.order.application.query.GetAddressQuery;
-import sanity.nil.order.application.service.AddressCommandService;
-import sanity.nil.order.application.service.AddressQueryService;
-import sanity.nil.order.application.service.OrderCommandService;
-import sanity.nil.common.application.relay.interfaces.persistence.OutboxDAO;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.stereotype.Component;
+import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
+import sanity.nil.order.application.order.command.CreateAddressCommand;
+import sanity.nil.order.application.order.command.CreateOrderCommand;
+import sanity.nil.order.application.order.command.UpdateAddressCommand;
+import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
+import sanity.nil.order.application.order.persistence.AddressDAO;
+import sanity.nil.order.application.order.persistence.AddressReader;
+import sanity.nil.order.application.order.persistence.OrderCacheDAO;
+import sanity.nil.order.application.order.persistence.OrderDAO;
+import sanity.nil.order.application.order.query.GetAddressQuery;
+import sanity.nil.order.application.order.service.AddressCommandService;
+import sanity.nil.order.application.order.service.AddressQueryService;
+import sanity.nil.order.application.order.service.OrderCommandService;
+import sanity.nil.order.application.common.application.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.domain.order.services.AddressService;
 import sanity.nil.order.domain.order.services.OrderService;
 import sanity.nil.order.infrastructure.cache.impl.OrderCacheDAOImpl;
@@ -41,8 +44,8 @@ import sanity.nil.order.infrastructure.database.orm.UserORM;
 @Configuration
 @ComponentScans(value = {
         @ComponentScan("sanity.nil.order.infrastructure"),
-        @ComponentScan("sanity.nil.order.domain"),
-        @ComponentScan("sanity.nil.order.application"),
+        @ComponentScan("sanity.nil.order.domain.order"),
+        @ComponentScan("sanity.nil.order.application.order"),
         @ComponentScan("sanity.nil.order.presentation")
 })
 public class OrderBeanCreator {
@@ -84,6 +87,16 @@ public class OrderBeanCreator {
     @Bean
     public Binding binding(Queue queue, TopicExchange topicExchange) {
         return BindingBuilder.bind(queue).to(topicExchange).with(orderRoutingKey);
+    }
+
+    @Bean
+    public RedisTemplate<String, OrderQueryDTO> redisTemplate(RedisConnectionFactory redis) {
+        RedisTemplate<String, OrderQueryDTO> template = new RedisTemplate<>();
+        Jackson2JsonRedisSerializer<OrderQueryDTO> serializer = new Jackson2JsonRedisSerializer<>(OrderQueryDTO.class);
+        template.setValueSerializer(serializer);
+        template.setHashValueSerializer(serializer);
+        template.setConnectionFactory(redis);
+        return template;
     }
 
     @Bean

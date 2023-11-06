@@ -7,8 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import sanity.nil.common.application.interfaces.broker.MessageBroker;
-import sanity.nil.common.application.exceptions.BrokerException;
+import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
+import sanity.nil.order.application.common.application.exceptions.BrokerException;
 
 import java.nio.charset.StandardCharsets;
 

@@ -6,11 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import sanity.nil.product.application.exceptions.ProductIsDeleted;
-import sanity.nil.product.application.exceptions.ProductNotFound;
-import sanity.nil.product.application.exceptions.SubtypeNotFound;
-import sanity.nil.product.domain.exceptions.UnsupportedPriceException;
-import sanity.nil.product.domain.exceptions.UnsupportedQuantityException;
+import sanity.nil.order.application.product.exceptions.ProductIsDeleted;
+import sanity.nil.order.application.product.exceptions.ProductNotFound;
+import sanity.nil.order.application.product.exceptions.SubtypeNotFound;
+import sanity.nil.order.domain.product.exceptions.UnsupportedPriceException;
+import sanity.nil.order.domain.product.exceptions.UnsupportedQuantityException;
 import sanity.nil.order.presentation.api.exception.request.RequestIdHolder;
 import sanity.nil.order.presentation.api.exception.response.ErrorResponse;
 

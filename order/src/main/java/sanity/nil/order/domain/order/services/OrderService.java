@@ -1,13 +1,15 @@
 package sanity.nil.order.domain.order.services;
 
 
+import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.order.aggregate.Order;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
-import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.order.events.*;
 import sanity.nil.order.domain.order.exceptions.OrderProductsEmptyException;
+import sanity.nil.order.domain.order.exceptions.ProductQuantityIsLessException;
+import sanity.nil.order.domain.order.exceptions.RequestedProductNoMatchException;
 import sanity.nil.order.domain.order.vo.OrderID;
 
 import java.util.ArrayList;
@@ -17,10 +19,22 @@ import java.util.UUID;
 
 public class OrderService {
 
-    public Order create(UUID addressID, UUID userID, List<OrderProduct> products,
+    public Order create(UUID addressID, UUID userID, List<OrderProduct> products, List<OrderProduct> requestedProducts,
                         String paymentMethod, String paymentOption) {
         if (products == null || products.isEmpty()){
             throw new OrderProductsEmptyException();
+        }
+
+        for (OrderProduct requestedProduct : requestedProducts) {
+           OrderProduct product =
+                   products.stream()
+                           .filter(p -> p.getProductID().equals(requestedProduct.getProductID()))
+                           .findFirst().orElseThrow(
+                                   () -> RequestedProductNoMatchException.throwEx(requestedProduct.getProductID())
+                           );
+           if (product.getQuantity() < requestedProduct.getQuantity()) {
+               throw ProductQuantityIsLessException.throwEx(requestedProduct.getProductID());
+           }
         }
 
         Order createdOrder = new Order(new OrderID(), addressID, userID, products, OrderStatus.CREATED,

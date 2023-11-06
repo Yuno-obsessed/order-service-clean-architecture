@@ -1,12 +1,12 @@
 package sanity.nil.order.domain.order.aggregate;
 
-import sanity.nil.common.domain.aggregate.BaseAggregate;
-import sanity.nil.common.domain.vo.Deleted;
-import sanity.nil.order.domain.order.consts.OrderStatus;
-import sanity.nil.order.domain.order.consts.PaymentMethod;
+import sanity.nil.order.application.common.domain.aggregate.BaseAggregate;
+import sanity.nil.order.application.common.domain.vo.Deleted;
 import sanity.nil.order.domain.order.consts.PaymentOption;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.order.events.OrderDeletedEvent;
+import sanity.nil.order.domain.order.consts.OrderStatus;
+import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.exceptions.*;
 import sanity.nil.order.domain.order.vo.OrderID;
 
@@ -47,7 +47,7 @@ public class Order extends BaseAggregate{
         if (this.products.stream()
                 .anyMatch(p -> p.getProductID()
                         .equals(product.getProductID()))) {
-            throw OrderProductAlreadyIsContained.throwEx(product.getProductID());
+            throw OrderProductAlreadyIsContainedException.throwEx(product.getProductID());
         }
         this.products.add(product);
     }
@@ -55,7 +55,7 @@ public class Order extends BaseAggregate{
     public void removeProduct(OrderProduct product) {
         this.preprocessOrder();
         if (!products.contains(product)) {
-            throw OrderProductNotExists.throwEx(product.getProductID());
+            throw OrderProductNotExistsException.throwEx(product.getProductID());
         }
         this.products.remove(product);
     }
@@ -85,6 +85,7 @@ public class Order extends BaseAggregate{
         this.paymentOption = paymentOption;
         this.deleted = new Deleted();
         this.closed = false;
+        this.totalPrice = getTotalPrice();
     }
 
     public BigDecimal getTotalPrice() {
@@ -169,12 +170,11 @@ public class Order extends BaseAggregate{
                 orderStatus == order.orderStatus &&
                 paymentMethod == order.paymentMethod &&
                 paymentOption == order.paymentOption &&
-                Objects.equals(deleted, order.deleted) &&
-                Objects.equals(totalPrice, order.totalPrice);
+                Objects.equals(deleted, order.deleted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderID, addressID, clientID, products, orderStatus, paymentMethod, paymentOption, deleted, totalPrice);
+        return Objects.hash(orderID, addressID, clientID, products, orderStatus, paymentMethod, paymentOption, deleted);
     }
 }

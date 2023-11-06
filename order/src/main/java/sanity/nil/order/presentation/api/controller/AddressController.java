@@ -3,12 +3,12 @@ package sanity.nil.order.presentation.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sanity.nil.order.application.dto.boundary.AddressDTO;
-import sanity.nil.order.application.dto.command.CreateAddressDTO;
-import sanity.nil.order.application.dto.command.UpdateAddressDTO;
-import sanity.nil.order.application.dto.query.AddressQueryDTO;
-import sanity.nil.order.application.service.AddressCommandService;
-import sanity.nil.order.application.service.AddressQueryService;
+import sanity.nil.order.application.order.dto.boundary.AddressDTO;
+import sanity.nil.order.application.order.dto.command.CreateAddressDTO;
+import sanity.nil.order.application.order.dto.command.UpdateAddressCommandDTO;
+import sanity.nil.order.application.order.dto.query.AddressQueryDTO;
+import sanity.nil.order.application.order.service.AddressCommandService;
+import sanity.nil.order.application.order.service.AddressQueryService;
 import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.infrastructure.database.orm.mapper.AddressMapper;
 
@@ -31,7 +31,7 @@ public class AddressController {
     }
 
     @PutMapping
-    public ResponseEntity<AddressDTO> updateAddress(@RequestBody UpdateAddressDTO updateDTO) {
+    public ResponseEntity<AddressDTO> updateAddress(@RequestBody UpdateAddressCommandDTO updateDTO) {
         Address address = addressCommandService.updateAddressCommand.handle(updateDTO);
         return ResponseEntity
                 .status(201)

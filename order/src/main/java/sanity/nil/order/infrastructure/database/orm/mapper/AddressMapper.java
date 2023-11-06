@@ -1,10 +1,10 @@
 package sanity.nil.order.infrastructure.database.orm.mapper;
 
-import sanity.nil.order.application.dto.boundary.AddressDTO;
-import sanity.nil.order.application.dto.query.AddressQueryDTO;
+import sanity.nil.order.application.order.dto.boundary.AddressDTO;
+import sanity.nil.order.application.order.dto.query.AddressQueryDTO;
+import sanity.nil.order.infrastructure.database.models.AddressModel;
 import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.domain.order.vo.AddressID;
-import sanity.nil.order.infrastructure.database.models.AddressModel;
 
 public class AddressMapper {
 

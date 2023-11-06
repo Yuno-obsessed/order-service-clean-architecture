@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
-import sanity.nil.common.infrastructure.database.models.BaseModel;
 
 import java.util.Objects;
 import java.util.UUID;

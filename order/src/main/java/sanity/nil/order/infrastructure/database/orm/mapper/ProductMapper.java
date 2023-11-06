@@ -1,26 +1,26 @@
 package sanity.nil.order.infrastructure.database.orm.mapper;
 
 
-import sanity.nil.product.application.dto.boundary.DiscountDTO;
-import sanity.nil.product.application.dto.boundary.ProductDTO;
-import sanity.nil.product.application.dto.boundary.ProductImageDTO;
-import sanity.nil.product.application.dto.boundary.ProductStatisticsDTO;
-import sanity.nil.product.application.dto.query.ProductQueryDTO;
-import sanity.nil.product.application.dto.query.ProductStatisticsQueryDTO;
-import sanity.nil.common.domain.vo.Deleted;
-import sanity.nil.common.domain.vo.Discount;
-import sanity.nil.order.domain.order.entity.OrderProduct;
-import sanity.nil.product.domain.entity.Product;
-import sanity.nil.product.domain.vo.ProductID;
-import sanity.nil.product.domain.vo.ProductStatistics;
+import sanity.nil.order.application.product.dto.boundary.DiscountDTO;
+import sanity.nil.order.application.product.dto.boundary.ProductDTO;
+import sanity.nil.order.application.product.dto.boundary.ProductImageDTO;
+import sanity.nil.order.application.product.dto.boundary.ProductStatisticsDTO;
+import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
+import sanity.nil.order.application.product.dto.query.ProductStatisticsQueryDTO;
+import sanity.nil.order.application.common.domain.vo.Deleted;
+import sanity.nil.order.application.common.domain.vo.Discount;
 import sanity.nil.order.infrastructure.database.models.ProductImageModel;
 import sanity.nil.order.infrastructure.database.models.ProductModel;
+import sanity.nil.order.domain.order.entity.OrderProduct;
+import sanity.nil.order.domain.product.entity.Product;
+import sanity.nil.order.domain.product.vo.ProductID;
+import sanity.nil.order.domain.product.vo.ProductStatistics;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static sanity.nil.common.domain.vo.Discount.DiscountType.getByDiscount;
+import static sanity.nil.order.application.common.domain.vo.Discount.DiscountType.getByDiscount;
 
 
 public class ProductMapper {

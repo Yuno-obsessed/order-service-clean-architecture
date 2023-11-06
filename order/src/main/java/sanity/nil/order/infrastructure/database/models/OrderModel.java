@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
-import sanity.nil.common.infrastructure.database.models.BaseModel;
 
 import java.util.List;
 import java.util.Objects;

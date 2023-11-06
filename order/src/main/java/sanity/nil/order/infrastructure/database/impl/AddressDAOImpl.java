@@ -1,12 +1,12 @@
 package sanity.nil.order.infrastructure.database.impl;
 
 import lombok.RequiredArgsConstructor;
-import sanity.nil.order.application.dto.query.AddressQueryDTO;
-import sanity.nil.order.application.exceptions.AddressNotFound;
-import sanity.nil.order.application.interfaces.persistence.AddressDAO;
-import sanity.nil.order.application.interfaces.persistence.AddressReader;
-import sanity.nil.order.domain.order.entity.Address;
+import sanity.nil.order.application.order.dto.query.AddressQueryDTO;
+import sanity.nil.order.application.order.exceptions.AddressNotFound;
+import sanity.nil.order.application.order.persistence.AddressDAO;
+import sanity.nil.order.application.order.persistence.AddressReader;
 import sanity.nil.order.infrastructure.database.models.AddressModel;
+import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.infrastructure.database.orm.AddressORM;
 import sanity.nil.order.infrastructure.database.orm.mapper.AddressMapper;
 

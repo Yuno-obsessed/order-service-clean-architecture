@@ -1,6 +1,4 @@
 spring:
-#  jackson:
-#    date-format: 'dd.MM.yyyy'
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:15432/online-shop
@@ -21,17 +19,10 @@ spring:
     username: admin
     host: localhost
     port: 5672
-  #  flyway:
-#    enabled: true
-#    placeholderReplacement: false
-#    baseline-on-migrate: true
-  mvc:
-    throw-exception-if-no-handler-found: true
-#  servlet:
-#    multipart:
-#      max-file-size: 1MB
-#      max-request-size: 10MB
-#
+  data:
+    redis:
+      host: localhost
+      port: 6379
 logging:
   level:
     com.sanity: debug

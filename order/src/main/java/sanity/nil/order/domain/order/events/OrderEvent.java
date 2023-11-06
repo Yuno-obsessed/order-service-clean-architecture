@@ -1,6 +1,6 @@
 package sanity.nil.order.domain.order.events;
 
-import sanity.nil.common.domain.event.Event;
+import sanity.nil.order.application.common.domain.event.Event;
 
 public interface OrderEvent extends Event {
 

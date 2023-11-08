@@ -18,7 +18,7 @@ public class BaseAggregate {
     }
 
     public List<Event> pullEvents() {
-        List<Event> pulled = events;
+        List<Event> pulled = new ArrayList<>(events);
         events.clear();
         return pulled;
     }

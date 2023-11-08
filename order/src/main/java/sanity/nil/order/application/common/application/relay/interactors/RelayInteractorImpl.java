@@ -2,8 +2,8 @@ package sanity.nil.order.application.common.application.relay.interactors;
 
 import lombok.RequiredArgsConstructor;
 import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
-import sanity.nil.order.application.common.application.relay.interfaces.interactors.RelayInteractor;
 import sanity.nil.order.application.common.application.relay.dto.OutboxMessage;
+import sanity.nil.order.application.common.application.relay.interfaces.interactors.RelayInteractor;
 import sanity.nil.order.application.common.application.relay.interfaces.persistence.OutboxDAO;
 
 import java.util.ArrayList;

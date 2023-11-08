@@ -1,25 +1,35 @@
 package sanity.nil.order.presentation.consumer.subscribers;
 
-import org.springframework.amqp.rabbit.annotation.Exchange;
-import org.springframework.amqp.rabbit.annotation.Queue;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import sanity.nil.order.domain.order.events.OrderAddedProductEvent;
-import sanity.nil.order.domain.order.events.OrderCreatedEvent;
-import sanity.nil.order.infrastructure.messageBroker.config.RabbitConfig;
+import sanity.nil.order.application.common.application.exceptions.BrokerException;
+import sanity.nil.order.application.common.domain.event.Event;
+import sanity.nil.order.application.order.persistence.OrderCacheDAO;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+@Slf4j
+@RequiredArgsConstructor
 public class OrderSubscribers {
 
-    @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = RabbitConfig.ORDER_QUEUE),
-            exchange = @Exchange(value = RabbitConfig.ORDER_TOPIC),
-            key = RabbitConfig.ORDER_ROUT_KEY)
-    )
-    public void processMessage(OrderCreatedEvent event) {
-        // cache.save(newOrder);
+    private final OrderCacheDAO orderCacheDAO;
+    private final ObjectMapper objectMapper;
+
+    @RabbitListener(queues = "${application.rabbit.order.queue}")
+    public void processMessage(byte[] event) {
+//        OrderCreatedEvent orderCreatedEvent = null;
+        Event message = null;
+        try (ByteArrayInputStream bis = new ByteArrayInputStream(event);
+             ObjectInputStream in = new ObjectInputStream(bis)) {
+             message = (Event) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new BrokerException(e);
+        }
+        log.info("Message consumed: {} ", message.getBaseEvent().getEventType());
     }
 
-    public void processMessage(OrderAddedProductEvent event) {
-
-    }
 }

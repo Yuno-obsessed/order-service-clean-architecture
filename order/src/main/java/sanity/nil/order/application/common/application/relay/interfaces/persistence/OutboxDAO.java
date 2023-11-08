@@ -1,8 +1,8 @@
 package sanity.nil.order.application.common.application.relay.interfaces.persistence;
 
 import sanity.nil.order.application.common.application.consts.EventStatus;
-import sanity.nil.order.application.common.domain.event.Event;
 import sanity.nil.order.application.common.application.relay.dto.OutboxMessage;
+import sanity.nil.order.application.common.domain.event.Event;
 
 import java.util.List;
 import java.util.UUID;

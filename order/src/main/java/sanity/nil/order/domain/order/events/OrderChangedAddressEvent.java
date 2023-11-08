@@ -2,10 +2,11 @@ package sanity.nil.order.domain.order.events;
 
 import sanity.nil.order.application.common.domain.Utils;
 import sanity.nil.order.application.common.domain.event.BaseEvent;
+import sanity.nil.order.application.common.domain.event.Event;
 
 import java.util.UUID;
 
-public class OrderChangedAddressEvent implements OrderEvent{
+public class OrderChangedAddressEvent implements Event {
 
     private BaseEvent baseEvent;
 
@@ -30,12 +31,7 @@ public class OrderChangedAddressEvent implements OrderEvent{
     }
 
     @Override
-    public int getStatus() {
-        return 0;
-    }
-
-    @Override
-    public String getRouteAddition() {
-        return "ChangeAddress";
+    public BaseEvent getBaseEvent() {
+        return baseEvent;
     }
 }

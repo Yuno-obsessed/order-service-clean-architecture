@@ -1,9 +1,10 @@
 package sanity.nil.order.application.common.domain.event;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class BaseEvent {
+public class BaseEvent implements Serializable {
 
     private UUID eventId;
 
@@ -17,4 +18,7 @@ public class BaseEvent {
         eventTimestamp = LocalDateTime.now();
     }
 
+    public String getEventType() {
+        return eventType;
+    }
 }

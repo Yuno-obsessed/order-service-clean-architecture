@@ -12,7 +12,6 @@ import sanity.nil.order.util.EntityGenerator;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sanity.nil.order.util.EntityGenerator.generateProduct;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UpdateProductTest {

@@ -1,7 +1,45 @@
 spring:
   datasource:
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: "jdbc:tc:postgresql:11.1:///integration-tests-db:"
-    jpa:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:15432/online-shop
+    username: sanity
+    password: wordpass
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
       hibernate:
-        ddl-auto: create
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      open-in-view: false
+      generate-ddl: true
+  rabbitmq:
+    password: admin
+    username: admin
+    host: localhost
+    port: 5672
+  data:
+    redis:
+      host: localhost
+      port: 6379
+logging:
+  level:
+    com.sanity: debug
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: false
+exception:
+  trace: true
+application:
+  rabbit:
+    order:
+      exchange: Orders
+      queue: order
+      routing-created-event: Order.Create
+      routing-updated-event: Order.Update
+      routing-deleted-event: Order.Delete

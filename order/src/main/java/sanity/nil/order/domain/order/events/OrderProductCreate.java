@@ -1,9 +1,10 @@
 package sanity.nil.order.domain.order.events;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class OrderProductCreate {
+public class OrderProductCreate implements Serializable {
 
     private UUID productID;
     private String name;

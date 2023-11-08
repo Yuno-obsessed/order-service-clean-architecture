@@ -2,15 +2,17 @@ package sanity.nil.order.domain.order.events;
 
 import sanity.nil.order.application.common.domain.Utils;
 import sanity.nil.order.application.common.domain.event.BaseEvent;
+import sanity.nil.order.application.common.domain.event.Event;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-public class OrderCreatedEvent implements OrderEvent {
+public class OrderCreatedEvent implements Event, Serializable {
 
     private BaseEvent baseEvent;
 
@@ -29,6 +31,8 @@ public class OrderCreatedEvent implements OrderEvent {
     private List<OrderProductCreate> products;
 
     private BigDecimal totalPrice;
+
+    public OrderCreatedEvent() {}
 
     public OrderCreatedEvent(UUID id, UUID clientID, UUID deliveryAddressID, PaymentMethod paymentMethod,
                              PaymentOption paymentOption, List<OrderProductCreate> products, BigDecimal totalPrice) {
@@ -54,13 +58,7 @@ public class OrderCreatedEvent implements OrderEvent {
     }
 
     @Override
-    public String getRouteAddition() {
-        return "Create";
+    public BaseEvent getBaseEvent() {
+        return baseEvent;
     }
-
-    @Override
-    public int getStatus() {
-        return 0;
-    }
-
 }

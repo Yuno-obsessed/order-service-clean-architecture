@@ -2,11 +2,11 @@ package sanity.nil.order.infrastructure.database.impl;
 
 import lombok.RequiredArgsConstructor;
 import sanity.nil.order.application.common.application.consts.EventStatus;
+import sanity.nil.order.application.common.application.relay.dto.OutboxMessage;
+import sanity.nil.order.application.common.application.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.application.common.domain.event.Event;
 import sanity.nil.order.infrastructure.database.models.OutboxModel;
 import sanity.nil.order.infrastructure.database.orm.OutboxORM;
-import sanity.nil.order.application.common.application.relay.dto.OutboxMessage;
-import sanity.nil.order.application.common.application.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.infrastructure.database.orm.mapper.OutboxMapper;
 
 import java.util.List;
@@ -16,11 +16,12 @@ import java.util.UUID;
 public class OutboxDAOImpl implements OutboxDAO {
 
     private final OutboxORM outboxORM;
+    private final OutboxMapper outboxMapper;
 
     @Override
     public List<OutboxMessage> getAllNonProcessedMessages() {
         List<OutboxModel> models = outboxORM.getAllByEventStatus(0);
-        return OutboxMapper.convertModelsToDTOs(models);
+        return outboxMapper.convertModelsToDTOs(models);
     }
 
     @Override
@@ -43,6 +44,6 @@ public class OutboxDAOImpl implements OutboxDAO {
 
     @Override
     public void addEvents(List<Event> events) {
-        outboxORM.saveAll(OutboxMapper.convertEventsToModels(events));
+        outboxORM.saveAll(outboxMapper.convertEventsToModels(events));
     }
 }

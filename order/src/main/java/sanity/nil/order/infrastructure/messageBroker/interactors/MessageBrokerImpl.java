@@ -1,16 +1,14 @@
 package sanity.nil.order.infrastructure.messageBroker.interactors;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
 import sanity.nil.order.application.common.application.exceptions.BrokerException;
-
-import java.nio.charset.StandardCharsets;
+import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,9 +20,11 @@ public class MessageBrokerImpl implements MessageBroker {
     @Override
     public void publishMessage(String exchangeName, String routingKey, byte[] message) throws BrokerException {
         try {
-            Message messageAsString = new Message(objectMapper.writeValueAsString(message).getBytes(StandardCharsets.UTF_8));
+            MessageProperties properties = new MessageProperties();
+            properties.setContentType("application/json");
+            Message messageAsString = new Message(message, properties);
             rabbitTemplate.send(exchangeName, routingKey, messageAsString);
-        } catch (JsonProcessingException | AmqpException e) {
+        } catch (AmqpException e) {
             throw new BrokerException(e);
         }
     }

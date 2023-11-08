@@ -2,11 +2,11 @@ package sanity.nil.order.domain.order.aggregate;
 
 import sanity.nil.order.application.common.domain.aggregate.BaseAggregate;
 import sanity.nil.order.application.common.domain.vo.Deleted;
+import sanity.nil.order.domain.order.consts.OrderStatus;
+import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.order.events.OrderDeletedEvent;
-import sanity.nil.order.domain.order.consts.OrderStatus;
-import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.exceptions.*;
 import sanity.nil.order.domain.order.vo.OrderID;
 

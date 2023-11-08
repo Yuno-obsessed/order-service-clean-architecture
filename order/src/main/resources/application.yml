@@ -36,7 +36,11 @@ server:
 exception:
   trace: true
 application:
-  order:
-    topic: Orders
-    queue: order
-    routing-key: rout.order
+  rabbit:
+    order:
+      exchange: Orders
+      queue: order
+      routing-created-event: Order.Create
+      routing-updated-event: Order.Update
+      routing-deleted-event: Order.Delete
+

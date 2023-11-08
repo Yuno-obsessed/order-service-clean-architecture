@@ -8,11 +8,6 @@ public interface Event {
 
     UUID uniqueAggregateID();
 
-    String getExchange();
+    BaseEvent getBaseEvent();
 
-    String getRoute();
-
-    int getStatus();
-
-    String getAggregateType();
 }

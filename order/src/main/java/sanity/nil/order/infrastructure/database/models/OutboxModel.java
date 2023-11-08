@@ -24,14 +24,11 @@ public class OutboxModel extends BaseModel {
     @Column(name = "route")
     private String route;
 
-    @Column(name = "payload")
-    private String payload;
+    @Column(name = "payload", columnDefinition = "bytea")
+    private byte[] payload;
 
     @Column(name = "aggregate_id")
     private UUID aggregateID;
-
-    @Column(name = "aggregate_type")
-    private String aggregateType;
 
     @Column(name = "event_status")
     private int eventStatus;

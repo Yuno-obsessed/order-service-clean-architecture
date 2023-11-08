@@ -1,6 +1,5 @@
 package sanity.nil.order.util;
 
-import org.checkerframework.checker.units.qual.A;
 import sanity.nil.order.application.common.domain.vo.Deleted;
 import sanity.nil.order.application.common.domain.vo.Discount;
 import sanity.nil.order.application.order.dto.query.AddressQueryDTO;
@@ -15,7 +14,6 @@ import sanity.nil.order.domain.product.vo.ProductSubtype;
 import sanity.nil.order.domain.product.vo.ProductType;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;

@@ -2,11 +2,12 @@ package sanity.nil.order.domain.order.events;
 
 import sanity.nil.order.application.common.domain.Utils;
 import sanity.nil.order.application.common.domain.event.BaseEvent;
+import sanity.nil.order.application.common.domain.event.Event;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class OrderDeletedProductEvent implements OrderEvent {
+public class OrderDeletedProductEvent implements Event {
 
     private BaseEvent baseEvent;
 
@@ -41,13 +42,7 @@ public class OrderDeletedProductEvent implements OrderEvent {
     }
 
     @Override
-    public String getRouteAddition() {
-        return "DeleteProduct";
+    public BaseEvent getBaseEvent() {
+        return baseEvent;
     }
-
-    @Override
-    public int getStatus() {
-        return 0;
-    }
-
 }

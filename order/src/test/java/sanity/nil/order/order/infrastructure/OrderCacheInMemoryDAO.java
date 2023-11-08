@@ -1,47 +1,74 @@
 package sanity.nil.order.order.infrastructure;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.data.redis.AutoConfigureDataRedis;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import sanity.nil.order.OrderApplication;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
-import sanity.nil.order.presentation.config.di.SharedBeanCreator;
-import sanity.nil.order.presentation.config.di.constructors.OrderBeanCreator;
-
+import sanity.nil.order.application.order.exceptions.OrderNotFoundException;
+import sanity.nil.order.application.order.persistence.OrderCacheDAO;
 
 import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static sanity.nil.order.util.EntityGenerator.generateOrderQueryDTO;
 
 
-@SpringBootTest(classes = OrderApplication.class)
+@SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ExtendWith({
-        SpringExtension.class,
-})
 public class OrderCacheInMemoryDAO {
 
     @Autowired
-    private RedisTemplate<String, OrderQueryDTO> redisTemplate;
+    private OrderCacheDAO orderCacheDAO;
+
+    private static UUID clientID;
+    private static OrderQueryDTO orderQueryDTO1;
+    private static OrderQueryDTO orderQueryDTO2;
+
+    @BeforeEach
+    public void initTests() {
+        clientID = UUID.randomUUID();
+        orderQueryDTO1 = generateOrderQueryDTO(clientID);
+        orderQueryDTO2 = generateOrderQueryDTO(clientID);
+    }
 
     @Test
-    public void testGetList() {
-        UUID clientID = UUID.randomUUID();
-        OrderQueryDTO orderQueryDTO = generateOrderQueryDTO(clientID);
-        OrderQueryDTO orderQueryDTO1 = generateOrderQueryDTO(clientID);
-        redisTemplate.opsForValue().set(orderKey(orderQueryDTO.userID.toString(), orderQueryDTO.orderID.toString()), orderQueryDTO);
-        redisTemplate.opsForValue().set(orderKey(orderQueryDTO1.userID.toString(), orderQueryDTO1.orderID.toString()), orderQueryDTO1);
-        List<OrderQueryDTO> orderQueryDTOList = redisTemplate.opsForValue().multiGet(List.of(orderKey(clientID.toString(), null)));
+    public void testSaveAndGetOrder() {
+        orderCacheDAO.saveOrder(orderQueryDTO1);
+
+        OrderQueryDTO existingOrder = orderCacheDAO.getOrder(orderQueryDTO1.orderID);
+
+        assertThat(existingOrder.orderID).isEqualTo(orderQueryDTO1.orderID);
+        assertThatExceptionOfType(OrderNotFoundException.class).isThrownBy(
+                () -> orderCacheDAO.getOrder(orderQueryDTO2.orderID)
+        );
+    }
+
+    @Test
+    public void testGetOrdersOfClient() {
+        orderCacheDAO.saveOrder(orderQueryDTO1);
+        orderCacheDAO.saveOrder(orderQueryDTO2);
+        List<OrderQueryDTO> orderQueryDTOList = orderCacheDAO.getOrdersOfClient(clientID);
+
+        assertThat(orderQueryDTOList).isNotNull();
+        assertThat(orderQueryDTOList.get(0).orderID).isEqualTo(orderQueryDTO1.orderID);
         assertThat(orderQueryDTOList).hasSize(2);
+    }
+
+    @Test
+    public void testDeleteOrder() {
+        orderCacheDAO.saveOrder(orderQueryDTO1);
+
+        assertThat(orderCacheDAO.getOrder(orderQueryDTO1.orderID)).isNotNull();
+
+        orderCacheDAO.deleteOrder(orderQueryDTO1.orderID);
+
+        assertThatExceptionOfType(OrderNotFoundException.class).isThrownBy(
+                () -> orderCacheDAO.getOrder(orderQueryDTO1.orderID)
+        );
     }
 
     private String orderKey(String client, String order) {

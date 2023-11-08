@@ -1,8 +1,8 @@
 package sanity.nil.order.application.product.service;
 
 import lombok.RequiredArgsConstructor;
-import sanity.nil.order.application.product.command.DeleteProductCommand;
 import sanity.nil.order.application.product.command.CreateProductCommand;
+import sanity.nil.order.application.product.command.DeleteProductCommand;
 import sanity.nil.order.application.product.command.UpdateProductCommand;
 import sanity.nil.order.application.product.command.UpdateProductStatisticsCommand;
 

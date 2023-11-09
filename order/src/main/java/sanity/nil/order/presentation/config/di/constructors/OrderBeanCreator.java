@@ -11,14 +11,17 @@ import org.springframework.context.annotation.*;
 import org.springframework.data.redis.core.RedisTemplate;
 import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
 import sanity.nil.order.application.common.application.relay.interfaces.persistence.OutboxDAO;
+import sanity.nil.order.application.order.cache.OrderCacheImpl;
 import sanity.nil.order.application.order.command.CreateAddressCommand;
 import sanity.nil.order.application.order.command.CreateOrderCommand;
 import sanity.nil.order.application.order.command.UpdateAddressCommand;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
-import sanity.nil.order.application.order.persistence.AddressDAO;
-import sanity.nil.order.application.order.persistence.AddressReader;
-import sanity.nil.order.application.order.persistence.OrderCacheDAO;
-import sanity.nil.order.application.order.persistence.OrderDAO;
+import sanity.nil.order.application.order.interfaces.cache.OrderCache;
+import sanity.nil.order.application.order.interfaces.cache.OrderCacheDAO;
+import sanity.nil.order.application.order.interfaces.cache.OrderCacheReader;
+import sanity.nil.order.application.order.interfaces.persistence.AddressDAO;
+import sanity.nil.order.application.order.interfaces.persistence.AddressReader;
+import sanity.nil.order.application.order.interfaces.persistence.OrderDAO;
 import sanity.nil.order.application.order.query.GetAddressQuery;
 import sanity.nil.order.application.order.service.AddressCommandService;
 import sanity.nil.order.application.order.service.AddressQueryService;
@@ -26,6 +29,7 @@ import sanity.nil.order.application.order.service.OrderCommandService;
 import sanity.nil.order.domain.order.services.AddressService;
 import sanity.nil.order.domain.order.services.OrderService;
 import sanity.nil.order.infrastructure.cache.impl.OrderCacheDAOImpl;
+import sanity.nil.order.infrastructure.cache.impl.OrderCacheReaderImpl;
 import sanity.nil.order.infrastructure.database.impl.AddressDAOImpl;
 import sanity.nil.order.infrastructure.database.impl.OrderDaoImpl;
 import sanity.nil.order.infrastructure.database.orm.AddressORM;
@@ -59,14 +63,6 @@ public class OrderBeanCreator {
         return new AddressDAOImpl(addressORM);
     }
 
-//    @Bean
-//    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
-//                                         Jackson2JsonMessageConverter messageConverter) {
-//        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-//        rabbitTemplate.setMessageConverter(messageConverter);
-//        return rabbitTemplate;
-//    }
-
     @Bean
     public TopicExchange topicExchange(RabbitConfig rabbitConfig) {
         return new TopicExchange(rabbitConfig.getOrderExchange(), true, false);
@@ -86,9 +82,9 @@ public class OrderBeanCreator {
 
 
     @Bean
-    public OrderSubscribers orderSubscribers(OrderCacheDAO orderCacheDAO,
+    public OrderSubscribers orderSubscribers(OrderCache orderCache,
                                              @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
-        return new OrderSubscribers(orderCacheDAO, objectMapper);
+        return new OrderSubscribers(orderCache, objectMapper);
     }
 
     @Bean
@@ -100,6 +96,17 @@ public class OrderBeanCreator {
     public OrderCacheDAO orderCacheDAO(@Qualifier("orderRedisTemplate") RedisTemplate<String, OrderQueryDTO> redisTemplate,
                                        @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
         return new OrderCacheDAOImpl(redisTemplate, objectMapper);
+    }
+
+    @Bean
+    public OrderCacheReader orderCacheReader(@Qualifier("orderRedisTemplate") RedisTemplate<String, OrderQueryDTO> redisTemplate,
+                                             @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
+        return new OrderCacheReaderImpl(redisTemplate, objectMapper);
+    }
+
+    @Bean
+    public OrderCache orderCache(OrderCacheDAO orderCacheDAO) {
+        return new OrderCacheImpl(orderCacheDAO);
     }
 
     @Bean

@@ -5,6 +5,7 @@ import sanity.nil.order.application.common.domain.vo.Deleted;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
+import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.order.events.OrderDeletedEvent;
 import sanity.nil.order.domain.order.exceptions.*;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 public class Order extends BaseAggregate{
 
     private OrderID orderID;
-    private UUID addressID;
+    private Address address;
     private UUID clientID;
     private List<OrderProduct> products;
     private OrderStatus orderStatus;
@@ -74,10 +75,10 @@ public class Order extends BaseAggregate{
         this.recordEvent(new OrderDeletedEvent(this.orderID.getId()));
     }
 
-    public Order(OrderID orderID, UUID addressID, UUID clientID, List<OrderProduct> products,
+    public Order(OrderID orderID, Address address, UUID clientID, List<OrderProduct> products,
                  OrderStatus orderStatus, PaymentMethod paymentMethod, PaymentOption paymentOption) {
         this.orderID = orderID;
-        this.addressID = addressID;
+        this.address = address;
         this.clientID = clientID;
         this.products = products;
         this.orderStatus = orderStatus;
@@ -85,10 +86,10 @@ public class Order extends BaseAggregate{
         this.paymentOption = paymentOption;
         this.deleted = new Deleted();
         this.closed = false;
-        this.totalPrice = getTotalPrice();
+        this.totalPrice = calculateTotalPrice();
     }
 
-    public BigDecimal getTotalPrice() {
+    public BigDecimal calculateTotalPrice() {
         return products.stream()
                 .map(OrderProduct::getTotalPrice)
                 .reduce(BigDecimal::add).get();
@@ -119,8 +120,8 @@ public class Order extends BaseAggregate{
         return orderID;
     }
 
-    public UUID getAddressID() {
-        return addressID;
+    public Address getAddress() {
+        return address;
     }
 
     public UUID getClientID() {
@@ -154,8 +155,12 @@ public class Order extends BaseAggregate{
         return closed;
     }
 
-    public void setAddressID(UUID addressID) {
-        this.addressID = addressID;
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
     @Override
@@ -164,7 +169,7 @@ public class Order extends BaseAggregate{
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
         return Objects.equals(orderID, order.orderID) &&
-                Objects.equals(addressID, order.addressID) &&
+                Objects.equals(address, order.address) &&
                 Objects.equals(clientID, order.clientID) &&
                 Objects.equals(products, order.products) &&
                 orderStatus == order.orderStatus &&
@@ -175,6 +180,6 @@ public class Order extends BaseAggregate{
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderID, addressID, clientID, products, orderStatus, paymentMethod, paymentOption, deleted);
+        return Objects.hash(orderID, address, clientID, products, orderStatus, paymentMethod, paymentOption, deleted);
     }
 }

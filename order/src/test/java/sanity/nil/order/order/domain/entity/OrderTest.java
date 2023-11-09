@@ -7,6 +7,7 @@ import sanity.nil.order.domain.order.aggregate.Order;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
+import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.order.exceptions.OrderIsCanceledException;
 import sanity.nil.order.domain.order.exceptions.OrderIsDeletedException;
@@ -27,6 +28,7 @@ public class OrderTest {
     private static OrderProduct product1;
     private static OrderProduct product2;
     private static OrderProduct product3;
+    private static Address address;
     private static Order order;
 
     @BeforeAll
@@ -34,11 +36,12 @@ public class OrderTest {
         product1 = new OrderProduct(UUID.randomUUID(), "Book", BigDecimal.valueOf(50.2), EntityGenerator.generateActiveDiscount(30), 3);
         product2 = new OrderProduct(UUID.randomUUID(), "Laptop", BigDecimal.valueOf(1345.67), EntityGenerator.generateActiveDiscount(50), 4);
         product3 = new OrderProduct(UUID.randomUUID(), "Headphones", BigDecimal.valueOf(234.89), EntityGenerator.generateExpiredDiscount(30), 1);
+        address = EntityGenerator.generateAddress(UUID.randomUUID());
         List<OrderProduct> products = new ArrayList<>(List.of(product1, product2, product3));
         OrderStatus orderStatus = OrderStatus.CREATED;
         PaymentMethod paymentMethod = PaymentMethod.CASH;
         PaymentOption paymentOption = PaymentOption.ONE_TRANSFER;
-        order = new Order(new OrderID(), UUID.randomUUID(), UUID.randomUUID(), products, orderStatus, paymentMethod, paymentOption);
+        order = new Order(new OrderID(), address, UUID.randomUUID(), products, orderStatus, paymentMethod, paymentOption);
     }
 
     @Test

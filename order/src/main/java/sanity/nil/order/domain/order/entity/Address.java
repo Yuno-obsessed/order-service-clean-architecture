@@ -30,7 +30,6 @@ public class Address {
                 .append(',')
                 .append(streetName)
                 .append(',')
-                .append(',')
                 .append(buildingNumber)
                 .append(',')
                 .append(postalCode);

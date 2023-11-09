@@ -2,7 +2,7 @@ package sanity.nil.order.application.order.command;
 
 import lombok.RequiredArgsConstructor;
 import sanity.nil.order.application.order.dto.command.UpdateAddressCommandDTO;
-import sanity.nil.order.application.order.persistence.AddressDAO;
+import sanity.nil.order.application.order.interfaces.persistence.AddressDAO;
 import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.domain.order.services.AddressService;
 

@@ -13,9 +13,9 @@ public class ProductQueryFilters extends BaseFilters {
     public Integer productPriceBelow;
     public Integer productPriceAbove;
 
-    public ProductQueryFilters(int limit, int offset, Order order, String productType,
+    public ProductQueryFilters(Integer limit, Integer offset, String orderParam, String productType,
                                String productSubtype, Integer productPriceBelow, Integer productPriceAbove) {
-        super(limit, offset, order);
+        super(limit, offset, Order.fromString(orderParam));
         this.productType = productType;
         this.productSubtype = productSubtype;
         this.productPriceBelow = productPriceBelow;

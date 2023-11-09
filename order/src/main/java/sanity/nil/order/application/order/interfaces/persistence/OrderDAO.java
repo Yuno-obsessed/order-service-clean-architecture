@@ -1,6 +1,7 @@
-package sanity.nil.order.application.order.persistence;
+package sanity.nil.order.application.order.interfaces.persistence;
 
 import sanity.nil.order.domain.order.aggregate.Order;
+import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 
 import java.util.List;
@@ -12,5 +13,5 @@ public interface OrderDAO {
 
     List<OrderProduct> getProductsOfOrder(List<UUID> ids);
 
-    // address serves dao or not (use no domain, only application)
+    Address getAddress(UUID id);
 }

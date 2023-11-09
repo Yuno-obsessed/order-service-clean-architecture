@@ -6,8 +6,9 @@ import sanity.nil.order.application.common.application.relay.interfaces.persiste
 import sanity.nil.order.application.common.domain.event.Event;
 import sanity.nil.order.application.order.dto.boundary.OrderDTO;
 import sanity.nil.order.application.order.dto.command.CreateOrderCommandDTO;
-import sanity.nil.order.application.order.persistence.OrderDAO;
+import sanity.nil.order.application.order.interfaces.persistence.OrderDAO;
 import sanity.nil.order.domain.order.aggregate.Order;
+import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.order.services.OrderService;
 
@@ -24,8 +25,9 @@ public class CreateOrderCommand {
 
     public OrderDTO handle(CreateOrderCommandDTO dto) {
         List<UUID> productIDs = dto.products.stream().map(p -> p.productID).toList();
+        Address address = orderDAO.getAddress(dto.addressID);
         List<OrderProduct> orderProducts = orderDAO.getProductsOfOrder(productIDs);
-        Order order = orderService.create(dto.addressID, dto.userID, orderProducts, dto.paymentMethod, dto.paymentOption);
+        Order order = orderService.create(address, dto.userID, orderProducts, dto.paymentMethod, dto.paymentOption);
         Order createdOrder = orderDAO.create(order);
         List<Event> events = order.pullEvents();
         outboxDAO.addEvents(events);

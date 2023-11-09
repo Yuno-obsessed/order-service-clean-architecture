@@ -48,4 +48,28 @@ public class OrderAddedProductEvent implements Event {
     public BaseEvent getBaseEvent() {
         return baseEvent;
     }
+
+    public UUID getOrderID() {
+        return orderID;
+    }
+
+    public UUID getClientID() {
+        return clientID;
+    }
+
+    public UUID getProductID() {
+        return productID;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
 }

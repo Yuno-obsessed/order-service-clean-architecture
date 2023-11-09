@@ -3,6 +3,7 @@ package sanity.nil.order.domain.order.events;
 import sanity.nil.order.application.common.domain.Utils;
 import sanity.nil.order.application.common.domain.event.BaseEvent;
 import sanity.nil.order.application.common.domain.event.Event;
+import sanity.nil.order.domain.order.entity.Address;
 
 import java.util.UUID;
 
@@ -12,12 +13,12 @@ public class OrderChangedAddressEvent implements Event {
 
     private UUID orderID;
 
-    private UUID addressID;
+    private Address address;
 
-    public OrderChangedAddressEvent(UUID orderID, UUID addressID) {
+    public OrderChangedAddressEvent(UUID orderID, Address address) {
         this.baseEvent = new BaseEvent("OrderChangeAddress");
         this.orderID = orderID;
-        this.addressID = addressID;
+        this.address = address;
     }
 
     @Override

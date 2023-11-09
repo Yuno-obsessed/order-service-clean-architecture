@@ -26,7 +26,7 @@ public interface ProductORM extends JpaRepository<ProductModel, UUID> {
             "SELECT p FROM ProductModel p " +
                     "WHERE (:#{#filters.productSubtype} IS NULL OR p.productSubtype.subtypeName = :#{#filters.productSubtype}) " +
                     "AND (:#{#filters.productType} IS NULL OR p.productSubtype.productType.typeName = :#{#filters.productType}) " +
-                    "ORDER BY CASE WHEN :#{#filters.order} = 'ASC' THEN 'p.id ASC' ELSE 'p.id DESC' END"
+                    "ORDER BY CASE WHEN :#{#filters.order.name()} = 'ASC' THEN 'p.id ASC' ELSE 'p.id DESC' END"
     )
     List<ProductModel> findByFilters(@Param("filters") ProductQueryFilters filters, Pageable pageable);
 

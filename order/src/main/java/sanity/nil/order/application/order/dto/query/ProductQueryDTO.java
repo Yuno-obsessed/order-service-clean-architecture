@@ -17,12 +17,6 @@ public class ProductQueryDTO {
     @JsonProperty(value = "name", required = true)
     public String name;
 
-    @JsonProperty(value = "price")
-    public BigDecimal price;
-
-    @JsonProperty(value = "discount")
-    public Integer discount;
-
     @JsonProperty(value = "quantity")
     public Integer quantity;
 

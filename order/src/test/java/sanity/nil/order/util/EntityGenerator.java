@@ -86,12 +86,12 @@ public class EntityGenerator {
     }
 
     public static ProductQueryDTO generateProductQueryDTO() {
-        return new ProductQueryDTO(UUID.randomUUID(), "Laptop", BigDecimal.valueOf(1500), 50, 2, BigDecimal.valueOf(1500));
+        return new ProductQueryDTO(UUID.randomUUID(), "Laptop", 2, BigDecimal.valueOf(1500));
     }
 
     public static OrderQueryDTO generateOrderQueryDTO(UUID clientID) {
         return new OrderQueryDTO(UUID.randomUUID(), generateAddressQueryDTO(), clientID, List.of(generateProductQueryDTO()),
-                "CASH", "ONE_TRANSFER", LocalDateTime.now(), LocalDateTime.now());
+                "CASH", "ONE_TRANSFER", "CREATED", LocalDateTime.now(), LocalDateTime.now());
     }
 
 }

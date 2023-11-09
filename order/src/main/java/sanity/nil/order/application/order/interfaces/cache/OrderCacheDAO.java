@@ -1,4 +1,4 @@
-package sanity.nil.order.application.order.persistence;
+package sanity.nil.order.application.order.interfaces.cache;
 
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
 

@@ -21,4 +21,8 @@ public class BaseEvent implements Serializable {
     public String getEventType() {
         return eventType;
     }
+
+    public LocalDateTime getEventTimestamp() {
+        return eventTimestamp;
+    }
 }

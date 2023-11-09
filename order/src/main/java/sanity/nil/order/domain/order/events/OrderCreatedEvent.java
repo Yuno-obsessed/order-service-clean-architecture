@@ -6,6 +6,7 @@ import sanity.nil.order.application.common.domain.event.Event;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
+import sanity.nil.order.domain.order.vo.AddressVO;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -20,7 +21,7 @@ public class OrderCreatedEvent implements Event, Serializable {
 
     private UUID clientID;
 
-    private UUID deliveryAddressID;
+    private AddressVO address;
 
     private OrderStatus orderStatus;
 
@@ -34,7 +35,7 @@ public class OrderCreatedEvent implements Event, Serializable {
 
     public OrderCreatedEvent() {}
 
-    public OrderCreatedEvent(UUID id, UUID clientID, UUID deliveryAddressID, PaymentMethod paymentMethod,
+    public OrderCreatedEvent(UUID id, UUID clientID, AddressVO address, PaymentMethod paymentMethod,
                              PaymentOption paymentOption, List<OrderProductCreate> products, BigDecimal totalPrice) {
         this.baseEvent = new BaseEvent("OrderCreated");
         this.id = id;
@@ -43,7 +44,7 @@ public class OrderCreatedEvent implements Event, Serializable {
         this.paymentMethod = paymentMethod;
         this.paymentOption = paymentOption;
         this.products = products;
-        this.deliveryAddressID = deliveryAddressID;
+        this.address = address;
         this.totalPrice = totalPrice;
     }
 
@@ -61,4 +62,57 @@ public class OrderCreatedEvent implements Event, Serializable {
     public BaseEvent getBaseEvent() {
         return baseEvent;
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getClientID() {
+        return clientID;
+    }
+
+    public AddressVO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressVO address) {
+        this.address = address;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public PaymentOption getPaymentOption() {
+        return paymentOption;
+    }
+
+    public void setPaymentOption(PaymentOption paymentOption) {
+        this.paymentOption = paymentOption;
+    }
+
+    public List<OrderProductCreate> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<OrderProductCreate> products) {
+        this.products = products;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
 }

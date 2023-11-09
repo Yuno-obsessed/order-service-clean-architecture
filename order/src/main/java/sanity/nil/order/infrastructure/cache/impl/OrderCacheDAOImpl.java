@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
 import sanity.nil.order.application.order.exceptions.OrderNotFoundException;
-import sanity.nil.order.application.order.persistence.OrderCacheDAO;
+import sanity.nil.order.application.order.interfaces.cache.OrderCacheDAO;
 
 import java.util.ArrayList;
 import java.util.List;

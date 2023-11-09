@@ -3,6 +3,7 @@ package sanity.nil.order.application.order.dto.query;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class OrderQueryDTO {
 
     @JsonProperty(value = "order_id", required = true)
@@ -30,6 +32,9 @@ public class OrderQueryDTO {
 
     @JsonProperty(value = "payment_option")
     public String paymentOption;
+
+    @JsonProperty(value = "order_status")
+    public String orderStatus;
 
     @JsonProperty(value = "created_at")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

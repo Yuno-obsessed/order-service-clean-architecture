@@ -22,4 +22,8 @@ public enum OrderStatus {
         }
         return null;
     }
+
+    public String getValue() {
+        return value;
+    }
 }

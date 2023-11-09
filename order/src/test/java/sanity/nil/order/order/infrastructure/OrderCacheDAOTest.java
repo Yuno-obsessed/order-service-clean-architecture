@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
 import sanity.nil.order.application.order.exceptions.OrderNotFoundException;
-import sanity.nil.order.application.order.persistence.OrderCacheDAO;
+import sanity.nil.order.application.order.interfaces.cache.OrderCacheDAO;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +19,7 @@ import static sanity.nil.order.util.EntityGenerator.generateOrderQueryDTO;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class OrderCacheInMemoryDAO {
+public class OrderCacheDAOTest {
 
     @Autowired
     private OrderCacheDAO orderCacheDAO;

@@ -29,7 +29,7 @@ public class OrderMapper {
     }
 
     public static Order modelToEntity(OrderModel model) {
-        Order order = new Order(new OrderID(model.getId()), model.getAddress().getId(),
+        Order order = new Order(new OrderID(model.getId()), AddressMapper.convertModelToEntity(model.getAddress()),
                 model.getUser().getId(), ProductMapper.convertModelsToOrderEntities(model.getProducts()),
                 OrderStatus.valueOf(model.getOrderStatus()),PaymentMethod.valueOf(model.getPaymentMethod()),
                 PaymentOption.valueOf(model.getPaymentOption()));

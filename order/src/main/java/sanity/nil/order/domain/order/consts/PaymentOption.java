@@ -21,4 +21,8 @@ public enum PaymentOption {
         }
         return null;
     }
+
+    public String getValue() {
+        return value;
+    }
 }

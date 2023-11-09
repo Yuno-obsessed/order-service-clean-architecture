@@ -19,8 +19,6 @@ import sanity.nil.order.infrastructure.database.orm.mapper.ProductMapper;
 import java.util.List;
 import java.util.UUID;
 
-import static sanity.nil.order.application.common.application.dto.BaseFilters.Order.valueOf;
-
 @RestController
 @RequestMapping("/api/v1/product")
 @RequiredArgsConstructor
@@ -38,14 +36,14 @@ public class ProductController {
 
     @GetMapping("/search")
     public ResponseEntity<List<ProductQueryDTO>> getAllProducts(
-            @RequestParam String productType,
-            @RequestParam String productSubtype,
-            @RequestParam int limit,
-            @RequestParam int offset,
-            @RequestParam int priceAbove,
-            @RequestParam int priceBelow,
-            @RequestParam String order){
-        ProductQueryFilters filters = new ProductQueryFilters(limit, offset, valueOf(order),
+            @RequestParam(required = false) String productType,
+            @RequestParam(required = false) String productSubtype,
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) Integer offset,
+            @RequestParam(required = false) Integer priceAbove,
+            @RequestParam(required = false) Integer priceBelow,
+            @RequestParam(required = false) String order) {
+        ProductQueryFilters filters = new ProductQueryFilters(limit, offset, order,
                 productType, productSubtype, priceBelow, priceAbove);
         return ResponseEntity
                 .status(200)

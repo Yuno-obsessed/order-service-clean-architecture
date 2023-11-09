@@ -1,8 +1,9 @@
 package sanity.nil.order.domain.order.vo;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class AddressID {
+public class AddressID implements Serializable {
 
     private UUID id;
 

@@ -43,4 +43,6 @@ application:
       routing-created-event: Order.Create
       routing-updated-event: Order.Update
       routing-deleted-event: Order.Delete
-
+      routing-added-product-event: Order.AddedProduct
+    product:
+      queue: product

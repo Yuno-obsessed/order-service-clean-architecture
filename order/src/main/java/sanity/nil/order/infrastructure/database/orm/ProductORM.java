@@ -3,6 +3,7 @@ package sanity.nil.order.infrastructure.database.orm;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
@@ -35,4 +36,18 @@ public interface ProductORM extends JpaRepository<ProductModel, UUID> {
                     "order by CASE WHEN :order = 'ASC' THEN 'p.id ASC' ELSE 'p.id DESC' END"
     )
     List<ProductModel> findAllWithPagination(Pageable pageable, String order);
+
+    @Modifying
+    @Query(
+            "UPDATE ProductModel p SET p.quantity = p.quantity - :quantity " +
+                    "WHERE p.id = :id"
+    )
+    void decreaseQuantity(UUID id, int quantity);
+
+    @Modifying
+    @Query(
+            "UPDATE ProductModel p SET p.quantity = p.quantity + :quantity " +
+                    "WHERE p.id = :id"
+    )
+    void increaseQuantity(UUID id, int quantity);
 }

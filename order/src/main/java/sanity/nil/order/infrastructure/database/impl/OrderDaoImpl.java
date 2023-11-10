@@ -46,14 +46,15 @@ public class OrderDaoImpl implements OrderDAO, OrderReader {
 
     @Override
     public Order create(Order order) {
+        List<ProductModel> products = productORM.getAllByIdIn(order.getProductIDs());
         OrderModel createdOrder = orderORM.save(OrderMapper.entityToModel(order,
                 addressORM.findById(order.getAddress().getAddressID().getId()).orElseThrow(() ->
                         AddressNotFoundException.throwEx(order.getAddress().getAddressID().getId())),
                 userORM.findById(order.getClientID()).orElseThrow(() ->
                         UserNotFoundException.throwEx(order.getClientID())),
-                productORM.getAllByIdIn(order.getProductIDs()))
+                products)
         );
 
-        return OrderMapper.modelToEntity(createdOrder);
+        return OrderMapper.modelToEntity(createdOrder, products);
     }
 }

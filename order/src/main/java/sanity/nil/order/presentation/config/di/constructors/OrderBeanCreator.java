@@ -7,7 +7,10 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
 import sanity.nil.order.application.common.application.relay.interfaces.persistence.OutboxDAO;
@@ -23,9 +26,11 @@ import sanity.nil.order.application.order.interfaces.persistence.AddressDAO;
 import sanity.nil.order.application.order.interfaces.persistence.AddressReader;
 import sanity.nil.order.application.order.interfaces.persistence.OrderDAO;
 import sanity.nil.order.application.order.query.GetAddressQuery;
+import sanity.nil.order.application.order.query.GetAllOrdersQuery;
 import sanity.nil.order.application.order.service.AddressCommandService;
 import sanity.nil.order.application.order.service.AddressQueryService;
 import sanity.nil.order.application.order.service.OrderCommandService;
+import sanity.nil.order.application.order.service.OrderQueryService;
 import sanity.nil.order.domain.order.services.AddressService;
 import sanity.nil.order.domain.order.services.OrderService;
 import sanity.nil.order.infrastructure.cache.impl.OrderCacheDAOImpl;
@@ -64,20 +69,27 @@ public class OrderBeanCreator {
     }
 
     @Bean
-    public TopicExchange topicExchange(RabbitConfig rabbitConfig) {
+    public TopicExchange orderTopicExchange(RabbitConfig rabbitConfig) {
         return new TopicExchange(rabbitConfig.getOrderExchange(), true, false);
     }
 
     @Bean
-    @DependsOn("topicExchange")
     public Queue orderQueue(RabbitConfig rabbitConfig) {
         return new Queue(rabbitConfig.getOrderQueue(), true, false, false);
     }
 
     @Bean
-    public Binding binding(@Qualifier("orderQueue") Queue queue, TopicExchange topicExchange,
+    public Binding orderCreatedBinding(@Qualifier("orderQueue") Queue queue,
+                                       @Qualifier("orderTopicExchange") TopicExchange topicExchange,
+                                       RabbitConfig rabbitConfig) {
+        return BindingBuilder.bind(queue).to(topicExchange).with(rabbitConfig.getOrderCreatedRK());
+    }
+
+    @Bean
+    public Binding binding(@Qualifier("productQueue") Queue queue,
+                           @Qualifier("orderTopicExchange") TopicExchange topicExchange,
                            RabbitConfig rabbitConfig) {
-        return BindingBuilder.bind(queue).to(topicExchange).with(rabbitConfig.getOrderCreatedRk());
+        return BindingBuilder.bind(queue).to(topicExchange).with(rabbitConfig.getOrderAddedProductRK());
     }
 
 
@@ -129,6 +141,13 @@ public class OrderBeanCreator {
                                                    MessageBroker messageBroker) {
         return new OrderCommandService(
                 new CreateOrderCommand(orderDAO, outboxDAO, new OrderService(), messageBroker)
+        );
+    }
+
+    @Bean
+    public OrderQueryService orderQueryService(OrderCacheReader orderCacheReader) {
+        return new OrderQueryService(
+                new GetAllOrdersQuery(orderCacheReader)
         );
     }
 }

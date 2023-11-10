@@ -42,6 +42,7 @@ public class OrderCacheImpl implements OrderCache {
         }
         orderDTO.products = products;
         orderDTO.createdAt = event.getBaseEvent().getEventTimestamp();
+        orderDTO.updatedAt = event.getBaseEvent().getEventTimestamp();
 
         orderCacheDAO.saveOrder(orderDTO);
     }

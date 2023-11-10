@@ -6,6 +6,7 @@ import sanity.nil.order.application.common.application.relay.interfaces.persiste
 import sanity.nil.order.application.common.domain.event.Event;
 import sanity.nil.order.application.order.dto.boundary.OrderDTO;
 import sanity.nil.order.application.order.dto.command.CreateOrderCommandDTO;
+import sanity.nil.order.application.order.exceptions.ProductQuantityMismatch;
 import sanity.nil.order.application.order.interfaces.persistence.OrderDAO;
 import sanity.nil.order.domain.order.aggregate.Order;
 import sanity.nil.order.domain.order.entity.Address;
@@ -27,6 +28,19 @@ public class CreateOrderCommand {
         List<UUID> productIDs = dto.products.stream().map(p -> p.productID).toList();
         Address address = orderDAO.getAddress(dto.addressID);
         List<OrderProduct> orderProducts = orderDAO.getProductsOfOrder(productIDs);
+        for (OrderProduct product : orderProducts) {
+            dto.products.stream()
+                    .filter(p -> p.productID.equals(product.getProductID()))
+                    .findFirst()
+                    .ifPresent(p -> {
+                        if (product.getQuantity() < p.getQuantity()) {
+                            throw ProductQuantityMismatch.throwEx(product.getProductID(),
+                                    product.getQuantity(), p.getQuantity());
+                        } else {
+                            product.setQuantity(p.getQuantity());
+                        }
+                    });
+        }
         Order order = orderService.create(address, dto.userID, orderProducts, dto.paymentMethod, dto.paymentOption);
         Order createdOrder = orderDAO.create(order);
         List<Event> events = order.pullEvents();

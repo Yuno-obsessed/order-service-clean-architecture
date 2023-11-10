@@ -32,8 +32,13 @@ public class OrderService {
         List<OrderProductCreate> productEvents = new ArrayList<>();
         for (OrderProduct product : products) {
             OrderProductCreate orderProduct =
-                    new OrderProductCreate(product.getProductID(), product.getName(), product.getPrice());
+                    new OrderProductCreate(product.getProductID(), product.getName(),
+                            product.getTotalPrice(), product.getQuantity());
             productEvents.add(orderProduct);
+            createdOrder.recordEvent(
+                    new OrderProductReservedEvent(product.getProductID(),
+                            product.getQuantity())
+            );
         }
 
         createdOrder.recordEvent(
@@ -84,5 +89,12 @@ public class OrderService {
 
         return new Order(order.getOrderID(), address, userID, products, OrderStatus.CREATED,
                 order.getPaymentMethod(), order.getPaymentOption());
+    }
+
+    public Order cancel(Order order) {
+        order.updateStatus(OrderStatus.CANCELED);
+
+//        order.recordEvent();
+        return order;
     }
 }

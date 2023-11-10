@@ -38,9 +38,6 @@ public class ProductModel extends BaseModel {
     @Column(name = "discount_end")
     private LocalDateTime discountEnd;
 
-//    @Column(name = "price_with_discount", nullable = false, precision = 19, scale = 2)
-//    private BigDecimal priceWithDiscount;
-
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 

@@ -6,6 +6,7 @@ import sanity.nil.order.application.common.application.consts.EventStatus;
 import sanity.nil.order.application.common.application.relay.dto.OutboxMessage;
 import sanity.nil.order.application.common.domain.event.Event;
 import sanity.nil.order.domain.order.events.OrderCreatedEvent;
+import sanity.nil.order.domain.order.events.OrderProductReservedEvent;
 import sanity.nil.order.infrastructure.database.models.OutboxModel;
 import sanity.nil.order.infrastructure.messageBroker.config.RabbitConfig;
 
@@ -36,13 +37,17 @@ public class OutboxMapper {
 
     public OutboxModel convertEventToModel(Event event) {
         OutboxModel outboxModel = new OutboxModel();
+        outboxModel.setId(UUID.randomUUID());
+        outboxModel.setEventStatus(EventStatus.STATUS_AWAITING.getCode());
+        outboxModel.setPayload(event.bytes());
+        outboxModel.setAggregateID(event.uniqueAggregateID());
         if (event instanceof OrderCreatedEvent) {
-            outboxModel.setId(UUID.randomUUID());
-            outboxModel.setEventStatus(EventStatus.STATUS_AWAITING.getCode());
-            outboxModel.setPayload(event.bytes());
             outboxModel.setExchange(rabbitConfig.getOrderExchange());
-            outboxModel.setRoute(rabbitConfig.getOrderCreatedRk());
-            outboxModel.setAggregateID(event.uniqueAggregateID());
+            outboxModel.setRoute(rabbitConfig.getOrderCreatedRK());
+        }
+        if (event instanceof OrderProductReservedEvent) {
+            outboxModel.setExchange(rabbitConfig.getOrderExchange());
+            outboxModel.setRoute(rabbitConfig.getOrderAddedProductRK());
         }
 
         return outboxModel;

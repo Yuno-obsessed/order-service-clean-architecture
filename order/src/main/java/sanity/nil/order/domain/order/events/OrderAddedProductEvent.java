@@ -25,7 +25,7 @@ public class OrderAddedProductEvent implements Event {
 
     public OrderAddedProductEvent(UUID orderID, UUID clientID, UUID productID, String productName,
                                   BigDecimal totalPrice, int quantity) {
-        this.baseEvent = new BaseEvent("OrderAddProduct");
+        this.baseEvent = new BaseEvent("OrderAddedProduct");
         this.orderID = orderID;
         this.clientID = clientID;
         this.productID = productID;

@@ -18,7 +18,7 @@ public class MessageBrokerImpl implements MessageBroker {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void publishMessage(String exchangeName, String routingKey, byte[] message) throws BrokerException {
+    public void publishMessage(String exchangeName, String routingKey, byte[] message) {
         try {
             MessageProperties properties = new MessageProperties();
             properties.setContentType("application/json");

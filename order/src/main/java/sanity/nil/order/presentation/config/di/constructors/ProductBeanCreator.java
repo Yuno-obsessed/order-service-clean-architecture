@@ -1,5 +1,6 @@
 package sanity.nil.order.presentation.config.di.constructors;
 
+import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
@@ -21,6 +22,8 @@ import sanity.nil.order.infrastructure.database.impl.ProductDAOImpl;
 import sanity.nil.order.infrastructure.database.impl.ProductSubtypeDAOImpl;
 import sanity.nil.order.infrastructure.database.orm.ProductORM;
 import sanity.nil.order.infrastructure.database.orm.ProductSubtypeORM;
+import sanity.nil.order.infrastructure.messageBroker.config.RabbitConfig;
+import sanity.nil.order.presentation.consumer.subscribers.ProductSubscribers;
 
 @Configuration
 @ComponentScans(value = {
@@ -44,6 +47,16 @@ public class ProductBeanCreator {
     @Bean
     public ProductSubtypeReader productSubtypeReader(ProductSubtypeORM productSubtypeORM) {
         return new ProductSubtypeDAOImpl(productSubtypeORM);
+    }
+
+    @Bean
+    public Queue productQueue(RabbitConfig rabbitConfig) {
+        return new Queue(rabbitConfig.getProductQueue(), true, false, false);
+    }
+
+    @Bean
+    public ProductSubscribers productSubscribers(ProductDAO productDAO) {
+        return new ProductSubscribers(productDAO);
     }
 
     @Bean

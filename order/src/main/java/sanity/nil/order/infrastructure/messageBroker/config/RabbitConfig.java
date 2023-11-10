@@ -12,9 +12,16 @@ public class RabbitConfig {
     @Value("${application.rabbit.order.exchange}")
     private String orderExchange;
 
-    @Value("${application.rabbit.order.routing-created-event}")
-    private String orderCreatedRk;
+    @Value("${application.rabbit.order.routing-deleted-event}")
+    private String orderDeletedRK;
 
-    public static final String LISTENER_METHOD = "receiveMessage";
+    @Value("${application.rabbit.order.routing-created-event}")
+    private String orderCreatedRK;
+
+    @Value("${application.rabbit.order.routing-added-product-event}")
+    private String orderAddedProductRK;
+
+    @Value("${application.rabbit.product.queue}")
+    private String productQueue;
 
 }

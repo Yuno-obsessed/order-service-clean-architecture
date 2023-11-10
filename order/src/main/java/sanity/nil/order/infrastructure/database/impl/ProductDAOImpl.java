@@ -56,6 +56,18 @@ public class ProductDAOImpl implements ProductDAO, ProductReader {
     }
 
     @Override
+    @Transactional
+    public void increaseQuantity(UUID id, int quantity) {
+        productORM.increaseQuantity(id, quantity);
+    }
+
+    @Override
+    @Transactional
+    public void decreaseQuantity(UUID id, int quantity) {
+        productORM.decreaseQuantity(id, quantity);
+    }
+
+    @Override
     public List<ProductQueryDTO> getProductsQueriesWithPagination(BaseFilters filters) {
         Pageable pageable = PageRequest.of(filters.offset, filters.limit);
         return ProductMapper.convertListOfModelsToProductQueryDTOs(

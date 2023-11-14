@@ -26,7 +26,7 @@ public class UpdateProductTest {
         productService = new ProductService();
 
         Product product = EntityGenerator.generateProduct(UUID.randomUUID(), "test_name", 25.5, EntityGenerator.generateActiveDiscount(30));
-        createdProduct = productDAO.createProduct(product, null);
+        createdProduct = productDAO.createProduct(product);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class UpdateProductTest {
                createdProduct.getDiscount().getEndsAt(), createdProduct.getQuantity(), createdProduct.getProductSubtype(),
                createdProduct.getProductStatistics());
 
-       Product updatedProduct = productDAO.updateProduct(product, null);
+        Product updatedProduct = productDAO.updateProduct(product);
        assertThat(createdProduct).isNotEqualTo(updatedProduct);
     }
 }

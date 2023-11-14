@@ -1,14 +1,13 @@
 package sanity.nil.order.presentation.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import sanity.nil.order.application.product.dto.boundary.ProductDTO;
 import sanity.nil.order.application.product.dto.boundary.ProductStatisticsDTO;
-import sanity.nil.order.application.product.dto.command.CreateProductCommandDTO;
-import sanity.nil.order.application.product.dto.command.UpdateProductCommandDTO;
-import sanity.nil.order.application.product.dto.command.UpdateProductRateDTO;
-import sanity.nil.order.application.product.dto.command.UpdateProductWishListDTO;
+import sanity.nil.order.application.product.dto.command.*;
 import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
 import sanity.nil.order.application.product.service.ProductCommandService;
@@ -21,6 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/product")
+@CrossOrigin(origins = "http://localhost:63343", maxAge = 3600)
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -91,9 +91,21 @@ public class ProductController {
     @PutMapping("/statistics/addtowishlist")
     public ResponseEntity<ProductStatisticsDTO> addToWishList(@RequestBody UpdateProductWishListDTO productStatisticsDTO) {
         Product product = productCommandService.updateProductStatisticsCommand.handle(productStatisticsDTO);
-       return ResponseEntity
+        return ResponseEntity
                .status(201)
                .body(ProductMapper.convertEntityToProductStatisticsDTO(product));
+    }
+
+    @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductDTO> uploadProductPhotos(@RequestParam("files") MultipartFile[] images,
+                                                          @RequestParam("product_id") String productID) {
+        UploadProductImages uploadProductImages = new UploadProductImages(UUID.fromString(productID), List.of(images));
+        Product product = productCommandService.addImagesCommand
+                .handle(ProductMapper.convertUploadImagesToFileData(uploadProductImages));
+        return ResponseEntity
+                .status(200)
+                .body(ProductMapper.convertEntityToBoundary(product));
     }
 
 }

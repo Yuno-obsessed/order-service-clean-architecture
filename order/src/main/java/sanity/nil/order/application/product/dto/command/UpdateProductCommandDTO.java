@@ -29,9 +29,6 @@ public class UpdateProductCommandDTO {
     @JsonProperty(value = "discount")
     public CreateDiscountDTO discountDTO;
 
-    @JsonProperty(value = "images")
-    public CreateProductImageDTO productImage;
-
     @JsonProperty(value = "quantity", defaultValue = "0")
     public Integer quantity;
 

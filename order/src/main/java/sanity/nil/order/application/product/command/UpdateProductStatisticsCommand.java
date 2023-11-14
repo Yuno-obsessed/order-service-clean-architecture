@@ -18,12 +18,12 @@ public class UpdateProductStatisticsCommand {
     public Product handle(UpdateProductRateDTO updateProductRateDTO) {
         Product product = productReader.getProductById(updateProductRateDTO.productId);
         product = service.addRating(product, updateProductRateDTO.addRate);
-        return productDAO.updateProduct(product, null);
+        return productDAO.updateProduct(product);
     }
 
     public Product handle(UpdateProductWishListDTO updateProductWishListDTO) {
         Product product = productReader.getProductById(updateProductWishListDTO.productId);
         product = service.updateInWishList(product);
-        return productDAO.updateProduct(product, null);
+        return productDAO.updateProduct(product);
     }
 }

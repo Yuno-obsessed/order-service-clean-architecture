@@ -1,12 +1,11 @@
 package sanity.nil.order.infrastructure.database.orm.mapper;
 
 
+import sanity.nil.order.application.common.application.dto.FileData;
 import sanity.nil.order.application.common.domain.vo.Deleted;
 import sanity.nil.order.application.common.domain.vo.Discount;
-import sanity.nil.order.application.product.dto.boundary.DiscountDTO;
-import sanity.nil.order.application.product.dto.boundary.ProductDTO;
-import sanity.nil.order.application.product.dto.boundary.ProductImageDTO;
-import sanity.nil.order.application.product.dto.boundary.ProductStatisticsDTO;
+import sanity.nil.order.application.product.dto.boundary.*;
+import sanity.nil.order.application.product.dto.command.UploadProductImages;
 import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductStatisticsQueryDTO;
 import sanity.nil.order.domain.order.entity.OrderProduct;
@@ -16,8 +15,10 @@ import sanity.nil.order.domain.product.vo.ProductStatistics;
 import sanity.nil.order.infrastructure.database.models.ProductImageModel;
 import sanity.nil.order.infrastructure.database.models.ProductModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static sanity.nil.order.application.common.domain.vo.Discount.DiscountType.getByDiscount;
@@ -25,7 +26,7 @@ import static sanity.nil.order.application.common.domain.vo.Discount.DiscountTyp
 
 public class ProductMapper {
 
-    public static ProductModel convertEntityToModel(Product entity, List<ProductImageModel> images) {
+    public static ProductModel convertEntityToModel(Product entity) {
         ProductModel model = new ProductModel();
         model.setId(entity.getProductId().getId());
         model.setDescription(entity.getDescription());
@@ -46,7 +47,14 @@ public class ProductMapper {
         model.setRate(entity.getProductStatistics().getRate());
         model.setRatings(entity.getProductStatistics().getRatings());
         model.setInWishList(entity.getProductStatistics().getInWishList());
-        model.setProductImages(images);
+        List<ProductImageModel> imageModels = new ArrayList<>();
+        if (entity.getImages() != null) {
+            for (String imageName : entity.getImages().getImageNames()) {
+                imageModels.add(new ProductImageModel(UUID.randomUUID(), imageName,
+                        entity.getImages().getBucketName()));
+            }
+        }
+        model.setProductImages(imageModels);
         return model;
     }
 
@@ -117,5 +125,16 @@ public class ProductMapper {
         return new ProductStatisticsDTO(product.getProductStatistics().getRate(),
                 product.getProductStatistics().getRatings(),
                 product.getProductStatistics().getInWishList());
+    }
+
+    public static ProductFileData convertUploadImagesToFileData(UploadProductImages dto) {
+        return new ProductFileData(dto.getProductID(), dto.getFiles().stream().map(e ->
+        {
+            try {
+                return new FileData(e.getInputStream(), e.getOriginalFilename(), e.getContentType(), e.getSize());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }).collect(Collectors.toList()));
     }
 }

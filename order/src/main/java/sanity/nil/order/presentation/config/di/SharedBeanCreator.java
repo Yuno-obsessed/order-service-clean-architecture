@@ -17,6 +17,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
 import sanity.nil.order.infrastructure.messageBroker.interactors.MessageBrokerImpl;
+import sanity.nil.order.infrastructure.storage.config.MinioConfig;
 import sanity.nil.order.presentation.api.exception.request.RequestIdGenerator;
 import sanity.nil.order.presentation.api.exception.request.RequestIdHolder;
 import sanity.nil.order.presentation.api.exception.request.RequestImpl;
@@ -36,18 +37,24 @@ public class SharedBeanCreator {
     private String driverClassName;
 
     @Value("${spring.datasource.username}")
-    private String username;
+    private String dbUsername;
 
     @Value("${spring.datasource.password}")
-    private String password;
+    private String dbPassword;
+
+    @Value("${application.minio.access-key}")
+    private String minioAccessKey;
+
+    @Value("${application.minio.secret-key}")
+    private String minioSecretKey;
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUrl(jdbcUrl);
         dataSource.setDriverClassName(driverClassName);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
+        dataSource.setUsername(dbUsername);
+        dataSource.setPassword(dbPassword);
         return dataSource;
     }
 
@@ -65,6 +72,11 @@ public class SharedBeanCreator {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         return objectMapper;
+    }
+
+    @Bean
+    public MinioConfig minioConfig() {
+        return new MinioConfig(minioAccessKey, minioSecretKey);
     }
 
     @Bean

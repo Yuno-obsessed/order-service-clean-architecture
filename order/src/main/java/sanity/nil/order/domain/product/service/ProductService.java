@@ -3,6 +3,7 @@ package sanity.nil.order.domain.product.service;
 
 import sanity.nil.order.application.common.domain.vo.Deleted;
 import sanity.nil.order.application.common.domain.vo.Discount;
+import sanity.nil.order.domain.order.entity.ProductImages;
 import sanity.nil.order.domain.product.entity.Product;
 import sanity.nil.order.domain.product.exceptions.UnsupportedPriceException;
 import sanity.nil.order.domain.product.exceptions.UnsupportedQuantityException;
@@ -14,6 +15,7 @@ import sanity.nil.order.domain.product.vo.ProductSubtype;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -134,6 +136,11 @@ public class ProductService {
 
     public Product delete(Product product) {
         product.setDeleted(new Deleted(true, LocalDateTime.now()));
+        return product;
+    }
+
+    public Product addImages(Product product, List<String> imageNames, String bucketName) {
+        product.setImages(new ProductImages(imageNames, bucketName));
         return product;
     }
 

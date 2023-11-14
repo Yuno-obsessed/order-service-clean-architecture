@@ -26,14 +26,14 @@ public class DeleteProductTest {
         productService = new ProductService();
 
         Product product = EntityGenerator.generateProduct(UUID.randomUUID(), "test_name", 25.5, EntityGenerator.generateActiveDiscount(30));
-        createdProduct = productDAO.createProduct(product, null);
+        createdProduct = productDAO.createProduct(product);
     }
 
     @Test
     public void successUpdateProduct() {
         Product product = productService.delete(EntityGenerator.generateProduct(createdProduct));
 
-        Product updatedProduct = productDAO.updateProduct(product, null);
+        Product updatedProduct = productDAO.updateProduct(product);
         assertThat(createdProduct).isNotEqualTo(updatedProduct);
     }
 }

@@ -2,6 +2,7 @@ package sanity.nil.order.domain.product.entity;
 
 import sanity.nil.order.application.common.domain.vo.Deleted;
 import sanity.nil.order.application.common.domain.vo.Discount;
+import sanity.nil.order.domain.order.entity.ProductImages;
 import sanity.nil.order.domain.product.vo.ProductID;
 import sanity.nil.order.domain.product.vo.ProductStatistics;
 import sanity.nil.order.domain.product.vo.ProductSubtype;
@@ -21,6 +22,7 @@ public class Product {
     private Deleted deleted;
     private ProductSubtype productSubtype;
     private ProductStatistics productStatistics;
+    private ProductImages images;
 
     public Product() {}
 
@@ -88,6 +90,14 @@ public class Product {
 
     public ProductStatistics getProductStatistics() {
         return productStatistics;
+    }
+
+    public ProductImages getImages() {
+        return images;
+    }
+
+    public void setImages(ProductImages images) {
+        this.images = images;
     }
 
     @Override

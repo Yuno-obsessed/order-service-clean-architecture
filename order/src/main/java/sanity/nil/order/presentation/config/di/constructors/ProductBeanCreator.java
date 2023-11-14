@@ -1,14 +1,13 @@
 package sanity.nil.order.presentation.config.di.constructors;
 
 import org.springframework.amqp.core.Queue;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
-import sanity.nil.order.application.product.command.CreateProductCommand;
-import sanity.nil.order.application.product.command.DeleteProductCommand;
-import sanity.nil.order.application.product.command.UpdateProductCommand;
-import sanity.nil.order.application.product.command.UpdateProductStatisticsCommand;
+import sanity.nil.order.application.common.application.interfaces.storage.FileStorage;
+import sanity.nil.order.application.product.command.*;
 import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
 import sanity.nil.order.application.product.interfaces.persistence.ProductReader;
 import sanity.nil.order.application.product.interfaces.persistence.ProductSubtypeReader;
@@ -23,6 +22,8 @@ import sanity.nil.order.infrastructure.database.impl.ProductSubtypeDAOImpl;
 import sanity.nil.order.infrastructure.database.orm.ProductORM;
 import sanity.nil.order.infrastructure.database.orm.ProductSubtypeORM;
 import sanity.nil.order.infrastructure.messageBroker.config.RabbitConfig;
+import sanity.nil.order.infrastructure.storage.config.MinioConfig;
+import sanity.nil.order.infrastructure.storage.directories.ProductStorage;
 import sanity.nil.order.presentation.consumer.subscribers.ProductSubscribers;
 
 @Configuration
@@ -60,14 +61,21 @@ public class ProductBeanCreator {
     }
 
     @Bean
+    public FileStorage productFileStorage(MinioConfig minioConfig) {
+        return new ProductStorage(minioConfig);
+    }
+
+    @Bean
     public ProductCommandService productCommandService(ProductDAO productDAO, ProductReader productReader,
-                                                       ProductSubtypeReader productSubtypeReader) {
+                                                       ProductSubtypeReader productSubtypeReader,
+                                                       @Qualifier("productFileStorage") FileStorage fileStorage) {
         ProductService service = new ProductService();
         return new ProductCommandService(
-               new CreateProductCommand(productDAO, productSubtypeReader, service),
-               new UpdateProductCommand(productDAO, productReader, productSubtypeReader, service),
-               new UpdateProductStatisticsCommand(productDAO, productReader, service),
-               new DeleteProductCommand(productDAO, productReader, service)
+                new CreateProductCommand(productDAO, productSubtypeReader, service),
+                new UpdateProductCommand(productDAO, productReader, productSubtypeReader, service),
+                new UpdateProductStatisticsCommand(productDAO, productReader, service),
+                new DeleteProductCommand(productDAO, productReader, service),
+                new AddImagesCommand(productDAO, productReader, service, fileStorage)
         );
     }
 

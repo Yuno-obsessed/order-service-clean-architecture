@@ -22,6 +22,7 @@
         <spring.cache.version>3.1.2</spring.cache.version>
         <spring.amqp.version>3.1.2</spring.amqp.version>
         <postgres.version>42.6.0</postgres.version>
+        <minio.version>8.5.4</minio.version>
     </properties>
     <dependencies>
         <dependency>
@@ -138,6 +139,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
             <version>${spring.cache.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>${minio.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.5</version>
         </dependency>
     </dependencies>
 

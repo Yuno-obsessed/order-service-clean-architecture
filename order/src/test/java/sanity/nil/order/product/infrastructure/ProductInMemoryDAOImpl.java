@@ -18,16 +18,16 @@ public class ProductInMemoryDAOImpl implements ProductDAO, ProductReader {
     private Map<UUID, ProductModel> storage = new HashMap<>();
 
     @Override
-    public Product createProduct(Product product, List<String> imageNames) {
-        ProductModel model = ProductMapper.convertEntityToModel(product, null);
+    public Product createProduct(Product product) {
+        ProductModel model = ProductMapper.convertEntityToModel(product);
         storage.put(UUID.randomUUID(), model);
         return ProductMapper.convertModelToEntity(model);
     }
 
     @Override
-    public Product updateProduct(Product product, List<String> imageNames) {
+    public Product updateProduct(Product product) {
         ProductModel model = storage.remove(product.getProductId().getId());
-        ProductModel newModel = ProductMapper.convertEntityToModel(product, null);
+        ProductModel newModel = ProductMapper.convertEntityToModel(product);
         storage.put(product.getProductId().getId(), newModel);
         return ProductMapper.convertModelToEntity(newModel);
     }
@@ -71,5 +71,15 @@ public class ProductInMemoryDAOImpl implements ProductDAO, ProductReader {
     @Override
     public List<ProductQueryDTO> getProductQueriesWithFilters(ProductQueryFilters filters) {
         return null;
+    }
+
+    @Override
+    public void increaseQuantity(UUID id, int quantity) {
+
+    }
+
+    @Override
+    public void decreaseQuantity(UUID id, int quantity) {
+
     }
 }

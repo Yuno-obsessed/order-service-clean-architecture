@@ -1,12 +1,10 @@
 package sanity.nil.order.infrastructure.database.models;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -24,4 +22,20 @@ public class ProductImageModel {
     @Column(name = "image_name")
     private String imageName;
 
+    @Column(name = "bucket_name")
+    private String bucketName;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public ProductImageModel(UUID id, String imageName, String bucketName) {
+        this.id = id;
+        this.imageName = imageName;
+        this.bucketName = bucketName;
+    }
 }

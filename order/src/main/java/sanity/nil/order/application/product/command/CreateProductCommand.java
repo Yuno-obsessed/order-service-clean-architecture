@@ -20,6 +20,6 @@ public class CreateProductCommand {
         Product product = service.create(dto.description, dto.name, dto.price,
                 discountDTO.discountCode, discountDTO.startsAt, discountDTO.endsAt,
                 dto.quantity, productSubtypeReader.getBySubtypeId(dto.subTypeId));
-        return productDAO.createProduct(product, dto.productImage.imageNames);
+        return productDAO.createProduct(product);
     }
 }

@@ -34,7 +34,7 @@ public class CreateProductTest {
         Product product = productService.create("desc_test", "name_test",
                 BigDecimal.valueOf(25.5), 0, LocalDateTime.now().minusDays(1),
                 LocalDateTime.now().plusDays(4), 4, EntityGenerator.generateProductSubtype(1));
-        Product createdProduct = productDAO.createProduct(product, null);
+        Product createdProduct = productDAO.createProduct(product);
         assertThat(product).isEqualTo(createdProduct);
     }
 

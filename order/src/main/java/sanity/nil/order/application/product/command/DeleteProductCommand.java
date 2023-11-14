@@ -17,7 +17,7 @@ public class DeleteProductCommand {
 
     public UUID handle(UUID id) {
         Product product = productService.delete(productReader.getProductById(id));
-        productDAO.updateProduct(product, null);
+        productDAO.updateProduct(product);
         return id;
     }
 }

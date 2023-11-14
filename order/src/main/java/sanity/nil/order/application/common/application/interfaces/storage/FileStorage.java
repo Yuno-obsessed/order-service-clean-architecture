@@ -1,11 +1,24 @@
 package sanity.nil.order.application.common.application.interfaces.storage;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
+import sanity.nil.order.application.common.application.dto.FileData;
 
 public interface FileStorage {
 
-    void saveFile(FileInputStream file, String name, String objType);
+    String createBucketIfNotExists(String... args);
 
-    InputStream getFile(String name, String objType);
+    void saveFile(FileData file, String name, String bucketName);
+
+    FileData getFile(String name, String bucketName);
+
+    default String constructBucketName(String... args) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < args.length; i++) {
+            sb.append(args[i].toLowerCase());
+            if (i < args.length - 1) {
+                sb.append('.');
+            }
+        }
+        return sb.toString();
+    }
+
 }

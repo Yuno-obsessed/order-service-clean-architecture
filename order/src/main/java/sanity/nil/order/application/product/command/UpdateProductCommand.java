@@ -24,6 +24,6 @@ public class UpdateProductCommand {
                 discountDTO.discountCode, discountDTO.startsAt, discountDTO.endsAt,
                 dto.quantity, productSubtypeReader.getBySubtypeId(dto.typeId),
                 product.getProductStatistics());
-        return productDAO.updateProduct(product, dto.productImage.imageNames);
+        return productDAO.updateProduct(product);
     }
 }

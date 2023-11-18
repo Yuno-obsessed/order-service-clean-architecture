@@ -1,6 +1,6 @@
 package sanity.nil.order.infrastructure.database.orm.mapper;
 
-import sanity.nil.order.application.common.domain.vo.Discount;
+import sanity.nil.order.domain.common.entity.Discount;
 import sanity.nil.order.domain.order.aggregate.Order;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
@@ -10,8 +10,6 @@ import sanity.nil.order.domain.order.vo.OrderID;
 import sanity.nil.order.infrastructure.database.models.*;
 
 import java.util.List;
-
-import static sanity.nil.order.application.common.domain.vo.Discount.DiscountType.getByDiscount;
 
 public class OrderMapper {
 
@@ -35,9 +33,17 @@ public class OrderMapper {
 
     public static Order modelToEntity(OrderModel model, List<ProductModel> products) {
         Order order = new Order(new OrderID(model.getId()), AddressMapper.convertModelToEntity(model.getAddress()),
-                model.getUser().getId(), products.stream().map(e -> new OrderProduct(model.getId(),
-                e.getName(), e.getPrice(), new Discount(getByDiscount(e.getDiscount()),
-                e.getDiscountStart(), e.getDiscountEnd()), e.getQuantity())).toList(),
+                model.getUser().getId(), products.stream().map(e ->
+        {
+            Discount discount = null;
+            if (e.getDiscount() != null) {
+                DiscountModel discountModel = e.getDiscount();
+                discount = new Discount(discountModel.getDiscountID(), discountModel.getPercent(),
+                        discountModel.getStartedAt(), discountModel.getExpiredAt());
+            }
+            return new OrderProduct(model.getId(),
+                    e.getName(), e.getPrice(), discount, e.getQuantity());
+        }).toList(),
                 OrderStatus.valueOf(model.getOrderStatus()),PaymentMethod.valueOf(model.getPaymentMethod()),
                 PaymentOption.valueOf(model.getPaymentOption()));
         return order;

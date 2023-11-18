@@ -5,7 +5,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sanity.nil.order.application.order.exceptions.ImagesLimitException;
 import sanity.nil.order.application.product.dto.boundary.ProductDTO;
+import sanity.nil.order.application.product.dto.boundary.ProductImageInfo;
 import sanity.nil.order.application.product.dto.boundary.ProductStatisticsDTO;
 import sanity.nil.order.application.product.dto.command.*;
 import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
@@ -101,6 +103,9 @@ public class ProductController {
     public ResponseEntity<ProductDTO> uploadProductPhotos(@RequestParam("files") MultipartFile[] images,
                                                           @RequestParam("product_id") String productID) {
         UploadProductImages uploadProductImages = new UploadProductImages(UUID.fromString(productID), List.of(images));
+        if (images.length > 8) {
+            throw new ImagesLimitException();
+        }
         Product product = productCommandService.addImagesCommand
                 .handle(ProductMapper.convertUploadImagesToFileData(uploadProductImages));
         return ResponseEntity
@@ -108,4 +113,11 @@ public class ProductController {
                 .body(ProductMapper.convertEntityToBoundary(product));
     }
 
+    @GetMapping(value = "/images/{id}")
+    public ResponseEntity<List<ProductImageInfo>> getAllImages(@PathVariable("id") UUID productID,
+                                                               @RequestParam(required = false, name = "onlyMain") Boolean onlyMain) {
+        return ResponseEntity
+                .status(200)
+                .body(productQueryService.getAllImagesQuery.handle(productID, onlyMain));
+    }
 }

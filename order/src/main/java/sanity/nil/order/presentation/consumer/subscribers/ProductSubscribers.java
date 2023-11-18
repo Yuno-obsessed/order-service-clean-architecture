@@ -1,39 +1,37 @@
 package sanity.nil.order.presentation.consumer.subscribers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import sanity.nil.order.application.common.application.exceptions.BrokerException;
-import sanity.nil.order.application.common.domain.event.Event;
 import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
+import sanity.nil.order.domain.common.event.BaseEventElement;
 import sanity.nil.order.domain.order.events.OrderProductReservedEvent;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 
 @Slf4j
 @RequiredArgsConstructor
 public class ProductSubscribers {
 
     private final ProductDAO productDAO;
+    private final ObjectMapper objectMapper;
 
     @RabbitListener(queues = "${application.rabbit.product.queue}")
     public void processMessage(byte[] message) {
-        Event event = null;
-        try (ByteArrayInputStream bis = new ByteArrayInputStream(message);
-             ObjectInputStream in = new ObjectInputStream(bis)) {
-            event = (Event) in.readObject();
-            switch (event.getBaseEvent().getEventType()) {
+        BaseEventElement baseEvent = null;
+        try {
+            baseEvent = objectMapper.readValue(message, BaseEventElement.class);
+            switch (baseEvent.getBaseEvent().getEventType()) {
                 case "OrderProductReserved":
-                    OrderProductReservedEvent reservedProduct = (OrderProductReservedEvent) event;
+                    OrderProductReservedEvent reservedProduct = objectMapper.readValue(message, OrderProductReservedEvent.class);
                     productDAO.decreaseQuantity(reservedProduct.uniqueAggregateID(), reservedProduct.getQuantity());
-                    log.info(reservedProduct.uniqueAggregateID().toString());
+                    log.info("Message consumed: {}, aggregate id = {}", baseEvent.getBaseEvent().getEventType(),
+                            reservedProduct.uniqueAggregateID().toString());
             }
-        } catch (IOException | ClassNotFoundException e) {
-            throw new BrokerException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
-        log.info("Message consumed: {} ", event.getBaseEvent().getEventType());
     }
 }

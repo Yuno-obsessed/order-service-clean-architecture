@@ -1,13 +1,13 @@
 package sanity.nil.order.application.order.command;
 
 import lombok.RequiredArgsConstructor;
-import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
-import sanity.nil.order.application.common.application.relay.interfaces.persistence.OutboxDAO;
-import sanity.nil.order.application.common.domain.event.Event;
+import sanity.nil.order.application.common.interfaces.broker.MessageBroker;
+import sanity.nil.order.application.common.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.application.order.dto.boundary.OrderDTO;
 import sanity.nil.order.application.order.dto.command.CreateOrderCommandDTO;
 import sanity.nil.order.application.order.exceptions.ProductQuantityMismatch;
 import sanity.nil.order.application.order.interfaces.persistence.OrderDAO;
+import sanity.nil.order.domain.common.event.Event;
 import sanity.nil.order.domain.order.aggregate.Order;
 import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.domain.order.entity.OrderProduct;

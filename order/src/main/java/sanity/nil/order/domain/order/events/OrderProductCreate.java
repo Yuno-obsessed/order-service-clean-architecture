@@ -11,6 +11,9 @@ public class OrderProductCreate implements Serializable {
     private BigDecimal price;
     private Integer quantity;
 
+    public OrderProductCreate() {
+    }
+
     public OrderProductCreate(UUID productID, String name, BigDecimal price, Integer quantity) {
         this.productID = productID;
         this.name = name;

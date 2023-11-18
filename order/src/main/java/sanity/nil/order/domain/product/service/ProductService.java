@@ -1,16 +1,16 @@
 package sanity.nil.order.domain.product.service;
 
 
-import sanity.nil.order.application.common.domain.vo.Deleted;
-import sanity.nil.order.application.common.domain.vo.Discount;
+import sanity.nil.order.domain.common.entity.Discount;
+import sanity.nil.order.domain.common.vo.Deleted;
 import sanity.nil.order.domain.order.entity.ProductImages;
 import sanity.nil.order.domain.product.entity.Product;
+import sanity.nil.order.domain.product.entity.ProductStatistics;
+import sanity.nil.order.domain.product.entity.ProductSubtype;
 import sanity.nil.order.domain.product.exceptions.UnsupportedPriceException;
 import sanity.nil.order.domain.product.exceptions.UnsupportedQuantityException;
 import sanity.nil.order.domain.product.exceptions.UnsupportedRateException;
 import sanity.nil.order.domain.product.vo.ProductID;
-import sanity.nil.order.domain.product.vo.ProductStatistics;
-import sanity.nil.order.domain.product.vo.ProductSubtype;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -19,27 +19,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import static sanity.nil.order.application.common.domain.vo.Discount.DiscountType.BUY_TWO_PRICE_FOR_ONE;
-import static sanity.nil.order.application.common.domain.vo.Discount.DiscountType.getByCode;
-
 
 public class ProductService {
 
     public Product create(String description, String name, BigDecimal price,
-                          Integer discountCode, LocalDateTime startsAt,
-                          LocalDateTime endsAt, Integer quantity, ProductSubtype productSubtype) {
+                          Discount discount, Integer quantity, ProductSubtype productSubtype) {
         boolean available = false;
-        int discountInPercents = 0;
         BigDecimal newPrice = price;
-        Discount discount = null;
-        if (discountCode != null) {
-            LocalDateTime now = LocalDateTime.now();
-            discount = new Discount(
-                    getByCode(discountCode),
-                    startsAt,
-                    endsAt
-            );
-        }
         if (quantity < 0) {
             throw UnsupportedQuantityException.throwEx(quantity);
         } else if (quantity > 0){
@@ -48,19 +34,13 @@ public class ProductService {
         if (price.compareTo(BigDecimal.ZERO) <= 0) {
             throw UnsupportedPriceException.throwEx(price);
         }
-        if (discount != null && discount.getStartsAt().isBefore(LocalDateTime.now()) &&
-                discount.getEndsAt().isAfter(LocalDateTime.now())){
-            if (discount.getDiscountType() == BUY_TWO_PRICE_FOR_ONE) {
-                //TODO : implement
-            } else {
-                discountInPercents = discount.getDiscountType().getDiscount();
-                newPrice = price
-                        .subtract(
-                                price
-                                        .divide(BigDecimal.valueOf(100L))
-                                        .multiply(BigDecimal.valueOf(discountInPercents))
-                        );
-            }
+        if (discount.isActive()) {
+            newPrice = price
+                    .subtract(
+                            price
+                                    .divide(BigDecimal.valueOf(100L))
+                                    .multiply(BigDecimal.valueOf(discount.getPercent()))
+                    );
         }
 
 
@@ -70,21 +50,10 @@ public class ProductService {
     }
 
     public Product update(UUID id, String description, String name, BigDecimal price,
-                          Integer discountCode, LocalDateTime startsAt,
-                          LocalDateTime endsAt, Integer quantity, ProductSubtype productSubtype,
+                          Discount discount, Integer quantity, ProductSubtype productSubtype,
                           ProductStatistics productStatistics) {
         boolean available = false;
-        int discountInPercents = 0;
         BigDecimal newPrice = price;
-        Discount discount = null;
-        if (discountCode != null) {
-            LocalDateTime now = LocalDateTime.now();
-            discount = new Discount(
-                    getByCode(discountCode),
-                    startsAt,
-                    endsAt
-            );
-        }
         if (quantity < 0) {
             throw UnsupportedQuantityException.throwEx(quantity);
         } else if (quantity > 0){
@@ -93,21 +62,14 @@ public class ProductService {
         if (price.compareTo(BigDecimal.ZERO) <= 0) {
             throw UnsupportedPriceException.throwEx(price);
         }
-        if (discount != null && discount.getStartsAt().isBefore(LocalDateTime.now()) &&
-                discount.getEndsAt().isAfter(LocalDateTime.now())){
-            if (discount.getDiscountType() == BUY_TWO_PRICE_FOR_ONE) {
-                //TODO : implement
-            } else {
-                discountInPercents = discount.getDiscountType().getDiscount();
-                newPrice = price
-                        .subtract(
-                                price
-                                        .divide(BigDecimal.valueOf(100L))
-                                        .multiply(BigDecimal.valueOf(discountInPercents))
-                        );
-            }
+        if (discount.isActive()) {
+            newPrice = price
+                    .subtract(
+                            price
+                                    .divide(BigDecimal.valueOf(100L))
+                                    .multiply(BigDecimal.valueOf(discount.getPercent()))
+                    );
         }
-
 
         return new Product(new ProductID(id), description, name, price, discount,
                 quantity, available, new Deleted(), productSubtype,

@@ -7,8 +7,8 @@ import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import sanity.nil.order.application.common.application.exceptions.BrokerException;
-import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
+import sanity.nil.order.application.common.exceptions.BrokerException;
+import sanity.nil.order.application.common.interfaces.broker.MessageBroker;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,12 +18,12 @@ public class MessageBrokerImpl implements MessageBroker {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void publishMessage(String exchangeName, String routingKey, byte[] message) {
+    public void publishMessage(String exchangeName, String routingKey, String message) {
         try {
             MessageProperties properties = new MessageProperties();
             properties.setContentType("application/json");
-            Message messageAsString = new Message(message, properties);
-            rabbitTemplate.send(exchangeName, routingKey, messageAsString);
+            Message messageAsString = new Message(message.getBytes(), properties);
+            rabbitTemplate.convertAndSend(exchangeName, routingKey, messageAsString);
         } catch (AmqpException e) {
             throw new BrokerException(e);
         }

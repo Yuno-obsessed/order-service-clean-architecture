@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap"
+          rel="stylesheet">
+    <title>Created Order Mail</title>
+    <style>
+        .info {
+        }
+
+        h4 {
+            opacity: 0.4;
+        }
+
+        * {
+            margin: 0;
+            font-family: Poppins,
+            sans-serif;
+        }
+
+        .title {
+            margin: 15px auto;
+            justify-content: center;
+            display: flex;
+        }
+
+        .container {
+            border-radius: 10px;
+            padding: 5px 15px;
+            background: rgba(245, 245, 245, 0.73);
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .product-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .ariveinfo h4 {
+            color: #29dc29;
+            opacity: 1;
+        }
+
+        .number {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .post {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .product {
+            flex-direction: column;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            background: white;
+            transition: background 0.1s ease-in-out;
+        }
+
+        .product:hover {
+            background: white;
+        }
+
+        .price-orig {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product img {
+            margin-right: 10px;
+            width: 150px;
+            max-width: 180px;
+            margin-bottom: 10px;
+        }
+
+        .product-details {
+            margin-bottom: 10px;
+        }
+
+        .product_name {
+            font-size: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .address {
+
+        }
+
+        .button {
+            display: flex;
+            justify-content: center;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="title">Online Shop</h1>
+    <div class="number">
+        <h4>Arrives to you</h4>
+        <h4 th:text="${order.id}"></h4>
+    </div>
+    <div class="product info">
+        <div class="post">
+            <h3>Arrives 12.03.2023</h3>
+            <div class="address">
+                <h3 th:text="'Country: ' + ${order.country} + ', City: ' + ${order.city}"></h3>
+                <h4 th:text="'Street: + ' + ${order.street} + ', Building: ' + ${order.buildingNumber}"></h4>
+                <h4 th:text="'Postal Code: ' + ${order.postalCode}"></h4>
+            </div>
+        </div>
+        <h2 th:text="'Total price: ' + ${order.totalPrice}"></h2>
+        <a th:href="${delivery_status_url}">
+            <button class="button">Track delivery</button>
+        </a>
+    </div>
+    <div th:each="product : ${order.products}">
+        <a th:href="${product.link}">
+            <div class="product-container">
+                <img th:src="${product.imageURL}">
+                <div class="product-details">
+                    <p class="product_name" th:text="${product.name}"></p>
+                    <h2 class="price-orig">Price: <span th:text="'EU ' + ${product.price}"></span></h2>
+                </div>
+            </div>
+            <p th:text="'Quantity: ' + ${product.quantity}"></p>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

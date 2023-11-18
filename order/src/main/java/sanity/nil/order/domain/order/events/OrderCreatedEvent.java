@@ -1,8 +1,8 @@
 package sanity.nil.order.domain.order.events;
 
-import sanity.nil.order.application.common.domain.Utils;
-import sanity.nil.order.application.common.domain.event.BaseEvent;
-import sanity.nil.order.application.common.domain.event.Event;
+import sanity.nil.order.domain.common.Utils;
+import sanity.nil.order.domain.common.event.BaseEvent;
+import sanity.nil.order.domain.common.event.Event;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;
@@ -21,13 +21,13 @@ public class OrderCreatedEvent implements Event, Serializable {
 
     private UUID clientID;
 
-    private AddressVO address;
+    private String address;
 
-    private OrderStatus orderStatus;
+    private String orderStatus;
 
-    private PaymentMethod paymentMethod;
+    private String paymentMethod;
 
-    private PaymentOption paymentOption;
+    private String paymentOption;
 
     private List<OrderProductCreate> products;
 
@@ -40,11 +40,25 @@ public class OrderCreatedEvent implements Event, Serializable {
         this.baseEvent = new BaseEvent("OrderCreated");
         this.id = id;
         this.clientID = clientID;
-        this.orderStatus = OrderStatus.CREATED;
+        OrderStatus status = OrderStatus.CREATED;
+        this.orderStatus = status.getValue();
+        this.paymentMethod = paymentMethod.getValue();
+        this.paymentOption = paymentOption.getValue();
+        this.products = products;
+        this.address = address.getAddressVOString();
+        this.totalPrice = totalPrice;
+    }
+
+    public OrderCreatedEvent(BaseEvent baseEvent, UUID id, UUID clientID, String address, String orderStatus,
+                             String paymentMethod, String paymentOption, List<OrderProductCreate> products, BigDecimal totalPrice) {
+        this.baseEvent = baseEvent;
+        this.id = id;
+        this.clientID = clientID;
+        this.address = address;
+        this.orderStatus = orderStatus;
         this.paymentMethod = paymentMethod;
         this.paymentOption = paymentOption;
         this.products = products;
-        this.address = address;
         this.totalPrice = totalPrice;
     }
 
@@ -75,31 +89,31 @@ public class OrderCreatedEvent implements Event, Serializable {
         return clientID;
     }
 
-    public AddressVO getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(AddressVO address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
-    public OrderStatus getOrderStatus() {
+    public String getOrderStatus() {
         return orderStatus;
     }
 
-    public PaymentMethod getPaymentMethod() {
+    public String getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
+    public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
-    public PaymentOption getPaymentOption() {
+    public String getPaymentOption() {
         return paymentOption;
     }
 
-    public void setPaymentOption(PaymentOption paymentOption) {
+    public void setPaymentOption(String paymentOption) {
         this.paymentOption = paymentOption;
     }
 

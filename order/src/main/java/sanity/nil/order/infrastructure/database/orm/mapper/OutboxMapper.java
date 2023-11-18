@@ -1,17 +1,19 @@
 package sanity.nil.order.infrastructure.database.orm.mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import sanity.nil.order.application.common.application.consts.EventStatus;
-import sanity.nil.order.application.common.application.relay.dto.OutboxMessage;
-import sanity.nil.order.application.common.domain.event.Event;
+import sanity.nil.order.application.common.consts.EventStatus;
+import sanity.nil.order.application.common.relay.dto.OutboxMessage;
+import sanity.nil.order.domain.common.event.Event;
 import sanity.nil.order.domain.order.events.OrderCreatedEvent;
 import sanity.nil.order.domain.order.events.OrderProductReservedEvent;
 import sanity.nil.order.infrastructure.database.models.OutboxModel;
 import sanity.nil.order.infrastructure.messageBroker.config.RabbitConfig;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -19,6 +21,10 @@ public class OutboxMapper {
 
     @Autowired
     private RabbitConfig rabbitConfig;
+
+    @Autowired
+    @Qualifier("myObjectMapper")
+    private ObjectMapper objectMapper;
 
     public List<OutboxMessage> convertModelsToDTOs(List<OutboxModel> models) {
        return models.stream()
@@ -37,16 +43,22 @@ public class OutboxMapper {
 
     public OutboxModel convertEventToModel(Event event) {
         OutboxModel outboxModel = new OutboxModel();
-        outboxModel.setId(UUID.randomUUID());
+        String payload = null;
+        try {
+            payload = objectMapper.writeValueAsString(event);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        outboxModel.setPayload(payload);
+        outboxModel.setId(event.getBaseEvent().getEventID());
         outboxModel.setEventStatus(EventStatus.STATUS_AWAITING.getCode());
-        outboxModel.setPayload(event.bytes());
         outboxModel.setAggregateID(event.uniqueAggregateID());
         if (event instanceof OrderCreatedEvent) {
-            outboxModel.setExchange(rabbitConfig.getOrderExchange());
+            outboxModel.setExchange(rabbitConfig.getOrderFanoutExchange());
             outboxModel.setRoute(rabbitConfig.getOrderCreatedRK());
         }
         if (event instanceof OrderProductReservedEvent) {
-            outboxModel.setExchange(rabbitConfig.getOrderExchange());
+            outboxModel.setExchange(rabbitConfig.getOrderTopicExchange());
             outboxModel.setRoute(rabbitConfig.getOrderAddedProductRK());
         }
 

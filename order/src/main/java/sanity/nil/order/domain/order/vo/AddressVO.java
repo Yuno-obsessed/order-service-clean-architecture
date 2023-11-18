@@ -13,6 +13,13 @@ public class AddressVO implements Serializable {
         this.address = address;
     }
 
+    public AddressVO() {
+    }
+
+    public String getAddressVOString() {
+        return addressID.toString() + ',' + address;
+    }
+
     public String[] getSplitAddress() {
         return address.split(",");
     }

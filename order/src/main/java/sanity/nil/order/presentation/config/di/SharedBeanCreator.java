@@ -1,8 +1,10 @@
 package sanity.nil.order.presentation.config.di;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.HandlerInterceptor;
-import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
+import sanity.nil.order.application.common.interfaces.broker.MessageBroker;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
 import sanity.nil.order.infrastructure.messageBroker.interactors.MessageBrokerImpl;
 import sanity.nil.order.infrastructure.storage.config.MinioConfig;
@@ -67,10 +69,11 @@ public class SharedBeanCreator {
         return template;
     }
 
-    @Bean
+    @Bean("myObjectMapper")
     public ObjectMapper myObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return objectMapper;
     }
 
@@ -98,6 +101,13 @@ public class SharedBeanCreator {
     @Bean
     public MessageBroker messageBroker(RabbitTemplate rabbitTemplate, ObjectMapper objectMapper) {
         return new MessageBrokerImpl(rabbitTemplate, objectMapper);
+    }
+
+    @Bean
+    public SimpleRabbitListenerContainerFactory myContainerFactory() {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConcurrentConsumers(2);
+        return factory;
     }
 
 }

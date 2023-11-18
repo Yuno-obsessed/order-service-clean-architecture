@@ -2,7 +2,7 @@ package sanity.nil.order.application.product.dto.query;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import sanity.nil.order.application.common.application.dto.BaseFilters;
+import sanity.nil.order.application.common.dto.BaseFilters;
 
 @AllArgsConstructor
 @NoArgsConstructor

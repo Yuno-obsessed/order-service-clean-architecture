@@ -1,25 +1,22 @@
 package sanity.nil.order.util;
 
-import sanity.nil.order.application.common.domain.vo.Deleted;
-import sanity.nil.order.application.common.domain.vo.Discount;
 import sanity.nil.order.application.order.dto.query.AddressQueryDTO;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
 import sanity.nil.order.application.order.dto.query.ProductQueryDTO;
+import sanity.nil.order.domain.common.vo.Deleted;
 import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.domain.order.vo.AddressID;
 import sanity.nil.order.domain.product.entity.Product;
+import sanity.nil.order.domain.product.entity.ProductStatistics;
+import sanity.nil.order.domain.product.entity.ProductSubtype;
+import sanity.nil.order.domain.product.entity.ProductType;
 import sanity.nil.order.domain.product.vo.ProductID;
-import sanity.nil.order.domain.product.vo.ProductStatistics;
-import sanity.nil.order.domain.product.vo.ProductSubtype;
-import sanity.nil.order.domain.product.vo.ProductType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-
-import static sanity.nil.order.application.common.domain.vo.Discount.DiscountType.getByDiscount;
 
 public class EntityGenerator {
 

@@ -1,7 +1,7 @@
 package sanity.nil.order.application.product.interfaces.persistence;
 
 
-import sanity.nil.order.application.common.application.dto.BaseFilters;
+import sanity.nil.order.application.common.dto.BaseFilters;
 import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
 import sanity.nil.order.domain.product.entity.Product;

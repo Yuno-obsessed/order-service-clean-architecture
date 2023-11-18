@@ -24,8 +24,8 @@ public class OutboxModel extends BaseModel {
     @Column(name = "route")
     private String route;
 
-    @Column(name = "payload", columnDefinition = "bytea")
-    private byte[] payload;
+    @Column(name = "payload", columnDefinition = "text")
+    private String payload;
 
     @Column(name = "aggregate_id")
     private UUID aggregateID;

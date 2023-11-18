@@ -1,6 +1,6 @@
 package sanity.nil.order.domain.order.entity;
 
-import sanity.nil.order.application.common.domain.vo.Discount;
+import sanity.nil.order.domain.common.entity.Discount;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -55,7 +55,7 @@ public class OrderProduct {
     public BigDecimal getTotalPrice() {
         int discountInt = 0;
         if (discount.isActive()) {
-            discountInt = discount.getDiscountInt();
+            discountInt = discount.getPercent();
         }
         BigDecimal totalPrice = price.multiply(BigDecimal.valueOf(quantity));
         BigDecimal priceAfterDiscount = totalPrice

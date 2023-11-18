@@ -28,6 +28,9 @@ public class ProductImageModel {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "product_id")
+    private UUID productId;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

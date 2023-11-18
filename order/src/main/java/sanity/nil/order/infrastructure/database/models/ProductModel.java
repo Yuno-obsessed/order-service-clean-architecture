@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,14 +28,12 @@ public class ProductModel extends BaseModel {
     @Column(name = "price", nullable = false, precision = 19, scale = 2)
     private BigDecimal price;
 
-    @Column(name = "discount_percent")
-    private Integer discount;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "discount_id")
+    private DiscountModel discount;
 
-    @Column(name = "discount_start")
-    private LocalDateTime discountStart;
-
-    @Column(name = "discount_end")
-    private LocalDateTime discountEnd;
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ProductStatisticsModel productStatistics;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
@@ -48,24 +45,9 @@ public class ProductModel extends BaseModel {
     @JoinColumn(name = "subtype_id")
     private ProductSubtypeModel productSubtype;
 
-    @Column(name = "rate", precision = 16, scale = 15)
-    private BigDecimal rate;
-
-    @Column(name = "ratings")
-    private Integer ratings;
-
-    @Column(name = "in_wish_list")
-    private Integer inWishList;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id")
     private List<ProductImageModel> productImages = new ArrayList<>();
-
-    public boolean isDiscountExpired() {
-        LocalDateTime now = LocalDateTime.now();
-        return this.getDiscountStart().isBefore(now) &&
-                this.getDiscountEnd().isAfter(now);
-    }
 
     public boolean isLogicallyDeleted() {
         return this.isDeleted() && this.getDeletedAt() != null;

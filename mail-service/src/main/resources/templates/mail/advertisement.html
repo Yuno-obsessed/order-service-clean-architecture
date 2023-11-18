@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap"
+          rel="stylesheet">
+    <title>Advertisement Mail</title>
+    <style th:inline="text">
+        h4 {
+            opacity: 0.4;
+        }
+
+        * {
+            font-family: Poppins,
+            sans-serif;
+        }
+
+        .title {
+            margin: 15px auto;
+            justify-content: center;
+            display: flex;
+        }
+
+        .container {
+            border-radius: 10px;
+            padding: 5px 15px;
+            background: rgba(245, 245, 245, 0.73);
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .product {
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            background: white;
+            align-items: center;
+            transition: background 0.1s ease-in-out;
+        }
+
+        .product:hover {
+            background: white;
+        }
+
+        .product img {
+            margin-right: 10px;
+            width: 150px;
+            max-width: 180px;
+            margin-bottom: 10px;
+        }
+
+        .product-details {
+            margin-bottom: 10px;
+        }
+
+        .price {
+            display: flex;
+            color: red;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+        }
+
+        .product_name {
+            font-size: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .button {
+            display: flex;
+            justify-content: center;
+            margin: 10px auto;
+
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="title">Online Shop</h1>
+    <h4>Recommended for you</h4>
+    <div th:each="product : ${products}">
+        <a th:href="${product.link}">
+            <div class="product">
+                <img th:src="${product.imageURL}">
+                <div class="product-details">
+                    <p class="product_name" th:text="${product.name}"></p>
+                    <p th:text="${product.discount}"><span class="price" th:span="${product.price}"></span> <span
+                            class="original-price" th:span="${product.actualPrice}"></span></p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <a th:href="${shop_url}">
+        <button class="button">Shop now</button>
+    </a>
+</div>
+
+</body>
+</html>

@@ -13,6 +13,7 @@ import sanity.nil.order.domain.order.events.OrderProductCreate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class OrderCacheImpl implements OrderCache {
@@ -24,13 +25,13 @@ public class OrderCacheImpl implements OrderCache {
         OrderQueryDTO orderDTO = new OrderQueryDTO();
         orderDTO.orderID = event.getId();
         orderDTO.userID = event.getClientID();
-        String[] address = event.getAddress().getSplitAddress();
-        orderDTO.address = new AddressQueryDTO(event.getId(),
-                address[0], address[1], address[2],
-                Integer.parseInt(address[3]), address[4]);
-        orderDTO.paymentMethod = event.getPaymentMethod().getValue();
-        orderDTO.paymentOption = event.getPaymentOption().getValue();
-        orderDTO.orderStatus = event.getOrderStatus().getValue();
+        String[] address = event.getAddress().split(",");
+        orderDTO.address = new AddressQueryDTO(UUID.fromString(address[0]),
+                address[1], address[2], address[3],
+                Integer.parseInt(address[4]), address[5]);
+        orderDTO.paymentMethod = event.getPaymentMethod();
+        orderDTO.paymentOption = event.getPaymentOption();
+        orderDTO.orderStatus = event.getOrderStatus();
         List<ProductQueryDTO> products = new ArrayList<>();
         for (OrderProductCreate productEvent : event.getProducts()) {
             ProductQueryDTO product = new ProductQueryDTO();

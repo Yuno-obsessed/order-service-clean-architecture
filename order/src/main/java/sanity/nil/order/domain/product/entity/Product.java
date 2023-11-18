@@ -1,11 +1,9 @@
 package sanity.nil.order.domain.product.entity;
 
-import sanity.nil.order.application.common.domain.vo.Deleted;
-import sanity.nil.order.application.common.domain.vo.Discount;
+import sanity.nil.order.domain.common.entity.Discount;
+import sanity.nil.order.domain.common.vo.Deleted;
 import sanity.nil.order.domain.order.entity.ProductImages;
 import sanity.nil.order.domain.product.vo.ProductID;
-import sanity.nil.order.domain.product.vo.ProductStatistics;
-import sanity.nil.order.domain.product.vo.ProductSubtype;
 
 import java.math.BigDecimal;
 import java.util.Objects;

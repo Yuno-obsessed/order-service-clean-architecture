@@ -3,8 +3,8 @@ package sanity.nil.order.infrastructure.database.orm.mapper;
 
 import sanity.nil.order.application.product.dto.boundary.ProductSubtypeDTO;
 import sanity.nil.order.application.product.dto.boundary.ProductTypeDTO;
-import sanity.nil.order.domain.product.vo.ProductSubtype;
-import sanity.nil.order.domain.product.vo.ProductType;
+import sanity.nil.order.domain.product.entity.ProductSubtype;
+import sanity.nil.order.domain.product.entity.ProductType;
 import sanity.nil.order.infrastructure.database.models.ProductSubtypeModel;
 import sanity.nil.order.infrastructure.database.models.ProductTypeModel;
 

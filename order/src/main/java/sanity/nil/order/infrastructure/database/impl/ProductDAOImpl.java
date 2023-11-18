@@ -4,25 +4,39 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import sanity.nil.order.application.common.application.dto.BaseFilters;
+import sanity.nil.order.application.common.dto.BaseFilters;
 import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
+import sanity.nil.order.application.product.exceptions.DiscountNotFound;
 import sanity.nil.order.application.product.exceptions.ProductIsDeleted;
 import sanity.nil.order.application.product.exceptions.ProductNotFound;
-import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
-import sanity.nil.order.application.product.interfaces.persistence.ProductReader;
+import sanity.nil.order.application.product.exceptions.SubtypeNotFound;
+import sanity.nil.order.application.product.interfaces.persistence.*;
+import sanity.nil.order.domain.common.entity.Discount;
+import sanity.nil.order.domain.order.entity.ProductImages;
 import sanity.nil.order.domain.product.entity.Product;
+import sanity.nil.order.domain.product.entity.ProductSubtype;
+import sanity.nil.order.infrastructure.database.models.DiscountModel;
 import sanity.nil.order.infrastructure.database.models.ProductModel;
+import sanity.nil.order.infrastructure.database.models.ProductSubtypeModel;
+import sanity.nil.order.infrastructure.database.orm.DiscountORM;
+import sanity.nil.order.infrastructure.database.orm.ProductImageORM;
 import sanity.nil.order.infrastructure.database.orm.ProductORM;
+import sanity.nil.order.infrastructure.database.orm.ProductSubtypeORM;
 import sanity.nil.order.infrastructure.database.orm.mapper.ProductMapper;
+import sanity.nil.order.infrastructure.database.orm.mapper.ProductSubtypeMapper;
 
 import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class ProductDAOImpl implements ProductDAO, ProductReader {
+public class ProductDAOImpl implements ProductDAO, ProductReader, ProductSubtypeReader,
+        DiscountReader, ProductImageReader {
 
     private final ProductORM productORM;
+    private final ProductSubtypeORM productSubtypeORM;
+    private final DiscountORM discountORM;
+    private final ProductImageORM productImageORM;
 
     @Override
     public Product createProduct(Product entity) {
@@ -97,5 +111,24 @@ public class ProductDAOImpl implements ProductDAO, ProductReader {
             throw ProductIsDeleted.throwEx(id);
         }
         return ProductMapper.convertModelToEntity(maybeModel);
+    }
+
+    @Override
+    public ProductSubtype getBySubtypeId(Integer id) {
+        ProductSubtypeModel maybeProductSubtype = productSubtypeORM.findById(id).orElseThrow(() ->
+                SubtypeNotFound.throwEx(id));
+        return ProductSubtypeMapper.convertModelToEntity(maybeProductSubtype);
+    }
+
+    @Override
+    public Discount getByID(UUID id) {
+        DiscountModel maybeDiscountModel = discountORM.findById(id).orElseThrow(() ->
+                DiscountNotFound.throwEx(id));
+        return ProductMapper.convertDiscountModelToEntity(maybeDiscountModel);
+    }
+
+    @Override
+    public ProductImages getProductImagesByID(UUID productID) {
+        return ProductMapper.convertProductImagesModelToEntity(productImageORM.getAllByProductId(productID));
     }
 }

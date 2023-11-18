@@ -9,7 +9,7 @@ import sanity.nil.order.application.order.interfaces.cache.OrderCacheReader;
 
 import java.util.*;
 
-import static sanity.nil.order.application.common.application.dto.BaseFilters.Order.ASC;
+import static sanity.nil.order.application.common.dto.BaseFilters.Order.ASC;
 
 @RequiredArgsConstructor
 public class OrderCacheReaderImpl implements OrderCacheReader {

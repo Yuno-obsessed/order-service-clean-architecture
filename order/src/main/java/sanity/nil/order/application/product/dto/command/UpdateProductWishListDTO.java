@@ -13,6 +13,6 @@ public class UpdateProductWishListDTO {
     @JsonProperty(value = "product_id", required = true)
     public UUID productId;
 
-    @JsonProperty(value = "add_in_wish_list", defaultValue = "false")
+    @JsonProperty(value = "add_in_wish_list")
     public boolean addInWishList;
 }

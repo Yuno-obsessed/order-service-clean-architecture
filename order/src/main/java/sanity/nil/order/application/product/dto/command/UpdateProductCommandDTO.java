@@ -26,8 +26,8 @@ public class UpdateProductCommandDTO {
     @JsonProperty(value = "price", required = true)
     public BigDecimal price;
 
-    @JsonProperty(value = "discount")
-    public CreateDiscountDTO discountDTO;
+    @JsonProperty(value = "discount_id")
+    public UUID discountID;
 
     @JsonProperty(value = "quantity", defaultValue = "0")
     public Integer quantity;

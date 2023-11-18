@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import sanity.nil.order.application.product.dto.boundary.DiscountDTO;
 import sanity.nil.order.application.product.dto.boundary.ProductImageDTO;
 import sanity.nil.order.application.product.dto.boundary.ProductStatisticsDTO;
 import sanity.nil.order.application.product.dto.boundary.ProductTypeDTO;
@@ -33,8 +32,9 @@ public class ProductQueryDTO {
     public BigDecimal price;
 
     @JsonProperty(value = "discount")
-    public DiscountDTO discount;
+    public DiscountQueryDTO discount;
 
+    //TODO: add in domain to calculate actual_price and return it from domain?
 //    @JsonProperty(value = "actual_price")
 //    public BigDecimal actualPrice;
 

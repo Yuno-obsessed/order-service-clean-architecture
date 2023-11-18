@@ -1,14 +1,17 @@
 package sanity.nil.order.infrastructure.storage.directories;
 
 import io.minio.BucketExistsArgs;
-import io.minio.GetObjectArgs;
+import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.PutObjectArgs;
+import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
-import sanity.nil.order.application.common.application.dto.FileData;
-import sanity.nil.order.application.common.application.exceptions.StorageException;
-import sanity.nil.order.application.common.application.interfaces.storage.FileStorage;
+import sanity.nil.order.application.common.dto.FileData;
+import sanity.nil.order.application.common.exceptions.StorageException;
+import sanity.nil.order.application.common.interfaces.storage.FileStorage;
 import sanity.nil.order.infrastructure.storage.config.MinioConfig;
+
+import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 public class ProductStorage implements FileStorage {
@@ -51,16 +54,20 @@ public class ProductStorage implements FileStorage {
     }
 
     @Override
-    public FileData getFile(String name, String bucketName) {
+    public String getFileURL(String name, String bucketName) {
+        String url = null;
         try {
-            minio.getClient().getObject(GetObjectArgs.builder()
-                    .bucket(bucketName)
-                    .object(name)
-                    .build());
+            url = minio.getClient().getPresignedObjectUrl(
+                    GetPresignedObjectUrlArgs.builder()
+                            .method(Method.GET)
+                            .bucket(bucketName)
+                            .object(name)
+                            .expiry(2, TimeUnit.HOURS)
+                            .build());
         } catch (Exception e) {
             throw new StorageException(e);
         }
-        return null;
+        return url;
     }
 
 }

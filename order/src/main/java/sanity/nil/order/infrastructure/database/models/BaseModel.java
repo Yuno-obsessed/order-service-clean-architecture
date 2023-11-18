@@ -15,13 +15,13 @@ public abstract class BaseModel {
     @Id
     private UUID id;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", columnDefinition = "timestamptz", updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", columnDefinition = "timestamptz")
     private LocalDateTime updatedAt;
 
-    @Column(name = "deleted_at")
+    @Column(name = "deleted_at", columnDefinition = "timestamptz")
     private LocalDateTime deletedAt;
 
     @Column(name = "deleted")

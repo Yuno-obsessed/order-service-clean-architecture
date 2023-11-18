@@ -1,7 +1,7 @@
 package sanity.nil.order.application.product.command;
 
 import lombok.RequiredArgsConstructor;
-import sanity.nil.order.application.common.application.interfaces.storage.FileStorage;
+import sanity.nil.order.application.common.interfaces.storage.FileStorage;
 import sanity.nil.order.application.product.dto.boundary.ProductFileData;
 import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
 import sanity.nil.order.application.product.interfaces.persistence.ProductReader;

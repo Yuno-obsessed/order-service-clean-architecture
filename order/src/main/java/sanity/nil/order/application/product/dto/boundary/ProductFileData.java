@@ -2,7 +2,7 @@ package sanity.nil.order.application.product.dto.boundary;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import sanity.nil.order.application.common.application.dto.FileData;
+import sanity.nil.order.application.common.dto.FileData;
 
 import java.util.ArrayList;
 import java.util.List;

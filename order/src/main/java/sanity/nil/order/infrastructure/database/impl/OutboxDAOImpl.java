@@ -1,10 +1,10 @@
 package sanity.nil.order.infrastructure.database.impl;
 
 import lombok.RequiredArgsConstructor;
-import sanity.nil.order.application.common.application.consts.EventStatus;
-import sanity.nil.order.application.common.application.relay.dto.OutboxMessage;
-import sanity.nil.order.application.common.application.relay.interfaces.persistence.OutboxDAO;
-import sanity.nil.order.application.common.domain.event.Event;
+import sanity.nil.order.application.common.consts.EventStatus;
+import sanity.nil.order.application.common.relay.dto.OutboxMessage;
+import sanity.nil.order.application.common.relay.interfaces.persistence.OutboxDAO;
+import sanity.nil.order.domain.common.event.Event;
 import sanity.nil.order.infrastructure.database.models.OutboxModel;
 import sanity.nil.order.infrastructure.database.orm.OutboxORM;
 import sanity.nil.order.infrastructure.database.orm.mapper.OutboxMapper;

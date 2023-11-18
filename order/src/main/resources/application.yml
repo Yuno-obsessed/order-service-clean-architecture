@@ -1,9 +1,16 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: false
 spring:
+  profiles:
+    active: secrets
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:15432/online-shop
-    username: sanity
-    password: wordpass
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -15,8 +22,6 @@ spring:
       open-in-view: false
       generate-ddl: true
   rabbitmq:
-    password: admin
-    username: admin
     host: localhost
     port: 5672
   data:
@@ -32,19 +37,11 @@ spring:
 logging:
   level:
     com.sanity: debug
-server:
-  port: 8080
-  error:
-    include-message: always
-    include-binding-errors: always
-    include-stacktrace: on_param
-    include-exception: false
-exception:
-  trace: true
 application:
   rabbit:
     order:
-      exchange: Orders
+      topic-exchange: Orders.Top
+      fanout-exchange: Orders.FA
       queue: order
       routing-created-event: Order.Create
       routing-updated-event: Order.Update
@@ -52,6 +49,3 @@ application:
       routing-added-product-event: Order.AddedProduct
     product:
       queue: product
-  minio:
-    access-key: sanity
-    secret-key: sanity2004

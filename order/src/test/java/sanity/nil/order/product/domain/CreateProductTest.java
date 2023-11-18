@@ -3,7 +3,7 @@ package sanity.nil.order.product.domain;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import sanity.nil.order.application.common.application.exceptions.DiscountNotFoundException;
+import sanity.nil.order.application.product.exceptions.DiscountNotFound;
 import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
 import sanity.nil.order.domain.product.entity.Product;
 import sanity.nil.order.domain.product.exceptions.UnsupportedQuantityException;
@@ -40,7 +40,7 @@ public class CreateProductTest {
 
     @Test
     public void failCreateProductWithWrongDiscountCode() {
-        assertThatExceptionOfType(DiscountNotFoundException.class).isThrownBy(
+        assertThatExceptionOfType(DiscountNotFound.class).isThrownBy(
                 () -> productService.create("desc_test", "name_test",
                         BigDecimal.valueOf(25.5), 4, LocalDateTime.now().minusDays(1),
                         LocalDateTime.now().plusDays(4), 4, EntityGenerator.generateProductSubtype(1))

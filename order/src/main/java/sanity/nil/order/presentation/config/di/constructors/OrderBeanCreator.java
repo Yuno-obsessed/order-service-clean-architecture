@@ -2,18 +2,15 @@ package sanity.nil.order.presentation.config.di.constructors;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
-import sanity.nil.order.application.common.application.interfaces.broker.MessageBroker;
-import sanity.nil.order.application.common.application.relay.interfaces.persistence.OutboxDAO;
+import sanity.nil.order.application.common.interfaces.broker.MessageBroker;
+import sanity.nil.order.application.common.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.application.order.cache.OrderCacheImpl;
 import sanity.nil.order.application.order.command.CreateAddressCommand;
 import sanity.nil.order.application.order.command.CreateOrderCommand;
@@ -69,8 +66,13 @@ public class OrderBeanCreator {
     }
 
     @Bean
-    public TopicExchange orderTopicExchange(RabbitConfig rabbitConfig) {
-        return new TopicExchange(rabbitConfig.getOrderExchange(), true, false);
+    public FanoutExchange fanoutExchange(RabbitConfig rabbitConfig) {
+        return new FanoutExchange(rabbitConfig.getOrderFanoutExchange(), true, false);
+    }
+
+    @Bean
+    public TopicExchange topicExchange(RabbitConfig rabbitConfig) {
+        return new TopicExchange(rabbitConfig.getOrderTopicExchange(), true, false);
     }
 
     @Bean
@@ -80,18 +82,9 @@ public class OrderBeanCreator {
 
     @Bean
     public Binding orderCreatedBinding(@Qualifier("orderQueue") Queue queue,
-                                       @Qualifier("orderTopicExchange") TopicExchange topicExchange,
-                                       RabbitConfig rabbitConfig) {
-        return BindingBuilder.bind(queue).to(topicExchange).with(rabbitConfig.getOrderCreatedRK());
+                                       @Qualifier("fanoutExchange") FanoutExchange fanoutExchange) {
+        return BindingBuilder.bind(queue).to(fanoutExchange);
     }
-
-    @Bean
-    public Binding binding(@Qualifier("productQueue") Queue queue,
-                           @Qualifier("orderTopicExchange") TopicExchange topicExchange,
-                           RabbitConfig rabbitConfig) {
-        return BindingBuilder.bind(queue).to(topicExchange).with(rabbitConfig.getOrderAddedProductRK());
-    }
-
 
     @Bean
     public OrderSubscribers orderSubscribers(OrderCache orderCache,

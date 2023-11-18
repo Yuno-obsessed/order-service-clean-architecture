@@ -1,7 +1,7 @@
 package sanity.nil.order.domain.order.aggregate;
 
-import sanity.nil.order.application.common.domain.aggregate.BaseAggregate;
-import sanity.nil.order.application.common.domain.vo.Deleted;
+import sanity.nil.order.domain.common.aggregate.BaseAggregate;
+import sanity.nil.order.domain.common.vo.Deleted;
 import sanity.nil.order.domain.order.consts.OrderStatus;
 import sanity.nil.order.domain.order.consts.PaymentMethod;
 import sanity.nil.order.domain.order.consts.PaymentOption;

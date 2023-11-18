@@ -3,9 +3,9 @@ package sanity.nil.order.infrastructure.storage.directories;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import lombok.RequiredArgsConstructor;
-import sanity.nil.order.application.common.application.dto.FileData;
-import sanity.nil.order.application.common.application.exceptions.StorageException;
-import sanity.nil.order.application.common.application.interfaces.storage.FileStorage;
+import sanity.nil.order.application.common.dto.FileData;
+import sanity.nil.order.application.common.exceptions.StorageException;
+import sanity.nil.order.application.common.interfaces.storage.FileStorage;
 import sanity.nil.order.infrastructure.storage.config.MinioConfig;
 
 @RequiredArgsConstructor
@@ -35,7 +35,7 @@ public class UserStorage implements FileStorage {
     }
 
     @Override
-    public FileData getFile(String name, String bucketName) {
+    public String getFileURL(String name, String bucketName) {
         return null;
     }
 

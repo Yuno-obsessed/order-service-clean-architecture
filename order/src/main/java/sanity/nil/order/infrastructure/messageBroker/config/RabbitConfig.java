@@ -9,8 +9,11 @@ public class RabbitConfig {
     @Value("${application.rabbit.order.queue}")
     private String orderQueue;
 
-    @Value("${application.rabbit.order.exchange}")
-    private String orderExchange;
+    @Value("${application.rabbit.order.topic-exchange}")
+    private String orderTopicExchange;
+
+    @Value("${application.rabbit.order.fanout-exchange}")
+    private String orderFanoutExchange;
 
     @Value("${application.rabbit.order.routing-deleted-event}")
     private String orderDeletedRK;

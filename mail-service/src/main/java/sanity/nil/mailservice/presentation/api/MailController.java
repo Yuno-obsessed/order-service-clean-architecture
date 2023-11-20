@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sanity.nil.mailservice.application.consts.MailType;
 import sanity.nil.mailservice.application.interfaces.MailSender;
 
 @RestController
@@ -17,11 +18,7 @@ public class MailController {
 
     @GetMapping("/send")
     public ResponseEntity<String> sendMail() {
-        try {
-            mailSender.sendSimpleEmail("d.2510086@gmail.com", "topic-1", "some text");
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
+        mailSender.sendSimpleEmail(new String[]{"d.2510086@gmail.com"}, MailType.CREATED_ORDER, "some text");
         return ResponseEntity.status(200).body("success");
     }
 }

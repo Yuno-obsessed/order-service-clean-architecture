@@ -22,11 +22,13 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 import sanity.nil.mailservice.application.dto.boundary.ProductImageDTO;
 import sanity.nil.mailservice.application.dto.mail.OrderMailDTO;
+import sanity.nil.mailservice.application.interactors.CreatedOrderMailInteractor;
 import sanity.nil.mailservice.application.interfaces.MailContentTemplate;
 import sanity.nil.mailservice.application.interfaces.MailSender;
 import sanity.nil.mailservice.application.interfaces.WebTemplate;
 import sanity.nil.mailservice.application.interfaces.persistence.MailDAO;
 import sanity.nil.mailservice.infrastructure.database.impl.MailDAOImpl;
+import sanity.nil.mailservice.infrastructure.database.orm.MailORM;
 import sanity.nil.mailservice.infrastructure.mail.MailSenderImpl;
 import sanity.nil.mailservice.infrastructure.mail.template.OrderCreatedMailTemplate;
 import sanity.nil.mailservice.infrastructure.messageBroker.config.RabbitConfig;
@@ -34,6 +36,7 @@ import sanity.nil.mailservice.infrastructure.web.OrderWebTemplate;
 import sanity.nil.mailservice.presentation.consumer.subscribers.MailSubscribers;
 
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.UUID;
 
 @EnableRabbit
@@ -51,9 +54,6 @@ public class MailBeanCreator {
 
     @Value("${spring.datasource.password}")
     private String dbPassword;
-
-    @Value("${application.web.order.base-url}")
-    private String orderBaseURL;
 
     @Bean
     public DataSource dataSource() {
@@ -125,15 +125,17 @@ public class MailBeanCreator {
     }
 
     @Bean
-    public MailDAO mailDAO() {
-        return new MailDAOImpl();
+    public MailDAO mailDAO(MailORM mailORM) {
+        return new MailDAOImpl(mailORM);
     }
 
     @Bean
-    public MailSubscribers mailSubscribers(MailDAO mailDAO,
-                                           @Qualifier("customMailSender") MailSender mailSender,
+    public MailSubscribers mailSubscribers(MailContentTemplate<OrderMailDTO> contentTemplate,
+                                           WebTemplate<List<ProductImageDTO>, UUID> webTemplate,
+                                           MailSender mailSender,
+                                           MailDAO mailDAO,
                                            @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
-        return new MailSubscribers(mailDAO, mailSender, objectMapper);
+        return new MailSubscribers(new CreatedOrderMailInteractor(contentTemplate,webTemplate, mailSender, mailDAO), objectMapper);
     }
 
     @Bean
@@ -144,15 +146,8 @@ public class MailBeanCreator {
     }
 
     @Bean
-    public WebClient orderWebClient(WebClient.Builder builder) {
-        return builder
-                .baseUrl(orderBaseURL)
-                .build();
-    }
-
-    @Bean
-    public WebTemplate<ProductImageDTO, UUID> orderWebTemplate(WebClient webClient) {
-        return new OrderWebTemplate(webClient);
+    public WebTemplate<List<ProductImageDTO>, UUID> orderWebTemplate() {
+        return new OrderWebTemplate();
     }
 
     @Bean

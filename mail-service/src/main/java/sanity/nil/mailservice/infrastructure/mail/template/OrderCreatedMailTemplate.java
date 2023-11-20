@@ -15,7 +15,7 @@ public class OrderCreatedMailTemplate implements MailContentTemplate<OrderMailDT
     public String load(OrderMailDTO orderMailDTO) {
         Context context = new Context();
         context.setVariable("order", orderMailDTO);
-        context.setVariable("shop_url", "#");
+        context.setVariable("delivery_status_url", "#");
         return templateEngine.process("created_order.html", context);
     }
 }

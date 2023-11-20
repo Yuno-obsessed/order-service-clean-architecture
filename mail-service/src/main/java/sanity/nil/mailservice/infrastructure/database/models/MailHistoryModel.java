@@ -1,10 +1,7 @@
 package sanity.nil.mailservice.infrastructure.database.models;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,4 +34,17 @@ public class MailHistoryModel {
 
     @Column(name = "created_at", columnDefinition = "timestamptz")
     private LocalDateTime createdAt;
+
+    @PrePersist
+    private void onCreate() {
+       this.createdAt = LocalDateTime.now();
+    }
+
+    public MailHistoryModel(UUID id, String topic, String mailContent, String recipients, LocalDateTime sendAt) {
+        this.id = id;
+        this.topic = topic;
+        this.mailContent = mailContent;
+        this.recipients = recipients;
+        this.sendAt = sendAt;
+    }
 }

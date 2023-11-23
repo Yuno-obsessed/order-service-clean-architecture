@@ -29,7 +29,7 @@ public class ProductController {
     private final ProductCommandService productCommandService;
     private final ProductQueryService productQueryService;
 
-    @GetMapping("/search/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ProductQueryDTO> getProductById(@PathVariable UUID id){
         return ResponseEntity
                 .status(200)

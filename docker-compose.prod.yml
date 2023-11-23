@@ -1,0 +1,102 @@
+version: '3.9'
+services:
+
+  postgres:
+    image: postgres:latest
+    container_name: order.postgres
+    restart: on-failure
+    environment:
+      POSTGRES_DB: online-shop
+      POSTGRES_USER: sanity
+      POSTGRES_PASSWORD: wordpass
+    expose:
+      - "5432"
+    ports:
+      - "127.0.0.1:15432:5432"
+    networks:
+      - order.postgres.network
+    volumes:
+      - order.postgres.data:/var/lib/postgresql/users:rw
+      - ./src/main/resources/import.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    container_name: order.rabbitmq
+    networks:
+      - order.rabbitmq.network
+    expose:
+      - "5672"
+      - "15672"
+    volumes:
+      - order.rabbitmq.data:/var/lib/rabbitmq/:rw
+    ports:
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics check_running -q" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    container_name: order.redis
+    image: redis:alpine
+    command: redis-server
+    networks:
+      - order.redis.network
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+    volumes:
+      - order.redis.data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli","ping" ]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+
+  minio:
+    container_name: order.minio
+    image: quay.io/minio/minio:latest
+    command: server --address ":9000" --console-address ":9001" /data
+    networks:
+      - order.minio.network
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=sanity
+      - MINIO_ROOT_PASSWORD=sanity2004
+    #    healthcheck:
+    #      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+    #      interval: 30s
+    #      timeout: 20s
+    #      retries: 3
+    volumes:
+      - order.minio.data:/data
+#TODO: ADD NGINX
+
+volumes:
+  order.postgres.data: { }
+  order.rabbitmq.data: { }
+  order.redis.data: { }
+  order.minio.data: { }
+
+
+networks:
+  order.postgres.network: { }
+  order.rabbitmq.network: { }
+  order.redis.network: { }
+  order.minio.network: { }

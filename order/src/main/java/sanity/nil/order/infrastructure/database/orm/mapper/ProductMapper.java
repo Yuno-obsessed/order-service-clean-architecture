@@ -167,6 +167,9 @@ public class ProductMapper {
     }
 
     public static ProductImages convertProductImagesModelToEntity(List<ProductImageModel> imageModels) {
+        if (imageModels == null || imageModels.isEmpty()) {
+            return null;
+        }
         return new ProductImages(imageModels.stream()
                 .map(ProductImageModel::getImageName)
                 .toList(), imageModels.get(0).getBucketName()

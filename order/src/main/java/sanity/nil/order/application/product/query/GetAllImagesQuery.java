@@ -24,11 +24,11 @@ public class GetAllImagesQuery {
                     .filter(e -> e.lastIndexOf('0') == e.length() - 1)
                     .findFirst()
                     .get();
-            productImageList.add(new ProductImageInfo(fileStorage.getFileURL(mainImage, images.getBucketName()), mainImage));
+            productImageList.add(new ProductImageInfo(mainImage, fileStorage.getFileURL(mainImage, images.getBucketName())));
             return productImageList;
         }
         for (String image : images.getImageNames()) {
-            productImageList.add(new ProductImageInfo(fileStorage.getFileURL(image, images.getBucketName()), image));
+            productImageList.add(new ProductImageInfo(image, fileStorage.getFileURL(image, images.getBucketName())));
         }
         return productImageList;
     }

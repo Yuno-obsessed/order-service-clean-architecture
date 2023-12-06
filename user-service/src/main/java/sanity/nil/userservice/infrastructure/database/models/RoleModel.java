@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 public class RoleModel {
 
     @Id
-    private Integer id;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "role_type", nullable = false, unique = true, length = 20)
     private RoleType roleType;

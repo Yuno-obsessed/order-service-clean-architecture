@@ -1,6 +1,6 @@
 package sanity.nil.userservice.application.interfaces.persistence;
 
-import sanity.nil.userservice.domain.entity.User;
+import sanity.nil.userservice.domain.user.entity.User;
 
 public interface UserDAO {
 

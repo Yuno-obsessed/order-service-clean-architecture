@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import sanity.nil.mailservice.application.interactors.CreatedOrderMailInteractor;
-import sanity.nil.mailservice.application.interfaces.MailSender;
-import sanity.nil.mailservice.application.interfaces.persistence.MailDAO;
 import sanity.nil.mailservice.domain.common.BaseEventElement;
 import sanity.nil.mailservice.domain.events.OrderCreatedEvent;
 

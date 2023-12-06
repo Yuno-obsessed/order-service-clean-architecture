@@ -3,15 +3,17 @@ package sanity.nil.userservice.presentation.config.di;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import sanity.nil.userservice.application.dto.query.RefreshSessionsQueryDTO;
+import sanity.nil.userservice.application.interfaces.persistence.UserReader;
+import sanity.nil.userservice.application.interfaces.security.PasswordEncoder;
+import sanity.nil.userservice.application.query.GetUserByEmailAndPasswordQuery;
+import sanity.nil.userservice.application.service.UserQueryService;
+import sanity.nil.userservice.infrastructure.database.impl.UserDAOImpl;
+import sanity.nil.userservice.infrastructure.database.orm.UserORM;
+import sanity.nil.userservice.infrastructure.security.PasswordEncoderImpl;
 
 import javax.sql.DataSource;
 
@@ -40,20 +42,28 @@ public class BeanCreator {
         return dataSource;
     }
 
-    @Bean("orderRedisTemplate")
-    public RedisTemplate<String, RefreshSessionsQueryDTO> redisTemplate(RedisConnectionFactory connectionFactory,
-                                                                        @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
-        RedisTemplate<String, RefreshSessionsQueryDTO> template = new RedisTemplate<>();
-        template.setConnectionFactory(connectionFactory);
-        template.setDefaultSerializer(new GenericJackson2JsonRedisSerializer(objectMapper));
-        return template;
-    }
-
     @Bean("myObjectMapper")
     public ObjectMapper myObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return objectMapper;
+    }
+
+    @Bean
+    public UserReader userReader(UserORM userORM) {
+        return new UserDAOImpl(userORM);
+    }
+
+    @Bean
+    public UserQueryService userService(UserReader userReader, PasswordEncoder passwordEncoder) {
+        return new UserQueryService(
+                new GetUserByEmailAndPasswordQuery(userReader, passwordEncoder)
+        );
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new PasswordEncoderImpl();
     }
 }

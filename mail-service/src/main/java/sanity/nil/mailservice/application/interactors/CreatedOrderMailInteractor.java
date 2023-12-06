@@ -6,12 +6,10 @@ import sanity.nil.mailservice.application.dto.boundary.ProductImageDTO;
 import sanity.nil.mailservice.application.dto.mail.MailDTO;
 import sanity.nil.mailservice.application.dto.mail.OrderMailDTO;
 import sanity.nil.mailservice.application.dto.mail.OrderProductMailDTO;
-import sanity.nil.mailservice.application.dto.mail.ProductMailDTO;
 import sanity.nil.mailservice.application.interfaces.MailContentTemplate;
 import sanity.nil.mailservice.application.interfaces.MailSender;
 import sanity.nil.mailservice.application.interfaces.WebTemplate;
 import sanity.nil.mailservice.application.interfaces.persistence.MailDAO;
-import sanity.nil.mailservice.application.interfaces.persistence.MailReader;
 import sanity.nil.mailservice.domain.events.OrderCreatedEvent;
 import sanity.nil.mailservice.domain.events.OrderProductCreate;
 

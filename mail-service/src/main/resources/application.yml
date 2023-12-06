@@ -30,6 +30,13 @@ spring:
           auth: true
           starttls:
             enable: true
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
 application:
   rabbit:
     order:

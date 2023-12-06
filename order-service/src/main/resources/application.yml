@@ -1,0 +1,55 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: false
+spring:
+  profiles:
+    active: secrets
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:15432/online-shop
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      open-in-view: false
+      generate-ddl: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+      location: /upload
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
+application:
+  rabbit:
+    order:
+      topic-exchange: Orders.Top
+      fanout-exchange: Orders.FA
+      queue: order
+      routing-created-event: Order.Create
+      routing-updated-event: Order.Update
+      routing-deleted-event: Order.Delete
+      routing-added-product-event: Order.AddedProduct
+    product:
+      queue: product

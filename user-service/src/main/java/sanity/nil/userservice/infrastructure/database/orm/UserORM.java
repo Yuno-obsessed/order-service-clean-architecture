@@ -14,4 +14,16 @@ public interface UserORM extends JpaRepository<UserModel, UUID> {
             "AND u.deleted = false"
     )
     Optional<UserModel> findByEmail(String email);
+
+    @Query("SELECT u FROM UserModel u " +
+            "WHERE u.id = :id " +
+            "AND u.deleted = false"
+    )
+    Optional<UserModel> findByID(UUID id);
+
+    @Query("SELECT u FROM UserModel u " +
+            "WHERE u.username = :username " +
+            "AND u.deleted = false"
+    )
+    Optional<UserModel> findByUsername(String username);
 }

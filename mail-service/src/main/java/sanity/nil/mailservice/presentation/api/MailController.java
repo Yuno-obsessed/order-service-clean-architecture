@@ -1,6 +1,5 @@
 package sanity.nil.mailservice.presentation.api;
 
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -2,10 +2,8 @@ package sanity.nil.mailservice.infrastructure.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import sanity.nil.mailservice.application.dto.boundary.ProductImageDTO;
 import sanity.nil.mailservice.application.interfaces.WebTemplate;
 

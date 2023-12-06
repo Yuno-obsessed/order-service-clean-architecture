@@ -2,7 +2,7 @@ package sanity.nil.userservice.application.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
 
-    public UserNotFoundException(String message) {
-        super(String.format("User with username = %s wasn't found.", message));
+    public UserNotFoundException() {
+        super("Such user wasn't found.");
     }
 }

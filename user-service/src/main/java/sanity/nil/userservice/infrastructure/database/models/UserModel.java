@@ -26,9 +26,6 @@ public class UserModel extends BaseModel {
     @Column(name = "username", unique = true, length = 60)
     private String username;
 
-    @Column(name = "rank")
-    private Integer rank;
-
     @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
@@ -42,14 +39,20 @@ public class UserModel extends BaseModel {
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            inverseJoinColumns = @JoinColumn(name = "role_type")
     )
     private Set<RoleModel> roles = new HashSet<>();
 
-    public UserModel(UUID id, String email, String password) {
+    public UserModel(UUID id, String firstName, String lastName, String username, String email,
+                     boolean emailConfirmed, String password, Set<RoleModel> roles) {
         this.setId(id);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
         this.email = email;
+        this.emailConfirmed = emailConfirmed;
         this.password = password;
+        this.roles = roles;
     }
 
     @Override

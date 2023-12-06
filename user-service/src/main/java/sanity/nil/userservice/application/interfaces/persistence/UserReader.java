@@ -3,14 +3,15 @@ package sanity.nil.userservice.application.interfaces.persistence;
 import sanity.nil.userservice.application.dto.query.UserQueryDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserReader {
 
     List<UserQueryDTO> getUsers();
 
-    UserQueryDTO getUserByID();
+    UserQueryDTO getUserByID(UUID id);
 
-    UserQueryDTO getUserByUsername();
+    UserQueryDTO getUserByUsername(String username);
 
-    UserQueryDTO getUserByEmail();
+    UserQueryDTO getUserByEmail(String email);
 }

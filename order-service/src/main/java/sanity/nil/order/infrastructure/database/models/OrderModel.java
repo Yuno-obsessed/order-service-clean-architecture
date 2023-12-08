@@ -17,7 +17,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "orders")
+@Table(name = "orders", schema = "order_service")
 public class OrderModel extends BaseModel {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

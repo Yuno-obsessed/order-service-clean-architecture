@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.util.Objects;
 
 @Entity
-@Table(name = "addresses")
+@Table(name = "addresses", schema = "order_service")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

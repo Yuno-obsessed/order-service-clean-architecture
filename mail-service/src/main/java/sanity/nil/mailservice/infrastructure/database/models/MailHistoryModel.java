@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name = "mail_history")
+@Table(name = "mail_history", schema = "mail_service")
 public class MailHistoryModel {
 
     @Id

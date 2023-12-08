@@ -1,4 +1,4 @@
-package sanity.nil.userservice.presentation.config.logger;
+package sanity.nil.roleservice.presentation.config.logger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

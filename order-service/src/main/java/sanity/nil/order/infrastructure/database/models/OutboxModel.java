@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-@Table(name = "outbox")
+@Table(name = "outbox", schema = "order_service")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

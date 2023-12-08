@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "\"users\"")
+@Table(name = "\"users\"", schema = "order_service")
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -31,17 +31,6 @@ public class UserModel extends BaseModel {
 
     @Column(name = "password", nullable = false, length = 100)
     private String password;
-
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "user_role",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id")
-//    )
-//    private Set<Role> roles = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Review> reviews = new ArrayList<>();
 
     public UserModel(UUID id, String email, String password) {
         this.setId(id);

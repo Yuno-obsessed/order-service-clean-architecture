@@ -7,7 +7,7 @@ import sanity.nil.userservice.application.consts.RoleType;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "roles", schema = "user_service")
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString

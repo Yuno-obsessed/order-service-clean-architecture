@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "product_types")
+@Table(name = "product_types", schema = "order_service")
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString

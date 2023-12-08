@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "order_products")
+@Table(name = "order_products", schema = "order_service")
 @Entity
 public class OrderProductModel {
 

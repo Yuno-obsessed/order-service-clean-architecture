@@ -39,7 +39,8 @@ public class UserModel extends BaseModel {
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_type")
+            inverseJoinColumns = @JoinColumn(name = "role_type"),
+            schema = "user_service"
     )
     private Set<RoleModel> roles = new HashSet<>();
 

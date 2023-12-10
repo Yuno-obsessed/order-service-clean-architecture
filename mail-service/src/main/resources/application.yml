@@ -2,7 +2,7 @@ server:
   port: 8081
 spring:
   profiles:
-    active: secrets
+    active: dev
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:15432/online-shop

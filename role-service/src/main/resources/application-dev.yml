@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    username: sanity
+    password: wordpass
+    url: jdbc:postgresql://postgres:5432/online-shop

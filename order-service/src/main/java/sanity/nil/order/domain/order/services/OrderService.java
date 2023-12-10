@@ -52,7 +52,6 @@ public class OrderService {
     }
 
     public Order update(Order order, Address address, UUID userID, List<OrderProduct> products) {
-//                        String paymentMethod, String paymentOption) {
         if (products == null || products.isEmpty()){
             throw new OrderProductsEmptyException();
         }

@@ -32,8 +32,8 @@ public class UpdateProductTest {
     @Test
     public void successUpdateProduct() {
        Product product = productService.update(createdProduct.getProductId().getId(), createdProduct.getDescription(), "test_name_2",
-               createdProduct.getPrice(), createdProduct.getDiscount().getDiscountType().getCode(), createdProduct.getDiscount().getStartsAt(),
-               createdProduct.getDiscount().getEndsAt(), createdProduct.getQuantity(), createdProduct.getProductSubtype(),
+               createdProduct.getPrice(), createdProduct.getDiscount(),
+               createdProduct.getQuantity(), createdProduct.getProductSubtype(),
                createdProduct.getProductStatistics());
 
         Product updatedProduct = productDAO.updateProduct(product);

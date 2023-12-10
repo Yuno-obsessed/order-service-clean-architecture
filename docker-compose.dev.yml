@@ -1,101 +1,48 @@
 version: '3.9'
 services:
 
-  postgres:
-    image: postgres:latest
-    container_name: order.postgres
-    restart: on-failure
-    environment:
-      POSTGRES_DB: online-shop
-      POSTGRES_USER: sanity
-      POSTGRES_PASSWORD: wordpass
-    expose:
-      - "5432"
+  order-service:
+    container_name: order-service
+    build:
+      context: .
+      dockerfile: order-service/Dockerfile
     ports:
-      - "127.0.0.1:15432:5432"
+      - "8080:8080"
     networks:
-      - order.postgres.network
-    volumes:
-      - order.postgres.data:/var/lib/postgresql/users:rw
-      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
-      interval: 10s
-      timeout: 60s
-      retries: 5
-      start_period: 10s
+      - adapters-network
 
-  rabbitmq:
-    image: rabbitmq:3.11-management
-    container_name: order.rabbitmq
-    networks:
-      - order.rabbitmq.network
-    expose:
-      - "5672"
-      - "15672"
-    volumes:
-      - order.rabbitmq.data:/var/lib/rabbitmq/:rw
+  user-service:
+    container_name: user-service
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
     ports:
-      - "127.0.0.1:5672:5672"
-      - "127.0.0.1:15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin
-    healthcheck:
-      test: [ "CMD-SHELL", "rabbitmq-diagnostics check_running -q" ]
-      interval: 30s
-      timeout: 60s
-      retries: 5
-      start_period: 10s
-
-  redis:
-    container_name: order.redis
-    image: redis:alpine
-    command: redis-server
+      - "8002:8002"
     networks:
-      - order.redis.network
-    expose:
-      - "6379"
-    ports:
-      - "6379:6379"
-    volumes:
-      - order.redis.data:/data
-    healthcheck:
-      test: [ "CMD", "redis-cli","ping" ]
-      interval: 10s
-      timeout: 60s
-      retries: 5
-      start_period: 10s
+      - adapters-network
 
-  minio:
-    container_name: order.minio
-    image: quay.io/minio/minio:latest
-    command: server --address ":9000" --console-address ":9001" /data
+  mail-service:
+    container_name: mail-service
+    build:
+      context: .
+      dockerfile: mail-service/Dockerfile
+    ports:
+      - "8081:8081"
     networks:
-      - order.minio.network
+      - adapters-network
+
+  auth-service:
+    container_name: auth-service
+    build:
+      context: .
+      dockerfile: auth-service/Dockerfile
     ports:
-      - "9000:9000"
-      - "9001:9001"
-    environment:
-      - MINIO_ROOT_USER=sanity
-      - MINIO_ROOT_PASSWORD=sanity2004
-    #    healthcheck:
-    #      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
-    #      interval: 30s
-    #      timeout: 20s
-    #      retries: 3
-    volumes:
-      - order.minio.data:/data
-
-volumes:
-  order.postgres.data: { }
-  order.rabbitmq.data: { }
-  order.redis.data: { }
-  order.minio.data: { }
-
+      - "8003:8003"
+    networks:
+      - adapters-network
 
 networks:
-  order.postgres.network: { }
-  order.rabbitmq.network: { }
-  order.redis.network: { }
-  order.minio.network: { }
+  adapters-network:
+    external: true
+    name: adapters-network
+

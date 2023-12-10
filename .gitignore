@@ -2,8 +2,6 @@ order/src/main/resources/application-secrets.yml
 HELP.md
 frontend
 target/
-.mvn/
-!.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -169,6 +167,4 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 .env
-mvnw
-mvnw.cmd
 gen

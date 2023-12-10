@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    username: sanity
+    password: wordpass
+    url: jdbc:postgresql://postgres:5432/online-shop
+  rabbitmq:
+    password: admin
+    username: admin
+    host: rabbitmq
+  data:
+    redis:
+      host: redis
+application:
+  minio:
+    host: minio
+    access-key: sanity
+    secret-key: sanity2004

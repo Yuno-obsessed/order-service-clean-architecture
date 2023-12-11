@@ -1,0 +1,33 @@
+@use "../../sass/_variables.scss" as *;
+
+.root {
+  border-radius: 10px;
+  background-color: white;
+  justify-content: center;
+  display: flex;
+  margin: 22px 0;
+}
+.container {
+  display: flex;
+  align-items: center;
+  overflow: auto;
+  padding: 10px 40px;
+  column-gap: 70px;
+  justify-content: center;
+}
+.categories {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+  max-width: 900px;
+  white-space: nowrap;
+  column-gap: 70px;
+}
+
+@media screen and (max-width: $first-brake-point) {
+  .container {
+    button {
+      font-size: 10px;
+    }
+  }
+}

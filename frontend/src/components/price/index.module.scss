@@ -1,0 +1,59 @@
+@use "../../sass/_variables.scss" as *;
+
+.price {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.discount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.originalPrice {
+  color: rgba(0, 0, 0, 0.3);
+  font-family: Rubik, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-decoration: line-through;
+}
+.discountprice {
+  font-family: Rubik, sans-serif;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px;
+  color: rgba(239, 46, 46);
+  background: rgba(239, 46, 46, 0.1);
+}
+.buy {
+  display: flex;
+  margin-top: auto;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  h1 {
+    font-family: Rubik, sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+  }
+}
+
+@media screen and (max-width: $second-brake-point) {
+  .buy{
+
+    h1{
+      font-size: 14px;
+    }
+  }
+  .discountprice {
+    font-size: 10px;
+  }
+  .originalPrice{
+    font-size: 10px;
+  }
+}

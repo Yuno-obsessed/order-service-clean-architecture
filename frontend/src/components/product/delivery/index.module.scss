@@ -1,0 +1,30 @@
+.root {
+  background: white;
+  width: 100%;
+  gap: 20px;
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 20px;
+  h1 {
+    font-size: 24px;
+  }
+  span {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    p {
+      opacity: 0.4;
+    }
+  }
+}
+.postname {
+  opacity: 1 !important;
+}
+.post {
+  display: flex;
+  flex-direction: row !important;
+  align-items: center;
+}

@@ -1,0 +1,62 @@
+@use "../../../sass/_variables.scss" as *;
+
+.root {
+  display: flex;
+  background: white;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 10px;
+}
+.image {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-bottom: 20px;
+  img {
+    display: flex;
+    width: 80%;
+  }
+}
+.images {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  img {
+    padding: 10px;
+    border-radius: 10px;
+    transition: background-color 0.2s ease-in-out;
+    display: flex;
+    width: 70px;
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+@media screen and (max-width: $first-brake-point) {
+  .root {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  .image {
+    width: 100%;
+    align-items: center;
+    margin-bottom: 0;
+    justify-content: center;
+    img {
+      width: 200px;
+    }
+  }
+  .images {
+    align-items: initial;
+    flex-direction: column;
+    box-sizing: border-box;
+    img {
+      width: 70px;
+    }
+  }
+}

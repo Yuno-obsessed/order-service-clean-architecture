@@ -1,0 +1,50 @@
+@use "../../sass/_variables.scss" as *;
+
+.container {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+.maincontainer {
+  gap: 20px;
+  display: flex;
+}
+.root {
+  display: flex;
+  background: white;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 10px;
+}
+.title {
+  font-size: 24px;
+  font-weight: 600;
+}
+.cards {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+@media screen and (max-width: $first-brake-point) {
+  .maincontainer {
+    flex-direction: column;
+  }
+  .cards {
+    justify-content: center;
+  }
+  .root {
+    padding: 20px;
+  }
+}
+
+@media screen and (max-width: $second-brake-point) {
+  .root {
+    padding: 5px;
+  }
+  .cards{
+    gap: 5px;
+  }
+}
+

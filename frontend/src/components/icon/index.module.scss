@@ -1,0 +1,14 @@
+.root {
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  flex-shrink: 1;
+  svg {
+    transition: opacity 0.1s ease-in-out;
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}

@@ -1,0 +1,28 @@
+@use "../../../sass/_variables.scss" as *;
+
+.root {
+  display: flex;
+  background: white;
+  flex-direction: column;
+  padding: 20px;
+  width: 100%;
+  border-radius: 10px;
+}
+.container {
+  overflow: auto;
+}
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+.cards {
+  display: flex;
+  gap: 15px;
+}
+
+@media screen and (min-width: $first-brake-point) {
+  .root {
+    width: 75%;
+  }
+}

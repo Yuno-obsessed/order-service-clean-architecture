@@ -1,0 +1,42 @@
+@use "../../sass/_variables.scss" as *;
+
+.container {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+.maincontainer {
+  gap: 20px;
+  display: flex;
+}
+.root {
+  display: flex;
+  gap: 20px;
+}
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+.cards {
+  justify-content: center;
+  flex-wrap: wrap;
+  display: flex;
+  gap: 30px;
+}
+
+.detailsContainer {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  flex-direction: column;
+}
+@media (max-width: $first-brake-point) {
+  .root {
+    flex-direction: column;
+    width: 100%;
+  }
+  .maincontainer {
+    flex-direction: column;
+  }
+}

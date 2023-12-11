@@ -1,0 +1,16 @@
+.root {
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  flex-shrink: 1;
+  padding: 10px;
+  transition: background-color 0.2s ease-in-out;
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  img {
+    width: 24px;
+  }
+}

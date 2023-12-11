@@ -1,0 +1,16 @@
+.root {
+  color: white;
+  gap: 10px;
+  font-weight: 500;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.6;
+  }
+}

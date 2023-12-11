@@ -1,0 +1,14 @@
+.root {
+  display: block;
+  select {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: #fff;
+    &:focus {
+      outline: none;
+      border-color: #5b9dd9;
+      box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+    }
+  }
+}

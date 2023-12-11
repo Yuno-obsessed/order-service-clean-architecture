@@ -11,6 +11,16 @@ services:
     networks:
       - adapters-network
 
+  frontend:
+    container_name: frontend
+    build:
+       context: .
+       dockerfile: frontend/Dockerfile
+    ports:
+      - "5173:5173"
+    networks:
+      - adapters-network
+
   user-service:
     container_name: user-service
     build:
@@ -41,15 +51,15 @@ services:
     networks:
       - adapters-network
 
-  role-service:
-    container_name: role-service
-    build:
-      context: .
-      dockerfile: role-service/Dockerfile
-    ports:
-      - "8004:8004"
-    networks:
-      - adapters-network
+#  role-service:
+#    container_name: role-service
+#    build:
+#      context: .
+#      dockerfile: role-service/Dockerfile
+#    ports:
+#      - "8004:8004"
+#    networks:
+#      - adapters-network
 
 networks:
   adapters-network:

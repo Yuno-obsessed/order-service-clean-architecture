@@ -8,7 +8,7 @@ COPY order-service/src service/src
 COPY order-service/mvnw service/
 COPY order-service/.mvn service/.mvn
 
-RUN cd service && ./mvnw clean package -DskipTests -DskipITs
+RUN cd service && chmod +x mvnw && ./mvnw clean package -DskipTests -DskipITs
 
 FROM eclipse-temurin:17-jdk-jammy
 

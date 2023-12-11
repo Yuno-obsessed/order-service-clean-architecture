@@ -8,7 +8,7 @@ COPY auth-service/src service/src
 COPY auth-service/mvnw service/
 COPY auth-service/.mvn service/.mvn
 
-RUN cd service && ./mvnw clean package -DskipTests -DskipITs
+RUN cd service && chmod +x mvnw && ./mvnw clean package -DskipTests -DskipITs
 
 FROM eclipse-temurin:17-jdk-jammy
 

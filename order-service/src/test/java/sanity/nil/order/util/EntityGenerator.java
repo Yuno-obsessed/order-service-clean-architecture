@@ -3,6 +3,7 @@ package sanity.nil.order.util;
 import sanity.nil.order.application.order.dto.query.AddressQueryDTO;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
 import sanity.nil.order.application.order.dto.query.ProductQueryDTO;
+import sanity.nil.order.domain.common.entity.Discount;
 import sanity.nil.order.domain.common.vo.Deleted;
 import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.domain.order.vo.AddressID;
@@ -42,12 +43,12 @@ public class EntityGenerator {
     }
 
     public static Discount generateActiveDiscount(int discount) {
-        return new Discount(getByDiscount(discount),
+        return new Discount(UUID.randomUUID(), discount,
                 LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(5));
     }
 
     public static Discount generateExpiredDiscount(int discount) {
-       return new Discount(getByDiscount(discount),
+        return new Discount(UUID.randomUUID(), discount,
                LocalDateTime.now().minusDays(20), LocalDateTime.now().minusDays(2));
     }
 

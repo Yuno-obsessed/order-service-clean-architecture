@@ -66,7 +66,7 @@ public class AuthController {
                 .body(new NewRefreshTokenDTO(refreshTokenInteractorDTO.accessToken));
     }
 
-    @GetMapping("/access")
+    @PostMapping("/access")
     public ResponseEntity<AccessDTO> access(@RequestBody AccessCommandDTO accessCommandDTO) {
         return ResponseEntity
                 .status(200)

@@ -7,7 +7,7 @@ server:
     include-exception: false
 spring:
   profiles:
-    active: secrets
+    active: dev
   data:
     redis:
       host: localhost

@@ -13,7 +13,7 @@ import sanity.nil.authservice.application.interfaces.WebTemplate;
 public class UserWebTemplate implements WebTemplate<UserIDQueryDTO, UserDTO> {
 
     private final WebClient webClient = WebClient.builder()
-            .baseUrl("http://localhost:8002/api/v1/users").build();
+            .baseUrl("http://user-service:8002/api/v1/users").build();
 
     public Mono<UserIDQueryDTO> resolveApi(UserDTO userDTO) {
         return webClient.get()

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "services", schema = "role_service")
+@Table(name = "permissions", schema = "role_service")
 public class PermissionModel {
 
     @Id
@@ -29,7 +29,10 @@ public class PermissionModel {
     private String method;
 
     @Column(name = "uri", nullable = false)
-    private String url;
+    private String uri;
+
+    @Column(name = "verb")
+    private String verb;
 
     @Column(name = "description")
     private String description;

@@ -1,6 +1,5 @@
 package sanity.nil.roleservice.infrastructure.database.models;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,16 +20,17 @@ import java.time.LocalDateTime;
 public class ServiceModel {
 
     @Id
-    private int id;
-
-    @Column(name = "service_name", unique = true)
+    @Column(name = "service_name")
     private String serviceName;
-
-    @Column(name = "description")
-    private String description;
 
     @Column(name = "base_url")
     private String baseURL;
+
+    @Column(name = "port")
+    private String port;
+
+    @Column(name = "active")
+    private boolean active;
 
     @Column(name = "created_at", columnDefinition = "timestamptz", updatable = false)
     private LocalDateTime createdAt;

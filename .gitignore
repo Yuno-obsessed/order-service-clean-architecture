@@ -1,6 +1,5 @@
 order/src/main/resources/application-secrets.yml
 HELP.md
-frontend
 target/
 .mvn/
 !.mvn/wrapper/maven-wrapper.jar

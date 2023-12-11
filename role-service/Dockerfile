@@ -8,7 +8,7 @@ COPY role-service/src service/src
 COPY role-service/mvnw service/
 COPY role-service/.mvn service/.mvn
 
-RUN cd service && chmod +x mvnw && ./mvnw clean package -DskipTests -DskipITs
+RUN cd service && chmod +x ./mvnw && ./mvnw clean package -DskipTests -DskipITs
 
 FROM eclipse-temurin:17-jdk-jammy
 

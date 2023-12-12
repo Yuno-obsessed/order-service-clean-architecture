@@ -22,8 +22,8 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/product")
-@CrossOrigin(origins = "http://localhost:63343", maxAge = 3600)
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173", maxAge = 3600)
 public class ProductController {
 
     private final ProductCommandService productCommandService;

@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import sanity.nil.order.application.common.exceptions.AccessExpiredException;
+import sanity.nil.order.application.common.exceptions.InvalidAccessException;
 import sanity.nil.order.application.product.exceptions.ProductIsDeleted;
 import sanity.nil.order.application.product.exceptions.ProductNotFound;
 import sanity.nil.order.application.product.exceptions.SubtypeNotFound;
@@ -62,6 +64,20 @@ public class GeneralExceptionHandler {
     public ErrorResponse handle(final SubtypeNotFound e) {
         printError(e);
         return new ErrorResponse(requestIdHolder.mustGet(), BAD_REQUEST.getReason());
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(InvalidAccessException.class)
+    public ErrorResponse handle(InvalidAccessException e) {
+        printError(e);
+        return new ErrorResponse(requestIdHolder.mustGet(), ACCESS_DENIED.getReason());
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AccessExpiredException.class)
+    public ErrorResponse handle(AccessExpiredException e) {
+        printError(e);
+        return new ErrorResponse(requestIdHolder.mustGet(), ACCESS_DENIED.getReason());
     }
 
     private static void printError(Exception ex) {

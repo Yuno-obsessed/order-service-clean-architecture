@@ -25,7 +25,6 @@ public class AuthorizationFilter implements Filter {
         log.info("AuthorizationFilter worked");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String url = request.getRequestURL().toString();
-//        Matcher matcherService = Pattern.compile("//(.*?):").matcher(url);
         Matcher matcherPort = Pattern.compile(":(\\d+)").matcher(url);
         Matcher matcherURI = Pattern.compile(":(\\d+)/([^?:]*)(?:\\\\?|$)").matcher(url);
         String uri = null;

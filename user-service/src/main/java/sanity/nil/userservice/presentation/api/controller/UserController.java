@@ -2,10 +2,7 @@ package sanity.nil.userservice.presentation.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sanity.nil.userservice.application.dto.query.UserAuthQueryDTO;
 import sanity.nil.userservice.application.dto.query.UserQueryDTO;
 import sanity.nil.userservice.application.service.UserQueryService;
@@ -13,6 +10,7 @@ import sanity.nil.userservice.application.service.UserQueryService;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173", maxAge = 3600)
 public class UserController {
 
     private final UserQueryService userQueryService;

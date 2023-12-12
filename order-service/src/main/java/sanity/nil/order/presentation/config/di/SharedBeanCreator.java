@@ -129,9 +129,10 @@ public class SharedBeanCreator {
 //    }
 
     @Bean
-    public FilterRegistrationBean<AuthenticationFilter> authenticationFilter(WebTemplate<AccessDTO, AccessCommandDTO> webTemplate) {
+    public FilterRegistrationBean<AuthenticationFilter> authenticationFilter(WebTemplate<AccessDTO, AccessCommandDTO> webTemplate,
+                                                                             @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
         FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new AuthenticationFilter(webTemplate));
+        registrationBean.setFilter(new AuthenticationFilter(webTemplate, objectMapper));
         registrationBean.addUrlPatterns("/api/v1/*");
         registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE+1);
         return registrationBean;

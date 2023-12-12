@@ -7,8 +7,9 @@ import sanity.nil.roleservice.application.interfaces.persistence.PermissionReade
 import sanity.nil.roleservice.application.interfaces.persistence.ServiceReader;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class GetPermissionQuery {
@@ -21,8 +22,8 @@ public class GetPermissionQuery {
         PermissionQueryDTO permissionQueryDTO = permissionReader.getPermissionByServiceAndURI(serviceQueryDTO.serviceName, uri);
         String[] requestedRoles = roles.split(",");
         String[] permissionRoles = permissionQueryDTO.roles.split(",");
-        Set<String> requested = Arrays.stream(requestedRoles).collect(Collectors.toSet());
-        Set<String> stored = Arrays.stream(permissionRoles).collect(Collectors.toSet());
-        return requested.equals(stored);
+        Set<String> requested = new HashSet<>(Arrays.asList(requestedRoles));
+        Set<String> stored = new HashSet<>(Arrays.asList(permissionRoles));
+        return !Collections.disjoint(requested, stored);
     }
 }

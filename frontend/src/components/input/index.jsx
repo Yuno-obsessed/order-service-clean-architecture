@@ -1,30 +1,30 @@
 import styles from "./index.module.scss";
-import {useState} from "react";
+import {memo, useState} from "react";
 
-export const Input = ({ placeholder, style}) => {
-    const [search, setSearch] = useState(false)
-
+export const Input = memo(({ placeholder, value, name, onChange ,style, img }) => {
+  const [seePass, setSeePass] = useState(false);
+  const handleSeePassword = () => {
+    if (placeholder.toLowerCase().includes("pass")) {
+      setSeePass(!seePass);
+    } else return 0;
+  };
   return (
     <div className={styles.container}>
-      {search && <div className={styles.wrapper}></div>}
-        <div className={styles.refContainer}>
       <div className={styles.root}>
         <input
-          onClick={() => setSearch(!search)}
+          name={name}
+          value={value}
+          onChange={onChange}
+          type={seePass ? "password" : "initial"}
           placeholder={placeholder}
           style={style}
         ></input>
-        <img src="/assets/header/search.svg" />
+        <img
+          onClick={handleSeePassword}
+          src={!seePass ? img : "./assets/eye-slash.svg"}
+        />
       </div>
-      {search && (
-        <div className={styles.search}>
-          <p>dsaodnsajkdjskabjdsasads</p>
-          <p>dsads</p>
-          <p>dsads</p>
-          <p>dsads</p>
-        </div>
-      )}
-        </div>
     </div>
   );
-};
+})
+

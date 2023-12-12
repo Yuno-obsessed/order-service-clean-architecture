@@ -1,5 +1,14 @@
 $base-color: white;
 $background-color: #f4f4fa;
 
+$base-padding: 20px;
+$base-border-radius: 10px;
+
+@mixin root {
+  padding: $base-padding;
+  background: $base-color;
+  border-radius: $base-border-radius;
+}
+
 $first-brake-point: 980px;
 $second-brake-point: 450px;

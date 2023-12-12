@@ -1,5 +1,3 @@
-@use "../../sass/_variables.scss" as *;
-
 .container {
   display: flex;
   gap: 20px;
@@ -10,18 +8,16 @@
   display: flex;
 }
 .root {
+  @include root;
   display: flex;
-  background: white;
   flex-direction: column;
-  padding: 20px;
-  border-radius: 10px;
 }
 .title {
   font-size: 24px;
   font-weight: 600;
 }
 .cards {
-  justify-content: center;
+
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -43,8 +39,7 @@
   .root {
     padding: 5px;
   }
-  .cards{
+  .cards {
     gap: 5px;
   }
 }
-

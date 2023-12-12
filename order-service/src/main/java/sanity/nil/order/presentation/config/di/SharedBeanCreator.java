@@ -8,8 +8,10 @@ import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFacto
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -29,6 +31,7 @@ import sanity.nil.order.infrastructure.web.RoleWebTemplate;
 import sanity.nil.order.presentation.api.exception.request.RequestIdGenerator;
 import sanity.nil.order.presentation.api.exception.request.RequestIdHolder;
 import sanity.nil.order.presentation.api.exception.request.RequestImpl;
+import sanity.nil.order.presentation.api.middleware.AuthenticationFilter;
 import sanity.nil.order.presentation.api.middleware.CustomHandlerInterceptor;
 
 import javax.sql.DataSource;
@@ -125,16 +128,15 @@ public class SharedBeanCreator {
 //        return registrationBean;
 //    }
 
-//    @Bean
-//    public FilterRegistrationBean<AuthenticationFilter> authenticationFilter(WebTemplate<AccessDTO, AccessCommandDTO> webTemplate,
-//                                                                             @Qualifier("myObjectMapper") ObjectMapper objectMapper,
-//                                                                             AuthenticationFilter authenticationFilter) {
-//        FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
-//        registrationBean.setFilter(authenticationFilter);
-//        registrationBean.addUrlPatterns("/api/v1/*");
-//        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE+1);
-//        return registrationBean;
-//    }
+    @Bean
+    public FilterRegistrationBean<AuthenticationFilter> authenticationFilter(WebTemplate<AccessDTO, AccessCommandDTO> webTemplate,
+                                                                             @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
+        FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new AuthenticationFilter(webTemplate, objectMapper));
+        registrationBean.addUrlPatterns("/api/v1/*");
+        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE+1);
+        return registrationBean;
+    }
 
     @Bean
     public WebTemplate<Boolean, PermissionQueryDTO> roleWebTemplate() {

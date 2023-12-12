@@ -52,7 +52,7 @@ public class ProductController {
                 .body(productQueryService.getAllProductsQuery.handle(filters));
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<ProductQueryDTO> getProductByName(@PathVariable String name){
         return ResponseEntity
                 .status(200)

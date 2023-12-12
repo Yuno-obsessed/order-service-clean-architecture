@@ -11,15 +11,18 @@ services:
     networks:
       - adapters-network
 
-  frontend:
-    container_name: frontend
-    build:
-       context: frontend
-       dockerfile: Dockerfile
-    ports:
-      - "5173:5173"
-    networks:
-      - adapters-network
+
+#  frontend:
+#    container_name: frontend
+#    build:
+#      context: frontend
+#      dockerfile: Dockerfile
+#    ports:
+#      - "5173:5173"
+#    networks:
+#      - adapters-network
+#    volumes:
+#      - ./frontend:/app
 
   user-service:
     container_name: user-service

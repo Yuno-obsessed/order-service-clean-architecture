@@ -8,7 +8,10 @@ export const Card = ({ imageUrl, productName, onClick, price }) => {
     <div onClick={onClick} className={styles.root}>
       <div className={styles.container}>
         <div className={styles.card}>
-          <span className={styles.cardheart}>
+          <span onClick={(e) => {
+            e.stopPropagation()
+            console.log('hello')
+          }} className={styles.cardheart}>
             <IconCard ico={heart("30px", "30px")} />
           </span>
           <img className={styles.cardImage} src={imageUrl} />

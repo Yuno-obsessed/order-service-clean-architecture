@@ -4,8 +4,8 @@ import { AddCard } from "../../components/selection/addCard";
 import styles from "./index.module.scss";
 import { Selector } from "../../components/selector";
 import { Card } from "../../components/card/index.jsx";
-import {UNSAFE_LocationContext} from "react-router-dom";
 import SkeletonCard from "../../components/skeletons/card";
+import {useNavigate} from "react-router-dom";
 
 export const MainPage = () => {
   const cards = [
@@ -119,6 +119,7 @@ export const MainPage = () => {
     },
   ];
 
+  const navigate = useNavigate()
   return (
     <>
       <Categories />
@@ -133,21 +134,22 @@ export const MainPage = () => {
             <div className={styles.container}>
               <h1 className={styles.title}>Весь каталог</h1>
               <div className={styles.cards}>
-                {!cards ? (
-                    cards.map((card) => (
-                        <Card
-                            key={card.productId}
-                            productId={card.productId}
-                            imageUrl={card.imageUrl}
-                            price={card.price}
-                            productName={card.productName}
-                        />
+                {cards
+                  ? cards.map((card) => (
+                      <Card
+                        onClick={() => {
+                          navigate('/product/' + card.productId)
+                        }}
+                        key={card.productId}
+                        productId={card.productId}
+                        imageUrl={card.imageUrl}
+                        price={card.price}
+                        productName={card.productName}
+                      />
                     ))
-                ) : (
-                    Array.from({ length: 10 }, (_, i) => (
-                        <SkeletonCard key={i} />
-                    ))
-                )}
+                  : Array.from({ length: 10 }, (_, i) => (
+                      <SkeletonCard key={i} />
+                    ))}
               </div>
             </div>
           </div>

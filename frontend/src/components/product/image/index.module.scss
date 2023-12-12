@@ -1,13 +1,9 @@
-@use "../../../sass/_variables.scss" as *;
-
 .root {
   display: flex;
-  background: white;
   width: 100%;
   justify-content: center;
   flex-direction: column;
-  padding: 20px;
-  border-radius: 10px;
+  @include root;
 }
 .image {
   justify-content: center;

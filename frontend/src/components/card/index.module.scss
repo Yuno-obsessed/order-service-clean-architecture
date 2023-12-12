@@ -1,13 +1,10 @@
-@use "../../sass/_variables" as *;
-
 .root {
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 .container {
-  display: flex;
   padding: 14px;
-  width: 205px;
+  min-width: 205px;
 }
 .card {
   height: 100%;
@@ -35,19 +32,17 @@
   .container {
     width: 180px;
   }
-
 }
 
-@media screen and (max-width: $second-brake-point)
-{
-  .cardImage{
-    height: 80px;
+@media screen and (max-width: $second-brake-point) {
+  .cardImage {
+    height: 100px;
   }
   .container {
     padding: 5px;
     width: 160px;
   }
-  .cardTitle{
+  .cardTitle {
     font-size: 14px;
   }
 }

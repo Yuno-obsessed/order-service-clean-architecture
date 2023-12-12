@@ -1,12 +1,8 @@
-@use "../../../sass/_variables.scss" as *;
-
 .root {
+  @include root;
   display: flex;
-  background: white;
   flex-direction: column;
-  padding: 20px;
-  width: 25%;
-  border-radius: 10px;
+  width: 100%;
 }
 .container {
   display: flex;

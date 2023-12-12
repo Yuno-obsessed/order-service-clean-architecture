@@ -1,10 +1,8 @@
-@use "./sass/_variables.scss" as *;
-
 .root {
   box-sizing: border-box;
   max-width: 1200px;
   justify-content: center;
-  margin: 100px auto;
+  margin: 100px auto 20px auto;
 }
 
 body {
@@ -100,6 +98,6 @@ input {
 
 @media screen and (max-width: 1220px) {
   .root {
-    padding: 10px;
+    padding: 0 10px;
   }
 }

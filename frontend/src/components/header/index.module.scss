@@ -1,5 +1,3 @@
-@use "../../sass/_variables.scss" as *;
-
 .root {
   position: fixed;
   top: 0;
@@ -44,7 +42,7 @@
     display: initial;
   }
   .container {
-    padding: 15px 15px;
+    padding: 20px 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   .icons {

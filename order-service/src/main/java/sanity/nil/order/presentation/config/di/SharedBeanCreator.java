@@ -1,8 +1,6 @@
 package sanity.nil.order.presentation.config.di;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -11,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -18,20 +17,18 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.HandlerInterceptor;
-import sanity.nil.order.application.common.dto.AccessCommandDTO;
-import sanity.nil.order.application.common.dto.AccessDTO;
+import sanity.nil.library.config.di.BeanCreator;
+import sanity.nil.library.filter.AuthenticationFilter;
 import sanity.nil.order.application.common.interfaces.broker.MessageBroker;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
 import sanity.nil.order.application.order.dto.query.PermissionQueryDTO;
 import sanity.nil.order.application.order.interfaces.web.WebTemplate;
 import sanity.nil.order.infrastructure.messageBroker.interactors.MessageBrokerImpl;
 import sanity.nil.order.infrastructure.storage.config.MinioConfig;
-import sanity.nil.order.infrastructure.web.AuthWebTemplate;
 import sanity.nil.order.infrastructure.web.RoleWebTemplate;
 import sanity.nil.order.presentation.api.exception.request.RequestIdGenerator;
 import sanity.nil.order.presentation.api.exception.request.RequestIdHolder;
 import sanity.nil.order.presentation.api.exception.request.RequestImpl;
-import sanity.nil.order.presentation.api.middleware.AuthenticationFilter;
 import sanity.nil.order.presentation.api.middleware.CustomHandlerInterceptor;
 
 import javax.sql.DataSource;
@@ -39,6 +36,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableJpaRepositories("sanity.nil.order.infrastructure.database.orm")
 @EnableRabbit
+@Import(BeanCreator.class)
 public class SharedBeanCreator {
 
     @Value("${spring.datasource.url}")
@@ -76,14 +74,6 @@ public class SharedBeanCreator {
         template.setConnectionFactory(connectionFactory);
         template.setDefaultSerializer(new GenericJackson2JsonRedisSerializer(objectMapper));
         return template;
-    }
-
-    @Bean("myObjectMapper")
-    public ObjectMapper myObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return objectMapper;
     }
 
     @Bean
@@ -129,11 +119,10 @@ public class SharedBeanCreator {
 //    }
 
     @Bean
-    public FilterRegistrationBean<AuthenticationFilter> authenticationFilter(WebTemplate<AccessDTO, AccessCommandDTO> webTemplate,
-                                                                             @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
+    public FilterRegistrationBean<AuthenticationFilter> authenticationFilter(AuthenticationFilter authenticationFilter) {
         FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new AuthenticationFilter(webTemplate, objectMapper));
-        registrationBean.addUrlPatterns("/api/v1/*");
+        registrationBean.setFilter(authenticationFilter);
+        registrationBean.addUrlPatterns("/api/v1/order/*", "/api/v1/product", "/api/v1/product/statistics/*", "/api/v1/product/upload");
         registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE+1);
         return registrationBean;
     }
@@ -141,11 +130,6 @@ public class SharedBeanCreator {
     @Bean
     public WebTemplate<Boolean, PermissionQueryDTO> roleWebTemplate() {
         return new RoleWebTemplate();
-    }
-
-    @Bean
-    public WebTemplate<AccessDTO, AccessCommandDTO> authWebTemplate() {
-        return new AuthWebTemplate();
     }
 
 }

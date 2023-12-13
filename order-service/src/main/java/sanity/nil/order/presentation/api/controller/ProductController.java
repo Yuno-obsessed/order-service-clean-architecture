@@ -23,13 +23,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/product")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ProductController {
 
     private final ProductCommandService productCommandService;
     private final ProductQueryService productQueryService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<ProductQueryDTO> getProductById(@PathVariable UUID id){
         return ResponseEntity
                 .status(200)
@@ -76,7 +76,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UUID> deleteProductById(@PathVariable UUID id) {
+    public ResponseEntity<UUID> deleteProduct(@PathVariable UUID id) {
        return ResponseEntity
                .status(404)
                .body(productCommandService.deleteProductCommand.handle(id));

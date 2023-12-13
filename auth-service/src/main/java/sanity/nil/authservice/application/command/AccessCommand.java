@@ -17,19 +17,19 @@ public class AccessCommand {
     public AccessDTO handle(AccessCommandDTO accessCommandDTO) {
         AccessDTO accessDTO = new AccessDTO(AccessResponse.ACCESS_APPROVED);
 
-        if (jwtUtils.validateJwtToken(accessCommandDTO.accessToken)) {
+        if (!jwtUtils.validateJwtToken(accessCommandDTO.accessToken)) {
             if (jwtUtils.isTokenExpired(accessCommandDTO.accessToken)) {
                 accessDTO.accessResponse = AccessResponse.ACCESS_EXPIRED;
                 accessDTO.accessError = AccessError.TOKEN_EXPIRED;
                 log.info("Access token = {} is expired.", accessCommandDTO.accessToken);
             } else {
-                accessDTO.roles = jwtUtils.getRolesFromJwtToken(accessCommandDTO.accessToken);
-                log.info("Access token = {} is valid", accessCommandDTO.accessToken);
+                accessDTO.accessResponse = AccessResponse.ACCESS_DENIED;
+                accessDTO.accessError = AccessError.INVALID_ACCESS_TOKEN;
+                log.info("Access token = {} is invalid.", accessCommandDTO.accessToken);
             }
         } else {
-            accessDTO.accessResponse = AccessResponse.ACCESS_DENIED;
-            accessDTO.accessError = AccessError.INVALID_ACCESS_TOKEN;
-            log.info("Access token = {} is invalid.", accessCommandDTO.accessToken);
+            accessDTO.roles = jwtUtils.getRolesFromJwtToken(accessCommandDTO.accessToken);
+            log.info("Access token = {} is valid", accessCommandDTO.accessToken);
         }
 
         return accessDTO;

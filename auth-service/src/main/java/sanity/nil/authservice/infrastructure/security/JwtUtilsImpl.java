@@ -65,7 +65,13 @@ public class JwtUtilsImpl implements JwtUtils {
     }
 
     public boolean isTokenExpired(String token) {
-        return getExpiryDateFromJwtToken(token).before(new Date());
+        boolean expired;
+        try {
+            expired = getExpiryDateFromJwtToken(token).before(new Date());
+        } catch (Exception e) {
+           expired = true;
+        }
+        return expired;
     }
 
     public boolean validateJwtToken(String authToken) {

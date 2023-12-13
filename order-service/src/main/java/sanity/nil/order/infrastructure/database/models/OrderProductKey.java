@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -23,4 +24,16 @@ public class OrderProductKey implements Serializable {
     @Column(name = "product_id")
     private UUID productID;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderProductKey that = (OrderProductKey) o;
+        return Objects.equals(orderID, that.orderID) && Objects.equals(productID, that.productID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderID, productID);
+    }
 }

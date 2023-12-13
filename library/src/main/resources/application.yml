@@ -1,0 +1,4 @@
+application:
+  auth:
+    host: auth-service
+    port: 8003

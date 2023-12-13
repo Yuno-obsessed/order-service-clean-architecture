@@ -19,9 +19,9 @@ public interface ProductORM extends JpaRepository<ProductModel, UUID> {
 
     @Query(
             "SELECT p FROM ProductModel p " +
-                    "WHERE (:name IS NULL OR p.name LIKE CONCAT('%', :nameFilter, '%'))"
+                    "WHERE (:name IS NULL OR p.name LIKE CONCAT('%', :name, '%'))"
     )
-    Optional<ProductModel> getByName(String name);
+    Optional<ProductModel> getByName(@Param("name") String name);
 
     @Query(
             "SELECT p FROM ProductModel p " +

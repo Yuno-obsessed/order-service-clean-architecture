@@ -7,7 +7,9 @@ COPY order-service/pom.xml service/pom.xml
 COPY order-service/src service/src
 COPY order-service/mvnw service/
 COPY order-service/.mvn service/.mvn
+COPY library service/lib
 
+RUN cd service/lib && chmod +x ./mvnw && ./mvnw clean install
 RUN cd service && chmod +x ./mvnw && ./mvnw clean package -DskipTests -DskipITs
 
 FROM eclipse-temurin:17-jdk-jammy

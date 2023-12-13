@@ -8,7 +8,7 @@ import sanity.nil.roleservice.application.service.PermissionQueryService;
 @RestController
 @RequestMapping("/api/v1/role")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class PermissionController {
 
     private final PermissionQueryService permissionQueryService;

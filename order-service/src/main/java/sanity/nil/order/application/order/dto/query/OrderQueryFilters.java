@@ -10,8 +10,8 @@ public class OrderQueryFilters extends BaseFilters {
 
     public String withStatus;
 
-    public OrderQueryFilters(Integer limit, Integer offset, String order, String withStatus) {
-        super(limit, offset, Order.fromString(order));
+    public OrderQueryFilters(Integer limit, Integer offset, String order, String orderBy, String withStatus) {
+        super(limit, offset, Order.fromString(order), orderBy);
         this.withStatus = withStatus;
     }
 

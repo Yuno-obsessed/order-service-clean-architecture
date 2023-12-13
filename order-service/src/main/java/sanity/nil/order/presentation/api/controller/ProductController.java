@@ -38,25 +38,20 @@ public class ProductController {
 
     @GetMapping("/search")
     public ResponseEntity<List<ProductQueryDTO>> getAllProducts(
+            @RequestParam(required = false) String name,
             @RequestParam(required = false) String productType,
             @RequestParam(required = false) String productSubtype,
             @RequestParam(required = false) Integer limit,
             @RequestParam(required = false) Integer offset,
             @RequestParam(required = false) Integer priceAbove,
             @RequestParam(required = false) Integer priceBelow,
+            @RequestParam(required = false) String orderBy,
             @RequestParam(required = false) String order) {
-        ProductQueryFilters filters = new ProductQueryFilters(limit, offset, order,
+        ProductQueryFilters filters = new ProductQueryFilters(limit, offset, order, orderBy, name,
                 productType, productSubtype, priceBelow, priceAbove);
         return ResponseEntity
                 .status(200)
                 .body(productQueryService.getAllProductsQuery.handle(filters));
-    }
-
-    @GetMapping("/name/{name}")
-    public ResponseEntity<ProductQueryDTO> getProductByName(@PathVariable String name){
-        return ResponseEntity
-                .status(200)
-                .body(productQueryService.getProductsByNameQuery.handle(name));
     }
 
     @PostMapping

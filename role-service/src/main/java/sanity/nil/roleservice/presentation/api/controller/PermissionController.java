@@ -16,7 +16,7 @@ public class PermissionController {
     @GetMapping("/permission")
     public ResponseEntity<Boolean> hasPermission(@RequestParam String port,
                                                  @RequestParam String uri,
-                                                 @RequestParam String roles) {
+                                                 @RequestParam(required = false) String roles) {
         return ResponseEntity
                 .status(200)
                 .body(permissionQueryService.getPermissionQuery.handle(port, uri, roles));

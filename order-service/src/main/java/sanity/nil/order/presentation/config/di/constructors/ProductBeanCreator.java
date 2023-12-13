@@ -16,7 +16,6 @@ import sanity.nil.order.application.product.interfaces.persistence.*;
 import sanity.nil.order.application.product.query.GetAllImagesQuery;
 import sanity.nil.order.application.product.query.GetAllProductsQuery;
 import sanity.nil.order.application.product.query.GetProductByIdQuery;
-import sanity.nil.order.application.product.query.GetProductsByNameQuery;
 import sanity.nil.order.application.product.service.ProductCommandService;
 import sanity.nil.order.application.product.service.ProductQueryService;
 import sanity.nil.order.domain.product.service.ProductService;
@@ -113,7 +112,6 @@ public class ProductBeanCreator {
         return new ProductQueryService(
                 new GetAllProductsQuery(productReader),
                 new GetProductByIdQuery(productReader),
-                new GetProductsByNameQuery(productReader),
                 new GetAllImagesQuery(productImageReader, fileStorage)
         );
     }

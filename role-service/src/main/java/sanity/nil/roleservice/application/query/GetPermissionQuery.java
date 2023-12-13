@@ -20,6 +20,9 @@ public class GetPermissionQuery {
     public boolean handle(String port, String uri, String roles) {
         ServiceQueryDTO serviceQueryDTO = serviceReader.getActiveByPort(port, true);
         PermissionQueryDTO permissionQueryDTO = permissionReader.getPermissionByServiceAndURI(serviceQueryDTO.serviceName, uri);
+        if (roles == null || roles.isEmpty()) {
+            roles = "NONE";
+        }
         String[] requestedRoles = roles.split(",");
         String[] permissionRoles = permissionQueryDTO.roles.split(",");
         Set<String> requested = new HashSet<>(Arrays.asList(requestedRoles));

@@ -86,19 +86,11 @@ public class ProductDAOImpl implements ProductDAO, ProductReader, ProductSubtype
         return ProductMapper.convertModelToProductQueryDTO(maybeModel);
     }
 
-    @Override
-    public ProductQueryDTO getProductQueryByName(String name) {
-        ProductModel maybeModel = productORM.getByName(name).orElseThrow(
-                () -> ProductNotFound.throwEx(name));
-        if (maybeModel.isLogicallyDeleted()) {
-            throw ProductIsDeleted.throwEx(name);
-        }
-        return ProductMapper.convertModelToProductQueryDTO(maybeModel);
-    }
 
     @Override
     public List<ProductQueryDTO> getProductQueriesWithFilters(ProductQueryFilters filters) {
         Pageable pageable = PageRequest.of(filters.offset, filters.limit);
+        filters.orderBy = "p." + filters.orderBy;
         return ProductMapper.convertListOfModelsToProductQueryDTOs(
                 productORM.findByFilters(filters, pageable));
     }

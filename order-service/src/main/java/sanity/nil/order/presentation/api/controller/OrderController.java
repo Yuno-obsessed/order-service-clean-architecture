@@ -32,8 +32,9 @@ public class OrderController {
     public ResponseEntity<List<OrderQueryDTO>> getAllOrders(@RequestParam(required = false) Integer limit,
                                                             @RequestParam(required = false) Integer offset,
                                                             @RequestParam(required = false) String order,
+                                                            @RequestParam(required = false) String orderBy,
                                                             @RequestParam(required = false) String withStatus) {
-        OrderQueryFilters filters = new OrderQueryFilters(limit, offset, order, withStatus);
+        OrderQueryFilters filters = new OrderQueryFilters(limit, offset, order, orderBy, withStatus);
         return ResponseEntity
                 .status(200)
                 .body(orderQueryService.getAllOrdersQuery.handle(filters));

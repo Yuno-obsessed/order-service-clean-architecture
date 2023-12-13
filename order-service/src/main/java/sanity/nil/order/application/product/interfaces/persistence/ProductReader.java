@@ -17,7 +17,5 @@ public interface ProductReader {
 
     ProductQueryDTO getProductQueryById(UUID id);
 
-    ProductQueryDTO getProductQueryByName(String name);
-
     List<ProductQueryDTO> getProductQueriesWithFilters(ProductQueryFilters filters);
 }

@@ -14,6 +14,9 @@ public class GetAllProductsQuery {
     private final ProductReader productReader;
 
     public List<ProductQueryDTO> handle(ProductQueryFilters productFilters) {
+        if (productFilters.orderBy == null || productFilters.orderBy.isEmpty()) {
+            productFilters.orderBy = "created_at";
+        }
         return productReader.getProductQueriesWithFilters(productFilters);
     }
 

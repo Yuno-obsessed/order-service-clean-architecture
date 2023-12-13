@@ -8,14 +8,16 @@ import sanity.nil.order.application.common.dto.BaseFilters;
 @NoArgsConstructor
 public class ProductQueryFilters extends BaseFilters {
 
+    public String name;
     public String productType;
     public String productSubtype;
     public Integer productPriceBelow;
     public Integer productPriceAbove;
 
-    public ProductQueryFilters(Integer limit, Integer offset, String orderParam, String productType,
+    public ProductQueryFilters(Integer limit, Integer offset, String orderParam, String orderBy, String name, String productType,
                                String productSubtype, Integer productPriceBelow, Integer productPriceAbove) {
-        super(limit, offset, Order.fromString(orderParam));
+        super(limit, offset, Order.fromString(orderParam), orderBy);
+        this.name = name;
         this.productType = productType;
         this.productSubtype = productSubtype;
         this.productPriceBelow = productPriceBelow;

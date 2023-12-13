@@ -59,16 +59,6 @@ public class ProductInMemoryDAOImpl implements ProductDAO, ProductReader {
     }
 
     @Override
-    public ProductQueryDTO getProductQueryByName(String name) {
-        return storage.values()
-                .stream()
-                .filter(model -> model.getName().equals(name))
-                .findFirst()
-                .map(ProductMapper::convertModelToProductQueryDTO)
-                .orElse(null);
-    }
-
-    @Override
     public List<ProductQueryDTO> getProductQueriesWithFilters(ProductQueryFilters filters) {
         return null;
     }

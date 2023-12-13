@@ -10,7 +10,6 @@ import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
 import sanity.nil.order.infrastructure.database.models.ProductModel;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface ProductORM extends JpaRepository<ProductModel, UUID> {
@@ -19,15 +18,13 @@ public interface ProductORM extends JpaRepository<ProductModel, UUID> {
 
     @Query(
             "SELECT p FROM ProductModel p " +
-                    "WHERE (:name IS NULL OR p.name LIKE CONCAT('%', :name, '%'))"
-    )
-    Optional<ProductModel> getByName(@Param("name") String name);
-
-    @Query(
-            "SELECT p FROM ProductModel p " +
                     "WHERE (:#{#filters.productSubtype} IS NULL OR p.productSubtype.subtypeName = :#{#filters.productSubtype}) " +
                     "AND (:#{#filters.productType} IS NULL OR p.productSubtype.productType.typeName = :#{#filters.productType}) " +
-                    "ORDER BY CASE WHEN :#{#filters.order.name()} = 'ASC' THEN 'p.id ASC' ELSE 'p.id DESC' END"
+                    "AND (:#{#filters.name} IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :#{#filters.name}, '%'))) " +
+                    "AND (:#{#filters.productPriceAbove} IS NULL OR p.price > :#{#filters.productPriceAbove}) " +
+                    "AND (:#{#filters.productPriceBelow} IS NULL OR p.price < :#{#filters.productPriceBelow}) " +
+                    "ORDER BY CASE WHEN :#{#filters.order.name()} = 'ASC' THEN :#{#filters.orderBy} END ASC, CASE WHEN :#{#filters.order.name()} = 'DESC' THEN :#{#filters.orderBy} END DESC"
+//                    "ORDER BY CASE WHEN :#{#filters.order.name()} = 'ASC' THEN 'p.id ASC' ELSE 'p.id DESC' END"
     )
     List<ProductModel> findByFilters(@Param("filters") ProductQueryFilters filters, Pageable pageable);
 

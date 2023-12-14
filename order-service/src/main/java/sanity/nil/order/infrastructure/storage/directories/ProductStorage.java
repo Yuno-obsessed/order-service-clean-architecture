@@ -6,6 +6,7 @@ import io.minio.MakeBucketArgs;
 import io.minio.PutObjectArgs;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sanity.nil.order.application.common.dto.FileData;
 import sanity.nil.order.application.common.exceptions.StorageException;
 import sanity.nil.order.application.common.interfaces.storage.FileStorage;
@@ -13,6 +14,7 @@ import sanity.nil.order.infrastructure.storage.config.MinioConfig;
 
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @RequiredArgsConstructor
 public class ProductStorage implements FileStorage {
 
@@ -25,9 +27,11 @@ public class ProductStorage implements FileStorage {
             if (!minio.getClient().bucketExists(BucketExistsArgs.builder()
                     .bucket(bucketName)
                     .build())) {
+
                 minio.getClient().makeBucket(MakeBucketArgs.builder()
                         .bucket(bucketName)
                         .build());
+                log.info("Created minio bucket with name {}", bucketName);
             }
         } catch (Exception e) {
             throw new StorageException(e);

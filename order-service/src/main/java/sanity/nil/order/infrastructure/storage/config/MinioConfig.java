@@ -2,19 +2,19 @@ package sanity.nil.order.infrastructure.storage.config;
 
 import io.minio.MinioClient;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class MinioConfig {
 
     private MinioClient minioClient;
 
-    @Value("${application.minio.host}")
-    private String minioHost;
-
-    public MinioConfig(String accessKey, String secretKey) {
+    public MinioConfig(String host, String accessKey, String secretKey) {
+        String endpoint = "http://" + host + ":9000";
+        log.info("Minio client started at url {}", endpoint);
         minioClient = MinioClient.builder()
-                .endpoint("http://" + minioHost + ":9000")
+                .endpoint(endpoint)
                 .credentials(accessKey, secretKey)
                 .build();
     }

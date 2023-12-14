@@ -15,7 +15,7 @@ import sanity.nil.order.infrastructure.database.orm.mapper.AddressMapper;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/address")
+@RequestMapping("/api/v1/address")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class AddressController {

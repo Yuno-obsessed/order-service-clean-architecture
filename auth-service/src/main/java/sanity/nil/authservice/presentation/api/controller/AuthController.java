@@ -23,7 +23,8 @@ import java.util.Arrays;
 @RestController
 @RequestMapping(value = "/api/v1/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600,
+        methods = {RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.OPTIONS})
 public class AuthController {
 
     private final AuthService authService;
@@ -89,7 +90,7 @@ public class AuthController {
         deletedCookie.setMaxAge(0);
         response.addCookie(deletedCookie);
         return ResponseEntity
-                .status(404)
+                .status(204)
                 .build();
     }
 }

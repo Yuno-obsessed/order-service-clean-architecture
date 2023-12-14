@@ -34,7 +34,7 @@ public class CreateProductTest {
         assertThat(product).isEqualTo(createdProduct);
     }
 
-//    @Test
+//    @sanity.nil.library.Test
 //    public void failCreateProductWithWrongDiscountCode() {
 //        assertThatExceptionOfType(DiscountNotFound.class).isThrownBy(
 //                () -> productService.create("desc_test", "name_test",
@@ -43,7 +43,7 @@ public class CreateProductTest {
 //        );
 //    }
 
-//    @Test
+//    @sanity.nil.library.Test
 //    public void failCreateProductWithUnsupportedQuantity() {
 //        assertThatExceptionOfType(UnsupportedQuantityException.class).isThrownBy(
 //                () -> productService.create("desc_test", "name_test",

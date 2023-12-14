@@ -21,7 +21,7 @@ public class ProductIntegrationTests {
     private static String BASE_URL = "http://localhost:8080/api/v1/product";
     private TestRestTemplate restTemplate;
 
-//    @Test
+//    @sanity.nil.library.Test
 //    public void test() {
 //        assertThat(this.restTemplate.getForObject(BASE_URL + "/", String.class)).contains("");
 //    }

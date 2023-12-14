@@ -19,6 +19,9 @@ public class GetAllImagesQuery {
     public List<ProductImageInfo> handle(UUID productID, Boolean onlyMain) {
         ProductImages images = productImageReader.getProductImagesByID(productID);
         List<ProductImageInfo> productImageList = new ArrayList<>();
+        if (images == null) {
+            return null;
+        }
         if (onlyMain != null && onlyMain) {
             String mainImage = images.getImageNames().stream()
                     .filter(e -> e.lastIndexOf('0') == e.length() - 1)

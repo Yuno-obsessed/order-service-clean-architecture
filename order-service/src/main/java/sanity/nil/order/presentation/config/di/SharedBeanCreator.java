@@ -57,6 +57,9 @@ public class SharedBeanCreator {
     @Value("${application.minio.secret-key}")
     private String minioSecretKey;
 
+    @Value("${application.minio.host}")
+    private String minioHost;
+
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -78,7 +81,7 @@ public class SharedBeanCreator {
 
     @Bean
     public MinioConfig minioConfig() {
-        return new MinioConfig(minioAccessKey, minioSecretKey);
+        return new MinioConfig(minioHost, minioAccessKey, minioSecretKey);
     }
 
     @Bean

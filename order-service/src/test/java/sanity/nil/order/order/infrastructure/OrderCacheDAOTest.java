@@ -1,7 +1,7 @@
 //package sanity.nil.order.order.infrastructure;
 //
 //import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.sanity.nil.library.Test;
 //import org.junit.jupiter.api.TestInstance;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +35,7 @@
 //        orderQueryDTO2 = generateOrderQueryDTO(clientID);
 //    }
 //
-//    @Test
+//    @sanity.nil.library.Test
 //    public void testSaveAndGetOrder() {
 //        orderCacheDAO.saveOrder(orderQueryDTO1);
 //
@@ -47,7 +47,7 @@
 //        );
 //    }
 //
-//    @Test
+//    @sanity.nil.library.Test
 //    public void testGetOrdersOfClient() {
 //        orderCacheDAO.saveOrder(orderQueryDTO1);
 //        orderCacheDAO.saveOrder(orderQueryDTO2);
@@ -58,7 +58,7 @@
 //        assertThat(orderQueryDTOList).hasSize(2);
 //    }
 //
-//    @Test
+//    @sanity.nil.library.Test
 //    public void testDeleteOrder() {
 //        orderCacheDAO.saveOrder(orderQueryDTO1);
 //

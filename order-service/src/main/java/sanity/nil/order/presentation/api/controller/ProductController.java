@@ -23,7 +23,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/product")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600,
+        methods = {RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.OPTIONS})
 public class ProductController {
 
     private final ProductCommandService productCommandService;
@@ -73,7 +74,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<UUID> deleteProduct(@PathVariable UUID id) {
        return ResponseEntity
-               .status(404)
+               .status(204)
                .body(productCommandService.deleteProductCommand.handle(id));
     }
 

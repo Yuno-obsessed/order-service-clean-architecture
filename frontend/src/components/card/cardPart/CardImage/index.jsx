@@ -8,7 +8,7 @@ export const CardImage = ({ imageUrl, data}) => {
        :
        (
            <div className={styles.cardImage}>
-           <h1 className={styles.cardWithoutImage}>Without Photo</h1>
+           <h1 className={styles.cardWithoutImage}></h1>
        </div>)
    )
 }

@@ -5,7 +5,7 @@ export const ProductImage = () => {
   return (
     <div className={styles.root}>
       <div className={styles.image}>
-       <CardImage/>
+          <img src="/assets/product.png" />
       </div>
       <div className={styles.images}>
         <img src="/assets/product.png" />

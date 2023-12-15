@@ -38,6 +38,7 @@ export const SearchInput = ({ placeholder, style }) => {
                 {data &&
                     data?.map(product => (
                         <p onClick={() => {
+                          setIsComponentVisible(!isComponentVisible)
                           navigate(`product/${product?.product_id}`)
                         }}
                             key={product?.product_id}>{product.name}</p>

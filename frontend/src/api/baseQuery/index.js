@@ -22,6 +22,7 @@ export const baseQueryWithReauth = ({baseUrl}) => {
                 localStorage.setItem('token', refreshResult.data.token);
                 result = await baseQuery(args, api, extraOptions);
             }
+
         }
         return result;
     };

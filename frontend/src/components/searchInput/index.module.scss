@@ -7,8 +7,9 @@
 .search {
   position: absolute;
   top: 40px;
-  max-height: 400px;
+  max-height: 300px;
   word-break: break-word;
+  overflow: auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   border-radius: 10px;
   display: flex;

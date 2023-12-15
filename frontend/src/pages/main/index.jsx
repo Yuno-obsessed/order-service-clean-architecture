@@ -28,7 +28,6 @@ export const MainPage = () => {
       <div className={styles.container}>
         <div className={styles.maincontainer}>
           <AddCard />
-
         </div>
         <Selector />
         <div className={styles.cardcontainer}>
@@ -43,7 +42,7 @@ export const MainPage = () => {
                           navigate('/product/' + card.product_id)
                         }}
                         id={card.product_id}
-                        key={card.productId}
+                        key={card.product_Id}
                         productId={card.product_id}
                         imageUrl={card.imageUrl}
                         price={card.price}

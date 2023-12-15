@@ -13,8 +13,8 @@ export const Categories = () => {
     <div className={styles.root}>
       <div className={styles.container}>
         <div className={styles.categories}>
-          {categories.map((category) => (
-            <p>{category}</p>
+          {categories.map((category, i) => (
+            <p key={i}>{category}</p>
           ))}
         </div>
         <Button

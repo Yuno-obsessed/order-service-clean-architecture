@@ -12,11 +12,11 @@ const buttonVariations = {
   },
 };
 
-export const Button = ({ img, text, variation, style }) => {
+export const Button = ({ atribute,  img, text, variation, style }) => {
   const buttonStyle = buttonVariations[variation] || null;
 
   return (
-    <button style={{ ...buttonStyle, ...style }} className={styles.root}>
+    <button data-test={atribute} style={{ ...buttonStyle, ...style }} className={styles.root}>
       {img && <img src={img} alt="Button" />} {}
       {text}
     </button>

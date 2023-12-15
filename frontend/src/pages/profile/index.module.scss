@@ -1,21 +1,14 @@
 .root {
-  justify-content: center;
-  display: flex;
-  align-items: center;
-
-  height: 75svh;
+  @include root;
 }
 
 .container {
   display: flex;
-  @include root;
   gap: 20px;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
-  width: 500px;
-  height: 100%;
-  margin: 0px auto;
+  width: 60%;
+  margin: 0 auto;
 }
 .title {
   font-size: 32px;

@@ -6,6 +6,8 @@ import { ProductPage } from "./pages/product";
 import { LoginPage } from "./pages/login/index.jsx";
 import {Footer} from "./components/footer";
 import {PrivateRoute} from "./components/privateRoute";
+import {CartPage} from "./pages/cart";
+import {WishPage} from "./pages/wishlist/index.jsx";
 
 function App() {
 
@@ -15,8 +17,10 @@ function App() {
       <div className={styles.root}>
         <Routes>
           <Route index element={<MainPage />} />
-          <Route path="/product/:cardId" element={<PrivateRoute children={<ProductPage/>}/>} />
+          <Route path="/product/:cardId" element={<ProductPage/>} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/wishlist" element={<WishPage />} />
         </Routes>
       </div>
         <Footer/>

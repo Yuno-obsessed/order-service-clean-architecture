@@ -3,41 +3,24 @@ import { Button } from "../../button";
 import { Price } from "../../price";
 import { IconCard } from "../../icon";
 import { heart } from "../../../../public/assets/icons/svg.jsx";
+import {Avalible} from "../../avalible";
 
-export const ProductDetails = () => {
-  const cards = [
-    {
-      productId: "31109",
-      productName: "LEGO Icons Władca Pierścieni: Rivendell",
-      price: {
-        originalPrice: "2089.00",
-        discountedPrice: "1849.00",
-        currency: "zł",
-        discountPercentage: "20%",
-      },
-      imageUrl: "./assets/product.png",
-    },
-  ];
+export const ProductDetails = ({price, discount, name, avalible}) => {
+
   return (
     <div className={styles.root}>
       <div className={styles.details}>
-        <h1>LEGO Icons Władca Pierścieni: Rivendell </h1>
-        <Button
-          text="Є в наявності"
-          style={{
-            backgroundColor: "rgba(10,184,67,0.1)",
-            color: "#0AB843",
-            cursor: "inherit",
-          }}
+        <h1>{name}</h1>
+        <Avalible
+            availability={avalible}
         />
       </div>
       <span>
         <Price
-          button={false}
-          currency={cards[0].price.currency}
-          originalPrice={cards[0].price.originalPrice}
-          discountPercentage={cards[0].price.discountPercentage}
-          discountedPrice={cards[0].price.discountedPrice}
+            originalPrice = {price}
+          discountPercentage = {discount.discount_percent}
+  discountedPrice = {price * (discount.discount_percent / 100)}
+  button = {false}
         />
         <div className={styles.buttons}>
           <Button

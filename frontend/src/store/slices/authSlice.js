@@ -13,6 +13,7 @@ const authSlice = createSlice({
           localStorage.setItem('token', action.payload)
           state.isActiveToken = true
           state.token = action.payload
+          console.log( state.token)
       }
     },
 });

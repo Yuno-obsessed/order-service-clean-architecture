@@ -2,18 +2,19 @@ import styles from "./index.module.scss";
 import { Input } from "../../components/input";
 import { Button } from "../../components/button";
 import {useEffect, useState} from "react";
-import {useLoginUserMutation} from "../../services/auth.js";
+import {useCheckTokenMutation, useLoginUserMutation} from "../../api/auth.js";
 import {useDispatch} from "react-redux";
 import {setToken} from "../../store/slices/authSlice.js";
+import {useNavigate} from "react-router-dom";
 
 export const LoginPage = () => {
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const initialState = {
     email: '',
     password: ''
   }
-  const [loginUser, {data, isSuccess, isError, error}] = useLoginUserMutation()
+  const [loginUser, {data, isSuccess}] = useLoginUserMutation()
 
   const [formValue, setFormValue] = useState(
      initialState
@@ -35,8 +36,8 @@ export const LoginPage = () => {
   useEffect(() => {
     if(isSuccess){
       dispatch(setToken(data.access_token))
+      navigate('/')
     }
-
   }, [isSuccess])
 
   return (

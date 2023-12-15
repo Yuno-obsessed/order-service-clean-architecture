@@ -1,0 +1,15 @@
+.cardImage {
+  margin: 0 auto;
+  height: 105px;
+  width: 100%;
+}
+.cardWithoutImage{
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 10px;
+  background: rgba(183, 183, 183, 0.07);
+}

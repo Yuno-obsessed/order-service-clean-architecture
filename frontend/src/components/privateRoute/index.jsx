@@ -1,5 +1,5 @@
 import styles from "./index.module.scss";
-import { useCheckTokenMutation } from "../../services/auth.js";
+import { useCheckTokenMutation } from "../../api/auth.js";
 import { useEffect } from "react";
 import {useNavigate} from "react-router-dom";
 

@@ -1,26 +1,31 @@
 import styles from "./index.module.scss";
-import { IconCard } from "../icon";
-import { heart } from "../../../public/assets/icons/svg.jsx";
 import { Price } from "../price";
+import {HeartIcon} from "./cardPart/HeartIcon/index.jsx";
+import {ProductTitle} from "./cardPart/CardTitle/index.jsx";
+import {CardImage} from "./cardPart/CardImage/index.jsx";
+import {useGetImageByIdQuery} from "../../api/product.js";
 
-export const Card = ({ imageUrl, productName, onClick, price }) => {
+export const Card = ({id, imageUrl, productName, onClick, price, discount}) => {
+
+  const handleHeartClick = (e) => {
+    e.stopPropagation();
+  };
+  const {data, isSuccess, error} = useGetImageByIdQuery(id)
+
   return (
     <div onClick={onClick} className={styles.root}>
       <div className={styles.container}>
         <div className={styles.card}>
-          <span onClick={(e) => {
-            e.stopPropagation()
-            console.log('hello')
-          }} className={styles.cardheart}>
-            <IconCard ico={heart("30px", "30px")} />
-          </span>
-          <img className={styles.cardImage} src={imageUrl} />
-          <h1 className={styles.cardTitle}>{productName}</h1>
+          <HeartIcon onClick={handleHeartClick} />
+          <CardImage
+              data={data}
+              imageUrl={imageUrl}
+          />
+          <ProductTitle productName={productName} />
           <Price
-            discountPercentage={price.discountPercentage}
-            originalPrice={price.originalPrice}
-            currency={price.currency}
-            discountedPrice={price.discountedPrice}
+            discountPercentage={discount.discount_percent}
+            originalPrice={price * 3}
+            discountedPrice={price}
           />
         </div>
       </div>

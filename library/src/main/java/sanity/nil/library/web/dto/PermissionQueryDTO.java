@@ -1,4 +1,4 @@
-package sanity.nil.order.application.order.dto.query;
+package sanity.nil.library.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -16,4 +16,7 @@ public class PermissionQueryDTO {
 
     @JsonProperty(value = "uri", required = true)
     public String uri;
+
+    @JsonProperty(value = "method", required = true)
+    public String method;
 }

@@ -1,4 +1,4 @@
-package sanity.nil.order.application.common.consts;
+package sanity.nil.library.web.consts;
 
 public enum AccessResponse {
 

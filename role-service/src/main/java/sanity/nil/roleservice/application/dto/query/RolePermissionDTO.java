@@ -1,19 +1,23 @@
 package sanity.nil.roleservice.application.dto.query;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import sanity.nil.roleservice.application.consts.PermissionError;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RolePermissionDTO {
 
-    @JsonProperty(value = "role", required = true)
-    public String role;
+    @JsonProperty(value = "access")
+    public Boolean hasAccess;
 
-    @JsonProperty(value = "service", required = true)
-    public String service;
+    @JsonProperty("permission_error")
+    public PermissionError permissionError;
 
-    @JsonProperty(value = "method", required = true)
-    public String method;
+    public RolePermissionDTO(Boolean hasAccess) {
+        this.hasAccess = hasAccess;
+    }
 }

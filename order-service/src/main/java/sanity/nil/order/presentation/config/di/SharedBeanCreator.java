@@ -18,18 +18,18 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.HandlerInterceptor;
 import sanity.nil.library.config.di.BeanCreator;
-import sanity.nil.library.filter.AuthenticationFilter;
+import sanity.nil.library.middleware.AuthenticationFilter;
+import sanity.nil.library.middleware.AuthorizationFilter;
+import sanity.nil.library.services.interfaces.IdentityProvider;
 import sanity.nil.order.application.common.interfaces.broker.MessageBroker;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
-import sanity.nil.order.application.order.dto.query.PermissionQueryDTO;
-import sanity.nil.order.application.order.interfaces.web.WebTemplate;
 import sanity.nil.order.infrastructure.messageBroker.interactors.MessageBrokerImpl;
 import sanity.nil.order.infrastructure.storage.config.MinioConfig;
-import sanity.nil.order.infrastructure.web.RoleWebTemplate;
 import sanity.nil.order.presentation.api.exception.request.RequestIdGenerator;
 import sanity.nil.order.presentation.api.exception.request.RequestIdHolder;
 import sanity.nil.order.presentation.api.exception.request.RequestImpl;
 import sanity.nil.order.presentation.api.middleware.CustomHandlerInterceptor;
+import sanity.nil.order.presentation.api.services.IdentityProviderImpl;
 
 import javax.sql.DataSource;
 
@@ -112,14 +112,14 @@ public class SharedBeanCreator {
         return factory;
     }
 
-//    @Bean
-//    public FilterRegistrationBean<AuthorizationFilter> authorizationFilter(WebTemplate<Boolean, PermissionQueryDTO> webTemplate) {
-//        FilterRegistrationBean<AuthorizationFilter> registrationBean = new FilterRegistrationBean<>();
-//        registrationBean.setFilter(new AuthorizationFilter(webTemplate));
-//        registrationBean.addUrlPatterns("/api/v1/*");
-//        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE+2);
-//        return registrationBean;
-//    }
+    @Bean
+    public FilterRegistrationBean<AuthorizationFilter> authorizationFilter(AuthorizationFilter authorizationFilter) {
+        FilterRegistrationBean<AuthorizationFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(authorizationFilter);
+        registrationBean.addUrlPatterns("/api/v1/order/*", "/api/v1/product", "/api/v1/product/statistics/*", "/api/v1/product/upload");
+        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE+2);
+        return registrationBean;
+    }
 
     @Bean
     public FilterRegistrationBean<AuthenticationFilter> authenticationFilter(AuthenticationFilter authenticationFilter) {
@@ -131,8 +131,7 @@ public class SharedBeanCreator {
     }
 
     @Bean
-    public WebTemplate<Boolean, PermissionQueryDTO> roleWebTemplate() {
-        return new RoleWebTemplate();
+    public IdentityProvider identityProvider() {
+        return new IdentityProviderImpl();
     }
-
 }

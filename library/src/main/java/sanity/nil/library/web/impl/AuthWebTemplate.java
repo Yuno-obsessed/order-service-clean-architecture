@@ -22,8 +22,8 @@ public class AuthWebTemplate implements WebTemplate<AccessDTO, AccessCommandDTO>
     public Mono<AccessDTO> resolveApi(AccessCommandDTO accessCommandDTO) {
         return webClient.post()
                 .uri("/auth/access")
-                .header("Origin", "http://localhost:5173")
-                .header("Access-Control-Request-Method", "POST")
+//                .header("Origin", "http://localhost:5173")
+//                .header("Access-Control-Request-Method", "POST")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(accessCommandDTO))
                 .retrieve()

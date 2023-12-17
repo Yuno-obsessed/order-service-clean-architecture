@@ -11,16 +11,16 @@ import sanity.nil.order.infrastructure.database.models.ProductTypeModel;
 public class ProductSubtypeMapper {
 
     public static ProductSubtypeDTO convertModelToProductSubtypeDTO(ProductSubtypeModel model) {
-        return new ProductSubtypeDTO(model.getProductSubtypeId(), model.getSubtypeName(), model.getSubtypePrefix());
+        return new ProductSubtypeDTO(model.getProductSubtypeId(), model.getSubtypeName());
     }
     public static ProductTypeDTO convertModelToProductTypeDTO(ProductTypeModel model) {
-        return new ProductTypeDTO(model.getTypeName(), model.getPrefix(),
+        return new ProductTypeDTO(model.getTypeName(),
                 convertModelToProductSubtypeDTO(model.getSubtypes().get(0)));
     }
 
     public static ProductTypeDTO convertEntityToProductTypeDTO(ProductSubtype entity) {
-        return new ProductTypeDTO(entity.getProductType().getProductTypeName(), entity.getProductType().getPrefix(),
-                new ProductSubtypeDTO(entity.getSubtypeId(), entity.getSubtypeName(), entity.getSubtypePrefix()));
+        return new ProductTypeDTO(entity.getProductType().getProductTypeName(),
+                new ProductSubtypeDTO(entity.getSubtypeId(), entity.getSubtypeName()));
     }
 
     public static ProductSubtypeModel convertEntityToModel(ProductSubtype productSubtype) {

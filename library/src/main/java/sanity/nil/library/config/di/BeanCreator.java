@@ -6,10 +6,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import sanity.nil.library.filter.AuthenticationFilter;
+import org.springframework.context.annotation.Lazy;
+import sanity.nil.library.middleware.AuthenticationFilter;
+import sanity.nil.library.middleware.AuthorizationFilter;
+import sanity.nil.library.services.interfaces.IdentityProvider;
 import sanity.nil.library.web.dto.AccessCommandDTO;
 import sanity.nil.library.web.dto.AccessDTO;
+import sanity.nil.library.web.dto.PermissionQueryDTO;
+import sanity.nil.library.web.dto.RolePermissionDTO;
 import sanity.nil.library.web.impl.AuthWebTemplate;
+import sanity.nil.library.web.impl.RoleWebTemplate;
 import sanity.nil.library.web.interfaces.WebTemplate;
 
 @Configuration
@@ -23,10 +29,10 @@ public class BeanCreator {
         return objectMapper;
     }
 
-//    @Bean
-//    public WebTemplate<Boolean, PermissionQueryDTO> roleWebTemplate() {
-//        return new RoleWebTemplate();
-//    }
+    @Bean
+    public WebTemplate<RolePermissionDTO, PermissionQueryDTO> roleWebTemplate() {
+        return new RoleWebTemplate();
+    }
 
     @Bean
     public WebTemplate<AccessDTO, AccessCommandDTO> authWebTemplate() {
@@ -34,8 +40,19 @@ public class BeanCreator {
     }
 
     @Bean
+    @Lazy
     public AuthenticationFilter authenticationFilterCreator(WebTemplate<AccessDTO, AccessCommandDTO> webTemplate,
-                                                     @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
-        return new AuthenticationFilter(webTemplate, objectMapper);
+                                                     @Qualifier("myObjectMapper") ObjectMapper objectMapper,
+                                                            IdentityProvider identityProvider) {
+        return new AuthenticationFilter(webTemplate, objectMapper, identityProvider);
     }
+
+    @Bean
+    @Lazy
+    public AuthorizationFilter authorizationFilterCreator(WebTemplate<RolePermissionDTO, PermissionQueryDTO> webTemplate,
+                                                          @Qualifier("myObjectMapper") ObjectMapper objectMapper,
+                                                          IdentityProvider identityProvider) {
+        return new AuthorizationFilter(webTemplate, objectMapper, identityProvider);
+    }
+
 }

@@ -1,4 +1,4 @@
-package sanity.nil.library.filter;
+package sanity.nil.library.middleware;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +7,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import sanity.nil.library.web.dto.*;
+import sanity.nil.library.services.data.Identity;
+import sanity.nil.library.services.interfaces.IdentityProvider;
+import sanity.nil.library.web.consts.AccessResponse;
+import sanity.nil.library.web.consts.ErrorResponse;
+import sanity.nil.library.web.dto.AccessCommandDTO;
+import sanity.nil.library.web.dto.AccessDTO;
+import sanity.nil.library.web.dto.AccessError;
 import sanity.nil.library.web.interfaces.WebTemplate;
 
 import java.io.IOException;
@@ -19,13 +25,14 @@ public class AuthenticationFilter implements Filter {
 
     private final WebTemplate<AccessDTO, AccessCommandDTO> webTemplate;
     private final ObjectMapper objectMapper;
+    private final IdentityProvider identityProvider;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         log.info("AuthenticationFilter worked");
         HttpServletRequest request = (HttpServletRequest)  servletRequest;
         String bearer = request.getHeader("Authorization");
-        if (bearer.isEmpty()) {
+        if (bearer == null || bearer.isEmpty()) {
             log.error("Authorization header is empty.");
             handleEmptyAuthorizationHeader((servletResponse));
             return;
@@ -43,8 +50,9 @@ public class AuthenticationFilter implements Filter {
             handleExpiredToken(servletResponse);
             return;
         }
-        String rolesAsString = String.join(",", accessDTO.roles);
-        servletRequest.setAttribute("roles", rolesAsString);
+        identityProvider.holdIdentity(new Identity(accessDTO.userID, accessDTO.roles));
+//        String rolesAsString = String.join(",", accessDTO.roles);
+//        servletRequest.setAttribute("roles", rolesAsString);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

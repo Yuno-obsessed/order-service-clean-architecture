@@ -22,7 +22,7 @@ public class PermissionModel {
     @Id
     private int id;
 
-    @Column(name = "service_name", nullable = false, unique = true)
+    @Column(name = "service_name", nullable = false)
     private String serviceName;
 
     @Column(name = "method", nullable = false)

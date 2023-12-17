@@ -17,6 +17,34 @@ public class User extends BaseAggregate {
     private boolean emailConfirmed;
     private String password;
 
+    public boolean validate() {
+        return validateEmail() &&
+                validatePassword() &&
+                validateUsername() &&
+                validateFirstName() &&
+                validateRepeatPassword();
+    }
+
+    public boolean validateFirstName() {
+        return false;
+    }
+
+    public boolean validateUsername() {
+        return false;
+    }
+
+    public boolean validateEmail() {
+       return false;
+    }
+
+    public boolean validatePassword() {
+       return false;
+    }
+
+    public boolean validateRepeatPassword() {
+       return false;
+    }
+
     public User(UserID userID, Set<Role> roles, String firstName, String lastName, String username,
                 String email, boolean emailConfirmed, String password) {
         this.userID = userID;

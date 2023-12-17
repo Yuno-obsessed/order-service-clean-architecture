@@ -2,6 +2,7 @@ package sanity.nil.order.product.infrastructure;
 
 import lombok.NoArgsConstructor;
 import sanity.nil.order.application.common.dto.BaseFilters;
+import sanity.nil.order.application.product.dto.query.ProductCardQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
 import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
@@ -59,7 +60,7 @@ public class ProductInMemoryDAOImpl implements ProductDAO, ProductReader {
     }
 
     @Override
-    public List<ProductQueryDTO> getProductQueriesWithFilters(ProductQueryFilters filters) {
+    public List<ProductCardQueryDTO> getProductQueriesWithFilters(ProductQueryFilters filters) {
         return null;
     }
 

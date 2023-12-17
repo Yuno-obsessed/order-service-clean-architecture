@@ -87,6 +87,20 @@ services:
     volumes:
       - order.minio.data:/data
 
+#  proxy:
+#    build:
+#      context: proxy
+#    networks:
+#      - adapters-network
+#    volumes:
+#      - ./proxy/config/conf.d/:/etc/nginx/conf.d/
+#      - ./proxy/config/html/:/usr/share/nginx/html/
+##      - ./config/nginx.conf:/etc/nginx/nginx.conf
+#    ports:
+#      - "8000:80"
+#    environment:
+#      - NGINX_PORT=80
+
 volumes:
   order.postgres.data: { }
   order.rabbitmq.data: { }

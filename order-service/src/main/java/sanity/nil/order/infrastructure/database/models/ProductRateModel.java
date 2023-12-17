@@ -10,12 +10,12 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name = "product_statistics", schema = "order_service")
+@Table(name = "product_rates", schema = "order_service")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-public class ProductStatisticsModel {
+public class ProductRateModel {
 
     @Id
     @Column(name = "product_id")
@@ -27,18 +27,8 @@ public class ProductStatisticsModel {
     @Column(name = "ratings")
     private Integer ratings;
 
-    @Column(name = "in_wish_list")
-    private Integer inWishList;
-
     @OneToOne
     @MapsId
     @JoinColumn(name = "product_id")
     private ProductModel product;
-
-    public ProductStatisticsModel(UUID productID, BigDecimal rate, Integer ratings, Integer inWishList) {
-        this.productID = productID;
-        this.rate = rate;
-        this.ratings = ratings;
-        this.inWishList = inWishList;
-    }
 }

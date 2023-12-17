@@ -14,6 +14,4 @@ public class ProductSubtypeDTO {
     @JsonProperty(value = "subtype_name", required = true)
     public String subtypeName;
 
-    @JsonProperty(value = "subtype_prefix", required = true)
-    public String subtypePrefix;
 }

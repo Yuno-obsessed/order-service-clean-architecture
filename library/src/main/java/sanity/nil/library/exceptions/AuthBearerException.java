@@ -1,4 +1,4 @@
-package sanity.nil.order.application.common.exceptions;
+package sanity.nil.library.exceptions;
 
 public class AuthBearerException extends RuntimeException{
 

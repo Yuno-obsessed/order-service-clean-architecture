@@ -8,6 +8,7 @@ import sanity.nil.authservice.application.consts.AccessError;
 import sanity.nil.authservice.application.consts.AccessResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +23,9 @@ public class AccessDTO {
 
     @JsonProperty("roles")
     public List<String> roles;
+
+    @JsonProperty("user_id")
+    public UUID userID;
 
     public AccessDTO(AccessResponse accessResponse) {
         this.accessResponse = accessResponse;

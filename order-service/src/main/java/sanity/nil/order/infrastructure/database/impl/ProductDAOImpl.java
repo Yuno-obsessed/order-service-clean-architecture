@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import sanity.nil.order.application.common.dto.BaseFilters;
+import sanity.nil.order.application.product.dto.query.ProductCardQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductQueryFilters;
 import sanity.nil.order.application.product.exceptions.DiscountNotFound;
@@ -88,10 +89,10 @@ public class ProductDAOImpl implements ProductDAO, ProductReader, ProductSubtype
 
 
     @Override
-    public List<ProductQueryDTO> getProductQueriesWithFilters(ProductQueryFilters filters) {
+    public List<ProductCardQueryDTO> getProductQueriesWithFilters(ProductQueryFilters filters) {
         Pageable pageable = PageRequest.of(filters.offset, filters.limit);
         filters.orderBy = "p." + filters.orderBy;
-        return ProductMapper.convertListOfModelsToProductQueryDTOs(
+        return ProductMapper.convertListOfModelsToProductCardQueryDTOs(
                 productORM.findByFilters(filters, pageable));
     }
 

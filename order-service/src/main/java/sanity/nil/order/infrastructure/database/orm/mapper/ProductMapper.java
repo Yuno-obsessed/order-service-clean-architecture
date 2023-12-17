@@ -4,10 +4,10 @@ package sanity.nil.order.infrastructure.database.orm.mapper;
 import sanity.nil.order.application.common.dto.FileData;
 import sanity.nil.order.application.product.dto.boundary.ProductDTO;
 import sanity.nil.order.application.product.dto.boundary.ProductFileData;
-import sanity.nil.order.application.product.dto.boundary.ProductImageDTO;
 import sanity.nil.order.application.product.dto.boundary.ProductStatisticsDTO;
 import sanity.nil.order.application.product.dto.command.UploadProductImages;
 import sanity.nil.order.application.product.dto.query.DiscountQueryDTO;
+import sanity.nil.order.application.product.dto.query.ProductCardQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductQueryDTO;
 import sanity.nil.order.application.product.dto.query.ProductStatisticsQueryDTO;
 import sanity.nil.order.domain.common.entity.Discount;
@@ -20,7 +20,7 @@ import sanity.nil.order.domain.product.vo.ProductID;
 import sanity.nil.order.infrastructure.database.models.DiscountModel;
 import sanity.nil.order.infrastructure.database.models.ProductImageModel;
 import sanity.nil.order.infrastructure.database.models.ProductModel;
-import sanity.nil.order.infrastructure.database.models.ProductStatisticsModel;
+import sanity.nil.order.infrastructure.database.models.ProductRateModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,9 +51,8 @@ public class ProductMapper {
         }
         model.setProductSubtype(ProductSubtypeMapper.convertEntityToModel(entity.getProductSubtype()));
         if (entity.getProductStatistics() != null) {
-            ProductStatistics statistics = entity.getProductStatistics();
-            model.setProductStatistics(new ProductStatisticsModel(model.getId(), statistics.getRate(),
-                    statistics.getRatings(), statistics.getInWishList(), model));
+            model.setProductRate(new ProductRateModel(model.getId(), entity.getProductStatistics().getRate(),
+                    entity.getProductStatistics().getRatings(), model));
         }
         List<ProductImageModel> imageModels = new ArrayList<>();
         if (entity.getImages() != null) {
@@ -73,14 +72,13 @@ public class ProductMapper {
             discount = new Discount(discountModel.getDiscountID(), discountModel.getPercent(),
                     discountModel.getStartedAt(), discountModel.getExpiredAt());
         }
-        ProductStatisticsModel productStatistics = model.getProductStatistics();
         return new Product(new ProductID(model.getId()),
                 model.getDescription(), model.getName(), model.getPrice(),
                 discount, model.getQuantity(), model.isAvailability(),
                 new Deleted(model.isDeleted(), model.getDeletedAt()),
                 ProductSubtypeMapper.convertModelToEntity(model.getProductSubtype()),
-                new ProductStatistics(productStatistics.getRate(),
-                        productStatistics.getRatings(), productStatistics.getInWishList()));
+                new ProductStatistics(model.getProductRate().getRate(), model.getProductRate().getRatings(),
+                        null));
     }
 
     public static List<Product> convertModelsToEntities(List<ProductModel> models) {
@@ -105,19 +103,42 @@ public class ProductMapper {
     }
 
     public static ProductQueryDTO convertModelToProductQueryDTO(ProductModel model) {
-        List<ProductImageDTO> productImages = new ArrayList<>();
-        if (model.getProductImages() != null || !model.getProductImages().isEmpty()) {
-            for (ProductImageModel image : model.getProductImages()) {
-                productImages.add(new ProductImageDTO(image.getImageName(), image.getBucketName()));
-            }
+        List<String> productImages = new ArrayList<>();
+        if (model.getProductImages() != null && !model.getProductImages().isEmpty()) {
+            model.getProductImages().forEach(e -> productImages.add(e.getImageName() + ',' + e.getBucketName()));
         }
         return new ProductQueryDTO(model.getId(), model.getDescription(),
-                model.getName(), model.getPrice(), convertDiscountEntityToQuery(model.getDiscount()),
+                model.getName(), model.getPrice(), model.getDiscount() == null ? null : convertDiscountEntityToQuery(model.getDiscount()),
                 model.getQuantity(), model.isAvailability(),
                 ProductSubtypeMapper.convertModelToProductTypeDTO(model.getProductSubtype().getProductType()),
-                convertStatisticsModelToDTO(model.getProductStatistics()),
+                new ProductStatisticsDTO(model.getProductRate().getRate(), model.getProductRate().getRatings(), null),
                 productImages, model.getCreatedAt(), model.getUpdatedAt()
         );
+    }
+
+    public static ProductCardQueryDTO convertModelToProductCardQueryDTO(ProductModel model) {
+        Integer discount = null;
+        if (model.getDiscount() != null && model.getDiscount().isActive()) {
+           discount = model.getDiscount().getPercent();
+        }
+        ProductImageModel productImage = null;
+        if (model.getProductImages() != null && !model.getProductImages().isEmpty()) {
+            productImage = model.getProductImages().stream()
+                    .filter(e -> e.getImageName().lastIndexOf('0') == e.getImageName().length() - 1)
+                    .findFirst()
+                    .orElse(null);
+        }
+        return new ProductCardQueryDTO(model.getId(), model.getName(), model.getProductRate().getRate(),
+                model.getProductRate().getRatings(),
+                model.getPrice(), discount, null, productImage != null ?
+                productImage.getImageName() + ',' + productImage.getBucketName() : null
+        );
+    }
+
+    public static List<ProductCardQueryDTO> convertListOfModelsToProductCardQueryDTOs(List<ProductModel> models) {
+        return models.stream()
+                .map(ProductMapper::convertModelToProductCardQueryDTO)
+                .collect(Collectors.toList());
     }
 
     public static List<ProductQueryDTO> convertListOfModelsToProductQueryDTOs(List<ProductModel> models) {
@@ -131,9 +152,8 @@ public class ProductMapper {
     }
 
     public static ProductStatisticsQueryDTO convertEntityToProductStatisticsQueryDTO(Product product) {
-        return new ProductStatisticsQueryDTO(product.getProductId().getId(),
-                product.getProductStatistics().getRate(), product.getProductStatistics().getRatings(),
-                product.getProductStatistics().getInWishList());
+        return new ProductStatisticsQueryDTO(product.getProductStatistics().getRate(),
+                product.getProductStatistics().getRatings(), product.getProductStatistics().getInWishList());
     }
 
     public static ProductStatisticsDTO convertEntityToProductStatisticsDTO(Product product) {
@@ -149,10 +169,6 @@ public class ProductMapper {
     public static Discount convertDiscountModelToEntity(DiscountModel model) {
         return new Discount(model.getDiscountID(), model.getPercent(),
                 model.getStartedAt(), model.getExpiredAt());
-    }
-
-    public static ProductStatisticsDTO convertStatisticsModelToDTO(ProductStatisticsModel model) {
-        return new ProductStatisticsDTO(model.getRate(), model.getRatings(), model.getInWishList());
     }
 
     public static ProductFileData convertUploadImagesToFileData(UploadProductImages dto) {

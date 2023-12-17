@@ -110,8 +110,8 @@ public class ProductBeanCreator {
     public ProductQueryService productQueryService(ProductReader productReader, ProductImageReader productImageReader,
                                                    @Qualifier("productFileStorage") FileStorage fileStorage) {
         return new ProductQueryService(
-                new GetAllProductsQuery(productReader),
-                new GetProductByIdQuery(productReader),
+                new GetAllProductsQuery(productReader, fileStorage),
+                new GetProductByIdQuery(productReader, fileStorage),
                 new GetAllImagesQuery(productImageReader, fileStorage)
         );
     }

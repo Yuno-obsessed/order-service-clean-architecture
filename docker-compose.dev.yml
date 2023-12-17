@@ -41,15 +41,15 @@ services:
     networks:
       - adapters-network
 
-#  role-service:
-#    container_name: role-service
-#    build:
-#      context: .
-#      dockerfile: role-service/Dockerfile
-#    ports:
-#      - "8004:8004"
-#    networks:
-#      - adapters-network
+  role-service:
+    container_name: role-service
+    build:
+      context: .
+      dockerfile: role-service/Dockerfile
+    ports:
+      - "8004:8004"
+    networks:
+      - adapters-network
 
 networks:
   adapters-network:

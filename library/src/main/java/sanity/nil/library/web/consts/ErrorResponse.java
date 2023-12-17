@@ -1,4 +1,4 @@
-package sanity.nil.library.web.dto;
+package sanity.nil.library.web.consts;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

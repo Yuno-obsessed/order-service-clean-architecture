@@ -33,7 +33,7 @@ public class ProductModel extends BaseModel {
     private DiscountModel discount;
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ProductStatisticsModel productStatistics;
+    private ProductRateModel productRate;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
@@ -41,11 +41,11 @@ public class ProductModel extends BaseModel {
     @Column(name = "availability")
     private boolean availability;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "subtype_id")
     private ProductSubtypeModel productSubtype;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "product_id")
     private List<ProductImageModel> productImages = new ArrayList<>();
 

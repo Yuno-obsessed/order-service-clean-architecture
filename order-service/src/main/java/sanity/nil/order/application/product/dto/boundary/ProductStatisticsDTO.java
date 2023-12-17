@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import sanity.nil.order.application.product.dto.BigDecimalSerializer;
+import sanity.nil.order.application.product.dto.RateSerializer;
 
 import java.math.BigDecimal;
 
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductStatisticsDTO {
 
-    @JsonSerialize(using = BigDecimalSerializer.class)
+    @JsonSerialize(using = RateSerializer.class)
     @JsonProperty(value = "rate", required = true)
     public BigDecimal rate;
 

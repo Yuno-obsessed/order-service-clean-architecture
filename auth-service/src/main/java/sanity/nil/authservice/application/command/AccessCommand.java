@@ -8,6 +8,8 @@ import sanity.nil.authservice.application.dto.command.AccessCommandDTO;
 import sanity.nil.authservice.application.dto.response.AccessDTO;
 import sanity.nil.authservice.application.interfaces.security.JwtUtils;
 
+import java.util.UUID;
+
 @Slf4j
 @RequiredArgsConstructor
 public class AccessCommand {
@@ -29,6 +31,7 @@ public class AccessCommand {
             }
         } else {
             accessDTO.roles = jwtUtils.getRolesFromJwtToken(accessCommandDTO.accessToken);
+            accessDTO.userID = UUID.fromString(jwtUtils.getUserIDFromJwtToken(accessCommandDTO.accessToken));
             log.info("Access token = {} is valid", accessCommandDTO.accessToken);
         }
 

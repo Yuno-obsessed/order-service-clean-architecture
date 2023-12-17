@@ -17,6 +17,8 @@ public class RoleWebTemplate implements WebTemplate<RolePermissionDTO, Permissio
         return webClient.get()
                 .uri(String.format("/role/permission?port=%s&uri=%s&roles=%s&method=%s", permissionQueryDTO.port,
                         permissionQueryDTO.uri, permissionQueryDTO.roles, permissionQueryDTO.method))
+                .header("Origin", "http://localhost:5173")
+                .header("Access-Control-Request-Method", "POST")
                 .retrieve()
                 .bodyToMono(RolePermissionDTO.class);
     }

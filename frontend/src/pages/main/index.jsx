@@ -42,7 +42,7 @@ export const MainPage = () => {
                           navigate('/product/' + card.product_id)
                         }}
                         id={card.product_id}
-                        key={card.product_Id}
+                        key={card.product_id}
                         productId={card.product_id}
                         imageUrl={card.imageUrl}
                         price={card.price}

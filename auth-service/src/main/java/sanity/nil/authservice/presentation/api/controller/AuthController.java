@@ -24,7 +24,7 @@ import java.util.Arrays;
 @RequestMapping(value = "/api/v1/auth")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", maxAge = 3600,
-        methods = {RequestMethod.GET, RequestMethod.DELETE, RequestMethod.PUT, RequestMethod.OPTIONS})
+        methods = {RequestMethod.GET, RequestMethod.DELETE, RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS})
 public class AuthController {
 
     private final AuthService authService;

@@ -1,4 +1,4 @@
-package sanity.nil.authservice.application.dto.boundary;
+package sanity.nil.userservice.application.dto.boundary;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

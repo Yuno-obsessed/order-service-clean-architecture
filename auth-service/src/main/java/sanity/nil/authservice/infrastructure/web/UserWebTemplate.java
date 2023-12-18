@@ -2,6 +2,7 @@ package sanity.nil.authservice.infrastructure.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import sanity.nil.authservice.application.dto.boundary.UserDTO;
@@ -16,8 +17,11 @@ public class UserWebTemplate implements WebTemplate<UserIDQueryDTO, UserDTO> {
             .baseUrl("http://user-service:8002/api/v1/users").build();
 
     public Mono<UserIDQueryDTO> resolveApi(UserDTO userDTO) {
-        return webClient.get()
-                .uri(String.format("/user?email=%s&password=%s", userDTO.email, userDTO.password))
+        return webClient.post()
+                .uri("/user/get")
+                .header("Origin", "http://localhost:5173")
+                .header("Access-Control-Request-Method", "POST")
+                .body(BodyInserters.fromValue(userDTO))
                 .retrieve()
                 .bodyToMono(UserIDQueryDTO.class);
     }

@@ -14,8 +14,8 @@ public class PermissionDAOImpl implements PermissionReader {
     private final PermissionORM permissionORM;
 
     @Override
-    public PermissionQueryDTO getPermissionByServiceAndURI(String service, String uri, String method) {
-        PermissionModel permissionModel = permissionORM.findByServiceNameAndUriAndVerb(service, uri, method).orElseThrow(
+    public PermissionQueryDTO getPermissionByURIAndVerb(String uri, String verb) {
+        PermissionModel permissionModel = permissionORM.findByUriAndVerb(uri, verb).orElseThrow(
                 PermissionNotFoundException::new
         );
         return PermissionMapper.convertModelToQuery(permissionModel);

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +36,9 @@ public class OrderQueryDTO {
 
     @JsonProperty(value = "order_status")
     public String orderStatus;
+
+    @JsonProperty(value = "total_price")
+    public BigDecimal totalPrice;
 
     @JsonProperty(value = "created_at")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

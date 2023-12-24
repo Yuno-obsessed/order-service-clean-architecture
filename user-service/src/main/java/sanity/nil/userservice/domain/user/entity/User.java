@@ -9,6 +9,7 @@ import sanity.nil.userservice.domain.user.vo.Role;
 import sanity.nil.userservice.domain.user.vo.UserID;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -94,6 +95,10 @@ public class User extends BaseAggregate {
 
     public UserID getUserID() {
         return userID;
+    }
+
+    public UUID getID() {
+        return userID.getID();
     }
 
     public Set<Role> getRoles() {

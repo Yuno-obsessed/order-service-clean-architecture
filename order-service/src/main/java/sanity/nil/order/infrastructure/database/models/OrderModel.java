@@ -10,6 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @DynamicUpdate
@@ -24,12 +25,11 @@ public class OrderModel extends BaseModel {
     @JoinColumn(name = "address_id")
     private AddressModel address;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProductModel> products = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserModel user;
+    @Column(name = "user_id")
+    private UUID userID;
 
     @Column(name = "order_status", nullable = false)
     private String orderStatus;
@@ -40,11 +40,8 @@ public class OrderModel extends BaseModel {
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
 
-    @Column(name = "deleted")
-    private boolean deleted;
-
     public boolean isLogicallyDeleted() {
-        return this.deleted && this.getDeletedAt() != null;
+        return this.isDeleted() && this.getDeletedAt() != null;
     }
 
     @Override

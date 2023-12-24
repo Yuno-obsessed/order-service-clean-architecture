@@ -24,7 +24,7 @@ public class AddressDAOImpl implements AddressDAO, AddressReader {
     }
 
     @Override
-    public Address updateProduct(Address entity) {
+    public Address updateAddress(Address entity) {
         UUID id = entity.getAddressID().getId();
         AddressModel maybeModel = addressORM.findById(id).orElseThrow(
                 () -> AddressNotFoundException.throwEx(id));

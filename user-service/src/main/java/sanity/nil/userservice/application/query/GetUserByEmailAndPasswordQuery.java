@@ -14,9 +14,6 @@ public class GetUserByEmailAndPasswordQuery {
 
     public UserQueryDTO handle(String email, String password) {
         UserQueryDTO userQueryDTO = userReader.getUserByEmail(email);
-        if (userQueryDTO == null) {
-            return null;
-        }
         if (passwordEncoder.verifyHash(password, userQueryDTO.password)) {
             return userQueryDTO;
         } else {

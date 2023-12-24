@@ -1,17 +1,12 @@
 package sanity.nil.library.config;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Services {
 
-//    @Value("${application.auth.host}")
-//    public String host;
-//
-//    @Value("${application.auth.port}")
-//    public String port;
+    public static String getAuthServiceBaseURL() {
+        return "http://proxy:80/auth-service/auth";
+    }
 
-    public String getAuthServiceBaseURL() {
-        return "http://auth-service:8003/api/v1";
+    public static String getRoleServiceBaseURL() {
+        return "http://proxy:80/role-service/role";
     }
 }

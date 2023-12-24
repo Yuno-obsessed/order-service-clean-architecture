@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface ServiceORM extends JpaRepository<ServiceModel, String> {
 
-    Optional<ServiceModel> findByPortAndActive(String port, Boolean active);
+    Optional<ServiceModel> findByServiceNameAndActive(String serviceName, Boolean active);
 }

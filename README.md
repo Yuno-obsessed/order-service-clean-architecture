@@ -1,21 +1,22 @@
-## Ideas : 
+# Order-Service  
 
-- [ ] Refactor to cqrs (store orders in redis with ttl 1 week)
-- [ ] Add orders-history service (store in postgres orders, received from rabbitmq queue)
-- [ ] (?) Add storage service (to keep quantity of products, receive new items, update it)
-- [ ] Add minio to store product images
-- [ ] Add auth service (with auth table to store sessions(with auth table to store sessions)
-- [ ] Add user service  
-- [ ] Write unit tests for BL (domain)
+- [x] CQRS separation of orders:
+- Command/query handlers for IPC, 
+- Storing query responsibility in Redis
+- Storing command responsibility in Postgres
+- Synchronizing both responsibilities using RabbitMQ and domain events
 
----
-
-### Notes :
-
-- > Consumer is listening for changes in domain from producer of events, stores it in redis.  
-  > Redis is responsible for storing data about orders for 1 week  
-  > Order-history service is listening for creation, updates of order domain, stores it in db
-  
-- > Storage service provides an api of managing different storage centers, quantity of products (?) grouping by types  
-  > Printing smth like [ricevutas](https://www.soldioggi.it/ricevuta-di-pagamento-16164.html) about shipping and receiving products 
-  > 
+- [x] Clean architecture:
+- Principles of SOLID
+- Single ...
+- Precise division of layers:
+> Domain - layer that serves as implementation of critical business rules, is a core and has no dependencies on anything except of itself;  
+> 
+> Application - layer that serves as implementation of application business rules, 
+> invokes critical (domain) business rules and defines interfaces to implement in infrastructure layer;  
+>  
+> Infrastructure - layer of driven (secondary) adapters, which wrap around a tool (db, message bus, etc) 
+> and adapt it's I/O to a port, which fits the Application layer needs;  
+> 
+> Presentation - layer of driving (primary) adapters, which wrap around a use case and adapt it's I/O to a delivery 
+> mechanism (HTTP/HTML, HTTP/JSON, gRPC/Protocol Buffers, etc).

@@ -46,9 +46,9 @@ public class Order extends BaseAggregate{
     public void addProduct(OrderProduct product) {
         this.preprocessOrder();
         if (this.products.stream()
-                .anyMatch(p -> p.getProductID()
-                        .equals(product.getProductID()))) {
-            throw OrderProductAlreadyIsContainedException.throwEx(product.getProductID());
+                .anyMatch(p -> p.getId()
+                        .equals(product.getId()))) {
+            throw OrderProductAlreadyIsContainedException.throwEx(product.getId());
         }
         this.products.add(product);
     }
@@ -56,7 +56,7 @@ public class Order extends BaseAggregate{
     public void removeProduct(OrderProduct product) {
         this.preprocessOrder();
         if (!products.contains(product)) {
-            throw OrderProductNotExistsException.throwEx(product.getProductID());
+            throw OrderProductNotExistsException.throwEx(product.getId());
         }
         this.products.remove(product);
     }
@@ -99,7 +99,7 @@ public class Order extends BaseAggregate{
         Map<OrderProduct, Integer> result = new HashMap<>();
         for (OrderProduct oldProduct : productsToFindFrom) {
             OrderProduct matchingProduct = productsToFind.stream()
-                    .filter(product -> product.getProductID().equals(oldProduct.getProductID()))
+                    .filter(product -> product.getId().equals(oldProduct.getId()))
                     .findFirst()
                     .orElse(null);
             if (matchingProduct != null) {
@@ -149,7 +149,7 @@ public class Order extends BaseAggregate{
     }
 
     public List<UUID> getProductIDs() {
-        return products.stream().map(OrderProduct::getProductID).collect(Collectors.toList());
+        return products.stream().map(OrderProduct::getId).collect(Collectors.toList());
     }
     public boolean isClosed() {
         return closed;

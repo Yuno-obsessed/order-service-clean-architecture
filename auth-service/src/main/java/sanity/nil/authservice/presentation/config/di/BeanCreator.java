@@ -9,10 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import sanity.nil.authservice.application.command.AccessCommand;
-import sanity.nil.authservice.application.command.LoginCommand;
-import sanity.nil.authservice.application.command.LogoutCommand;
-import sanity.nil.authservice.application.command.RefreshTokenCommand;
+import sanity.nil.authservice.application.command.*;
+import sanity.nil.authservice.application.dto.boundary.UserCreateCommandDTO;
+import sanity.nil.authservice.application.dto.boundary.UserCreatedDTO;
 import sanity.nil.authservice.application.dto.boundary.UserDTO;
 import sanity.nil.authservice.application.dto.boundary.UserIDQueryDTO;
 import sanity.nil.authservice.application.dto.query.RefreshSessionsQueryDTO;
@@ -25,7 +24,8 @@ import sanity.nil.authservice.application.service.AuthService;
 import sanity.nil.authservice.infrastructure.cache.SessionCacheDAOImpl;
 import sanity.nil.authservice.infrastructure.security.FingerprintUtilsImpl;
 import sanity.nil.authservice.infrastructure.security.JwtUtilsImpl;
-import sanity.nil.authservice.infrastructure.web.UserWebTemplate;
+import sanity.nil.authservice.infrastructure.web.UserCreateCommandWeb;
+import sanity.nil.authservice.infrastructure.web.UserGetQueryWeb;
 
 @Configuration
 public class BeanCreator {
@@ -60,8 +60,13 @@ public class BeanCreator {
     }
 
     @Bean
-    public WebTemplate<UserIDQueryDTO, UserDTO> webTemplate() {
-        return new UserWebTemplate();
+    public WebTemplate<UserIDQueryDTO, UserDTO> getUserWeb() {
+        return new UserGetQueryWeb();
+    }
+
+    @Bean
+    public WebTemplate<UserCreatedDTO, UserCreateCommandDTO> createUserWeb() {
+        return new UserCreateCommandWeb();
     }
 
     @Bean
@@ -76,14 +81,16 @@ public class BeanCreator {
 
     @Bean
     public AuthService authService(SessionCacheDAO sessionCacheDAO,
-                                   WebTemplate<UserIDQueryDTO, UserDTO> webTemplate,
+                                   WebTemplate<UserIDQueryDTO, UserDTO> getUserWeb,
+                                   WebTemplate<UserCreatedDTO, UserCreateCommandDTO> createUserWeb,
                                    JwtUtils jwtUtils,
                                    FingerprintUtils fingerprintUtils) {
         return new AuthService(
-                new LoginCommand(sessionCacheDAO, webTemplate, jwtUtils, fingerprintUtils),
+                new LoginCommand(sessionCacheDAO, getUserWeb, jwtUtils, fingerprintUtils),
                 new RefreshTokenCommand(sessionCacheDAO, jwtUtils, fingerprintUtils),
                 new AccessCommand(jwtUtils),
-                new LogoutCommand(sessionCacheDAO)
+                new LogoutCommand(sessionCacheDAO),
+                new RegisterCommand(sessionCacheDAO, createUserWeb, jwtUtils, fingerprintUtils)
         );
     }
 }

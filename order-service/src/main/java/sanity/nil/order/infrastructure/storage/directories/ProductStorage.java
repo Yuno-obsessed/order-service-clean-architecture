@@ -67,7 +67,9 @@ public class ProductStorage implements FileStorage {
                             .bucket(bucketName)
                             .object(name)
                             .expiry(2, TimeUnit.HOURS)
+                            .versionId(null)
                             .build());
+            log.info("Url to minio object: {}", url);
         } catch (Exception e) {
             throw new StorageException(e);
         }

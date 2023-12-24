@@ -17,11 +17,11 @@ public class AuthWebTemplate implements WebTemplate<AccessDTO, AccessCommandDTO>
 
     private final WebClient webClient = WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(HttpClient.newConnection().compress(true)))
-            .baseUrl(new Services().getAuthServiceBaseURL()).build();
+            .baseUrl(Services.getAuthServiceBaseURL()).build();
 
     public Mono<AccessDTO> resolveApi(AccessCommandDTO accessCommandDTO) {
         return webClient.post()
-                .uri("/auth/access")
+                .uri("/access")
                 .header("Origin", "http://localhost:5173")
                 .header("Access-Control-Request-Method", "POST")
                 .contentType(MediaType.APPLICATION_JSON)

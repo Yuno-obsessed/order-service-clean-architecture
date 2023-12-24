@@ -7,6 +7,6 @@ public interface AddressDAO {
 
     Address createAddress(Address address);
 
-    Address updateProduct(Address address);
+    Address updateAddress(Address address);
 
 }

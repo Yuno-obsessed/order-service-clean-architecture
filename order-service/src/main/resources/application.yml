@@ -47,11 +47,11 @@ application:
       topic-exchange: Orders.Top
       fanout-exchange: Orders.FA
       queue: order
-      routing-created-event: Order.Create
-      routing-updated-event: Order.Update
-      routing-deleted-event: Order.Delete
-      routing-added-product-event: Order.AddedProduct
+      rk-created: Order.Create
+      rk-deleted: Order.Delete
+      rk-added-product: Order.AddedProduct
+      rk-removed-product: Order.RemovedProduct
+      rk-updated-address: Order.UpdatedAddress
+      rk-updated-product-quantity: Order.UpdatedProductQuantity
     product:
       queue: product
-  minio:
-    host: localhost

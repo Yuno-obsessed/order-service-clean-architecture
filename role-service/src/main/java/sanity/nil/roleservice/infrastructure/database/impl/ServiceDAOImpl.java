@@ -14,8 +14,8 @@ public class ServiceDAOImpl implements ServiceReader {
     private final ServiceORM serviceORM;
 
     @Override
-    public ServiceQueryDTO getActiveByPort(String port, Boolean active) {
-        ServiceModel maybeService = serviceORM.findByPortAndActive(port, active).orElseThrow(
+    public ServiceQueryDTO getActiveByService(String service, Boolean active) {
+        ServiceModel maybeService = serviceORM.findByServiceNameAndActive(service, active).orElseThrow(
                 ServiceNotFoundException::new
         );
         return ServiceMapper.convertModelToQuery(maybeService);

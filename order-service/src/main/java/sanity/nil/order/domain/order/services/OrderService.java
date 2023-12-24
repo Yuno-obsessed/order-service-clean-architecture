@@ -9,12 +9,12 @@ import sanity.nil.order.domain.order.entity.Address;
 import sanity.nil.order.domain.order.entity.OrderProduct;
 import sanity.nil.order.domain.order.events.*;
 import sanity.nil.order.domain.order.exceptions.OrderProductsEmptyException;
+import sanity.nil.order.domain.order.exceptions.ProductNotInOrderException;
 import sanity.nil.order.domain.order.vo.AddressVO;
 import sanity.nil.order.domain.order.vo.OrderID;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class OrderService {
@@ -32,62 +32,77 @@ public class OrderService {
         List<OrderProductCreate> productEvents = new ArrayList<>();
         for (OrderProduct product : products) {
             OrderProductCreate orderProduct =
-                    new OrderProductCreate(product.getProductID(), product.getName(),
+                    new OrderProductCreate(product.getId(), product.getName(),
                             product.getTotalPrice(), product.getQuantity());
             productEvents.add(orderProduct);
             createdOrder.recordEvent(
-                    new OrderProductReservedEvent(product.getProductID(),
+                    new OrderProductReservedEvent(product.getId(),
                             product.getQuantity())
             );
         }
 
         createdOrder.recordEvent(
                 new OrderCreatedEvent(createdOrder.getOrderID().getId(),
-                        createdOrder.getClientID(), new AddressVO(address.getAddressID().getId(), address.getFullAddress()),
-                        createdOrder.getPaymentMethod(), createdOrder.getPaymentOption(),
+                        createdOrder.getClientID(), new AddressVO(address.getAddressID().getId(), userID,
+                        address.getFullAddress()), createdOrder.getPaymentMethod(), createdOrder.getPaymentOption(),
                         productEvents, createdOrder.getTotalPrice())
         );
 
         return createdOrder;
     }
 
-    public Order update(Order order, Address address, UUID userID, List<OrderProduct> products) {
-        if (products == null || products.isEmpty()){
-            throw new OrderProductsEmptyException();
-        }
-
+    public Order addProduct(Order order, OrderProduct product) {
         Order updatedOrder = order;
-        if (order.getAddress() != address) {
+
+        updatedOrder.addProduct(product);
+        updatedOrder.recordEvent(new OrderAddedProductEvent(
+                updatedOrder.getOrderID().getId(), updatedOrder.getClientID(), product.getId(),
+                product.getName(), product.getPrice(), product.getQuantity()
+        ));
+
+        return updatedOrder;
+    }
+
+    public Order removeProduct(Order order, OrderProduct product) {
+        Order updatedOrder = order;
+
+        updatedOrder.removeProduct(product);
+        updatedOrder.recordEvent(new OrderRemovedProductEvent(
+                updatedOrder.getOrderID().getId(), updatedOrder.getClientID(), product.getId(),
+                product.getTotalPrice()
+        ));
+
+        return updatedOrder;
+    }
+
+    public Order updateAddress(Order order, Address address) {
+        Order updatedOrder = order;
+        if (!order.getAddress().equals(address)) {
             updatedOrder.setAddress(address);
-            updatedOrder.recordEvent(
-                    new OrderChangedAddressEvent(order.getOrderID().getId(), address)
-            );
+            updatedOrder.recordEvent(new OrderUpdatedAddressEvent(
+                    order.getOrderID().getId(), order.getClientID(), address
+            ));
         }
 
-        Map<OrderProduct, Integer> deletedProducts = order.getMatchingProducts(products, order.getProducts());
-        if (!deletedProducts.isEmpty()) {
-            for (OrderProduct product : deletedProducts.keySet()) {
-                updatedOrder.removeProduct(product);
-                updatedOrder.recordEvent(
-                        new OrderDeletedProductEvent(order.getOrderID().getId(), order.getClientID(),
-                                product.getProductID(), product.getTotalPrice(), deletedProducts.get(product))
-                );
-            }
-        }
+        return updatedOrder;
+    }
 
-        Map<OrderProduct, Integer> addedProducts = order.getMatchingProducts(order.getProducts(), products);
-        if (!addedProducts.isEmpty()) {
-            for (OrderProduct product : addedProducts.keySet()) {
-                updatedOrder.addProduct(product);
-                updatedOrder.recordEvent(
-                        new OrderAddedProductEvent(order.getOrderID().getId(), order.getClientID(),
-                                product.getProductID(), product.getName(), product.getTotalPrice(), addedProducts.get(product))
-                );
-            }
-        }
+    public Order setProductQuantity(Order order, OrderProduct orderProduct, int quantity) {
+        Order updatedOrder = order;
 
-        return new Order(order.getOrderID(), address, userID, products, OrderStatus.CREATED,
-                order.getPaymentMethod(), order.getPaymentOption());
+        int currentQuantity = orderProduct.getQuantity();
+        OrderProduct product = updatedOrder.getProducts().stream()
+                .filter(e -> e.equals(orderProduct))
+                .findFirst()
+                .orElseThrow(() -> new ProductNotInOrderException(orderProduct.getId()));
+        product.setQuantity(quantity);
+        updatedOrder.recordEvent(new OrderUpdatedProductQuantityEvent(
+                updatedOrder.getOrderID().getId(), updatedOrder.getClientID(),
+                orderProduct.getId(), currentQuantity, product.getQuantity(),
+                order.getTotalPrice()
+        ));
+
+        return updatedOrder;
     }
 
     public Order cancel(Order order) {

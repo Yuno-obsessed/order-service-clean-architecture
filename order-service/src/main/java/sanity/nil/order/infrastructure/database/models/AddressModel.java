@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "addresses", schema = "order_service")
@@ -17,6 +18,9 @@ import java.util.Objects;
 @Getter
 @Setter
 public class AddressModel extends BaseModel {
+
+    @Column(name = "user_id", unique = true)
+    private UUID userID;
 
     @Column(name = "country")
     private String country;

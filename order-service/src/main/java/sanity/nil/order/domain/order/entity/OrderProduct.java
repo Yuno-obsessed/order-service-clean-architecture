@@ -9,27 +9,27 @@ import java.util.UUID;
 
 public class OrderProduct {
 
-    private UUID productID;
+    private UUID id;
     private String name;
     private BigDecimal price;
     private Discount discount;
     private int quantity;
 
-    public OrderProduct(UUID productID, String name, BigDecimal price, Discount discount, Integer quantity) {
-        this.productID = productID;
+    public OrderProduct(UUID id, String name, BigDecimal price, Discount discount, Integer quantity) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.discount = discount;
         this.quantity = quantity;
     }
 
-    public OrderProduct(UUID productID, int quantity) {
-        this.productID = productID;
+    public OrderProduct(UUID id, int quantity) {
+        this.id = id;
         this.quantity = quantity;
     }
 
-    public UUID getProductID() {
-        return productID;
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {
@@ -71,7 +71,7 @@ public class OrderProduct {
         if (o == null || getClass() != o.getClass()) return false;
         OrderProduct product = (OrderProduct) o;
         return quantity == product.quantity &&
-                Objects.equals(productID, product.productID) &&
+                Objects.equals(id, product.id) &&
                 Objects.equals(name, product.name) &&
                 Objects.equals(price, product.price) &&
                 Objects.equals(discount, product.discount);
@@ -79,6 +79,6 @@ public class OrderProduct {
 
     @Override
     public int hashCode() {
-        return Objects.hash(productID, name, price, discount, quantity);
+        return Objects.hash(id, name, price, discount, quantity);
     }
 }

@@ -58,10 +58,8 @@ public class UserDAOImpl implements UserDAO, UserReader {
 
     @Override
     public UserQueryDTO getUserByEmail(String email) {
-        UserModel maybeUser = userORM.findByEmail(email).orElse(new UserModel());
-        if (maybeUser.getId() == null) {
-            return null;
-        }
+        UserModel maybeUser = userORM.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
         return UserMapper.convertUserModelToQueryDTO(maybeUser);
     }
 }

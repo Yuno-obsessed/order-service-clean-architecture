@@ -70,42 +70,45 @@ services:
   minio:
     container_name: adapter.minio
     image: quay.io/minio/minio:latest
+    hostname: minio
     command: server --address ":9000" --console-address ":9001" /data
     networks:
       - adapters-network
+    expose:
+      - 9000
     ports:
       - "9000:9000"
       - "9001:9001"
     environment:
-      - MINIO_ROOT_USER=sanity
-      - MINIO_ROOT_PASSWORD=sanity2004
+      - MINIO_ROOT_USER=Q3AM3UQ867SPQQA43P2F
+      - MINIO_ROOT_PASSWORD=zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG
+      - MINIO_SERVER_URL=http://localhost:9000
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 30s
       timeout: 20s
       retries: 3
     volumes:
-      - order.minio.data:/data
+      - data:/data
 
-#  proxy:
-#    build:
-#      context: proxy
-#    networks:
-#      - adapters-network
-#    volumes:
-#      - ./proxy/config/conf.d/:/etc/nginx/conf.d/
-#      - ./proxy/config/html/:/usr/share/nginx/html/
-##      - ./config/nginx.conf:/etc/nginx/nginx.conf
-#    ports:
-#      - "8000:80"
-#    environment:
-#      - NGINX_PORT=80
+  proxy:
+    build:
+      context: proxy
+    restart: on-failure
+    networks:
+      - adapters-network
+    volumes:
+      - ./proxy/config/conf.d/:/etc/nginx/conf.d/
+      - ./proxy/config/html/:/usr/share/nginx/html/
+#      - ./config/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
 
 volumes:
   order.postgres.data: { }
   order.rabbitmq.data: { }
   order.redis.data: { }
-  order.minio.data: { }
+  data: { }
 
 networks:
   adapters-network:

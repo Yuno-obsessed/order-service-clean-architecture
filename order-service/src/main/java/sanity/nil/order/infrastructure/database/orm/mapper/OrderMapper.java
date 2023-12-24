@@ -13,12 +13,12 @@ import java.util.List;
 
 public class OrderMapper {
 
-    public static OrderModel entityToModel(Order entity, AddressModel addressModel, UserModel userModel, List<ProductModel> products) {
+    public static OrderModel entityToModel(Order entity, AddressModel addressModel, List<ProductModel> products) {
         OrderModel model = new OrderModel();
         model.setId(entity.getOrderID().getId());
         model.setOrderStatus(entity.getOrderStatus().name());
         model.setAddress(addressModel);
-        model.setUser(userModel);
+        model.setUserID(entity.getClientID());
         model.setProducts(productsToProductsRelation(products, model));
         model.setDeleted(entity.getOrderInfo().isDeleted());
         model.setDeletedAt(entity.getOrderInfo().getDeletedAt());
@@ -32,8 +32,8 @@ public class OrderMapper {
     }
 
     public static Order modelToEntity(OrderModel model, List<ProductModel> products) {
-        Order order = new Order(new OrderID(model.getId()), AddressMapper.convertModelToEntity(model.getAddress()),
-                model.getUser().getId(), products.stream().map(e ->
+        return new Order(new OrderID(model.getId()), AddressMapper.convertModelToEntity(model.getAddress()),
+                model.getUserID(), products.stream().map(e ->
         {
             Discount discount = null;
             if (e.getDiscount() != null) {
@@ -46,6 +46,5 @@ public class OrderMapper {
         }).toList(),
                 OrderStatus.valueOf(model.getOrderStatus()),PaymentMethod.valueOf(model.getPaymentMethod()),
                 PaymentOption.valueOf(model.getPaymentOption()));
-        return order;
     }
 }

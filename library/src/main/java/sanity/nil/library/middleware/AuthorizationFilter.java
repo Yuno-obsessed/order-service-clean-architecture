@@ -34,19 +34,12 @@ public class AuthorizationFilter implements Filter {
         log.info("AuthorizationFilter worked");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String url = request.getRequestURL().toString();
-        Matcher matcherPort = Pattern.compile(":(\\d+)").matcher(url);
-        Matcher matcherURI = Pattern.compile(":(\\d+)/([^?:]*)(?:\\\\?|$)").matcher(url);
+        log.info("URL of request: {}", url);
+        Matcher matcherURI = Pattern.compile("http://localhost(/api/v1/[^/]+(?:/[^/]+)*)").matcher(url);
         String uri = null;
-        String port = null;
         try {
-            if (matcherPort.find()) {
-                port = matcherPort.group(1);
-                log.info("Port: " + port);
-            } else {
-                log.info("No match for port found");
-            }
             if (matcherURI.find()) {
-                uri = matcherURI.group(2);
+                uri = matcherURI.group(1);
                 log.info("URI: " + uri);
             } else {
                 log.info("No match for URI found");
@@ -54,12 +47,9 @@ public class AuthorizationFilter implements Filter {
         } catch (Exception e) {
            throw new MethodException(url, e);
         }
-        log.info("URL of request: {}", url);
-//        String roles = (String) servletRequest.getAttribute("roles");
-//        servletRequest.removeAttribute("roles");
         String roles = String.join(",", identityProvider.getCurrentIdentity().roles);
         log.info("Roles: {}", roles);
-        RolePermissionDTO rolePermissionDTO = webTemplate.get(new PermissionQueryDTO(roles, port, uri, request.getMethod()));
+        RolePermissionDTO rolePermissionDTO = webTemplate.get(new PermissionQueryDTO(roles, uri, request.getMethod()));
         log.info("Role access to resource was " + (rolePermissionDTO.hasAccess ? "approved" : "denied"));
         if (rolePermissionDTO.permissionError != null &&
                 rolePermissionDTO.permissionError.equals(PermissionError.NO_ROLE)) {

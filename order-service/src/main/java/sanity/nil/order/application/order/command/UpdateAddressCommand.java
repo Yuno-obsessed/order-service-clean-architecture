@@ -15,6 +15,6 @@ public class UpdateAddressCommand {
     public Address handle(UpdateAddressCommandDTO updateDTO) {
        Address address = service.updateAddress(updateDTO.addressID, updateDTO.country, updateDTO.city,
                updateDTO.streetName, updateDTO.buildingNumber, updateDTO.postalCode);
-       return addressDAO.updateProduct(address);
+       return addressDAO.updateAddress(address);
     }
 }

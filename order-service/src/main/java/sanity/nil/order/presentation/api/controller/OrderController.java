@@ -3,10 +3,10 @@ package sanity.nil.order.presentation.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sanity.nil.order.application.order.dto.boundary.OrderDTO;
 import sanity.nil.order.application.order.dto.command.CreateOrderCommandDTO;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
 import sanity.nil.order.application.order.dto.query.OrderQueryFilters;
+import sanity.nil.order.application.order.dto.response.OrderDTO;
 import sanity.nil.order.application.order.service.OrderCommandService;
 import sanity.nil.order.application.order.service.OrderQueryService;
 

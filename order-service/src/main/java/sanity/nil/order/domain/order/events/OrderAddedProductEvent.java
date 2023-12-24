@@ -4,14 +4,15 @@ import sanity.nil.order.domain.common.Utils;
 import sanity.nil.order.domain.common.event.BaseEvent;
 import sanity.nil.order.domain.common.event.Event;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class OrderAddedProductEvent implements Event {
+public class OrderAddedProductEvent implements Event, Serializable {
 
     private BaseEvent baseEvent;
 
-    private UUID orderID;
+    private UUID id;
 
     private UUID clientID;
 
@@ -19,18 +20,20 @@ public class OrderAddedProductEvent implements Event {
 
     private String productName;
 
-    private BigDecimal totalPrice;
+    private BigDecimal price;
 
     private int quantity;
 
-    public OrderAddedProductEvent(UUID orderID, UUID clientID, UUID productID, String productName,
-                                  BigDecimal totalPrice, int quantity) {
+    public OrderAddedProductEvent() {}
+
+    public OrderAddedProductEvent(UUID id, UUID clientID, UUID productID, String productName,
+                                  BigDecimal price, int quantity) {
         this.baseEvent = new BaseEvent("OrderAddedProduct");
-        this.orderID = orderID;
+        this.id = id;
         this.clientID = clientID;
         this.productID = productID;
         this.productName = productName;
-        this.totalPrice = totalPrice;
+        this.price = price;
         this.quantity = quantity;
     }
 
@@ -41,7 +44,7 @@ public class OrderAddedProductEvent implements Event {
 
     @Override
     public UUID uniqueAggregateID() {
-        return this.orderID;
+        return this.id;
     }
 
     @Override
@@ -49,8 +52,8 @@ public class OrderAddedProductEvent implements Event {
         return baseEvent;
     }
 
-    public UUID getOrderID() {
-        return orderID;
+    public UUID getId() {
+        return id;
     }
 
     public UUID getClientID() {
@@ -65,8 +68,8 @@ public class OrderAddedProductEvent implements Event {
         return productName;
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
+    public BigDecimal getPrice() {
+        return price;
     }
 
     public int getQuantity() {

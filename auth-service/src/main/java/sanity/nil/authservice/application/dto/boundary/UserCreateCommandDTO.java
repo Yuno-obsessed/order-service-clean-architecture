@@ -1,4 +1,4 @@
-package sanity.nil.userservice.application.dto.boundary;
+package sanity.nil.authservice.application.dto.boundary;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserCreateCommandDTO {
 
     @JsonProperty(value = "email")
     public String email;

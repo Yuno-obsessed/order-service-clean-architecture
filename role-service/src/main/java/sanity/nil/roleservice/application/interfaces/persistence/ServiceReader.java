@@ -4,5 +4,5 @@ import sanity.nil.roleservice.application.dto.query.ServiceQueryDTO;
 
 public interface ServiceReader {
 
-    ServiceQueryDTO getActiveByPort(String port, Boolean active);
+    ServiceQueryDTO getActiveByService(String service, Boolean active);
 }

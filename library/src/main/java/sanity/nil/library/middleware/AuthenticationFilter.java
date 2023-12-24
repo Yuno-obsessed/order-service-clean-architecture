@@ -51,8 +51,6 @@ public class AuthenticationFilter implements Filter {
             return;
         }
         identityProvider.holdIdentity(new Identity(accessDTO.userID, accessDTO.roles));
-//        String rolesAsString = String.join(",", accessDTO.roles);
-//        servletRequest.setAttribute("roles", rolesAsString);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

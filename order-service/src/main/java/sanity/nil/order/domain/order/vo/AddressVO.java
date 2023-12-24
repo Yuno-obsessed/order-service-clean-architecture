@@ -6,10 +6,12 @@ import java.util.UUID;
 public class AddressVO implements Serializable {
 
     private UUID addressID;
+    private UUID userID;
     private String address;
 
-    public AddressVO(UUID addressID, String address) {
+    public AddressVO(UUID addressID, UUID userID, String address) {
         this.addressID = addressID;
+        this.userID = userID;
         this.address = address;
     }
 

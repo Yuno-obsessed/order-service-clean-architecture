@@ -33,10 +33,6 @@ public class ProductQueryDTO {
     @JsonProperty(value = "discount")
     public DiscountQueryDTO discount;
 
-    //TODO: add in domain to calculate actual_price and return it from domain?
-//    @JsonProperty(value = "actual_price")
-//    public BigDecimal actualPrice;
-
     @JsonProperty(value = "quantity", defaultValue = "0")
     public Integer quantity;
 

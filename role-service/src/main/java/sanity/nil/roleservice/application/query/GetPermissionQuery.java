@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import sanity.nil.roleservice.application.consts.PermissionError;
 import sanity.nil.roleservice.application.dto.query.PermissionQueryDTO;
 import sanity.nil.roleservice.application.dto.query.RolePermissionDTO;
-import sanity.nil.roleservice.application.dto.query.ServiceQueryDTO;
 import sanity.nil.roleservice.application.interfaces.persistence.PermissionReader;
 import sanity.nil.roleservice.application.interfaces.persistence.ServiceReader;
 
@@ -19,9 +18,8 @@ public class GetPermissionQuery {
     private final PermissionReader permissionReader;
     private final ServiceReader serviceReader;
 
-    public RolePermissionDTO handle(String port, String uri, String method, String roles) {
-        ServiceQueryDTO serviceQueryDTO = serviceReader.getActiveByPort(port, true);
-        PermissionQueryDTO permissionQueryDTO = permissionReader.getPermissionByServiceAndURI(serviceQueryDTO.serviceName, uri, method);
+    public RolePermissionDTO handle(String uri, String verb, String roles) {
+        PermissionQueryDTO permissionQueryDTO = permissionReader.getPermissionByURIAndVerb(uri, verb);
         if (roles == null || roles.isEmpty()) {
             roles = "NONE";
         }

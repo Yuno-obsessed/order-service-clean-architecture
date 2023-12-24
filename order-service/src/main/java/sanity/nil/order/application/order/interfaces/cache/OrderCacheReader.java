@@ -8,9 +8,12 @@ import java.util.UUID;
 
 public interface OrderCacheReader {
 
+    OrderQueryDTO getOrder(UUID orderID, UUID clientID);
+
+    List<OrderQueryDTO> getOrdersOfClient(UUID clientID);
+
     List<OrderQueryDTO> getAllOrders(OrderQueryFilters queryFilters);
 
     List<OrderQueryDTO> getAllOrdersByUserID(UUID userID, OrderQueryFilters queryFilters);
 
-    OrderQueryDTO getOrderByID(UUID id);
 }

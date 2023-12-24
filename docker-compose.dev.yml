@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: order-service/Dockerfile
+    expose:
+      - 8080
     ports:
       - "8080:8080"
     networks:
@@ -16,8 +18,10 @@ services:
     build:
       context: .
       dockerfile: user-service/Dockerfile
-    ports:
-      - "8002:8002"
+    expose:
+      - 8002
+#    ports:
+#      - "8002:8002"
     networks:
       - adapters-network
 
@@ -26,8 +30,10 @@ services:
     build:
       context: .
       dockerfile: mail-service/Dockerfile
-    ports:
-      - "8081:8081"
+    expose:
+      - 8081
+#    ports:
+#      - "8081:8081"
     networks:
       - adapters-network
 
@@ -36,8 +42,10 @@ services:
     build:
       context: .
       dockerfile: auth-service/Dockerfile
-    ports:
-      - "8003:8003"
+    expose:
+      - 8003
+#    ports:
+#      - "8003:8003"
     networks:
       - adapters-network
 
@@ -46,8 +54,10 @@ services:
     build:
       context: .
       dockerfile: role-service/Dockerfile
-    ports:
-      - "8004:8004"
+    expose:
+      - 8004
+#    ports:
+#      - "8004:8004"
     networks:
       - adapters-network
 

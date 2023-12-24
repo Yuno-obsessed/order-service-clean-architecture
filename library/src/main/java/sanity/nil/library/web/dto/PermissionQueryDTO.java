@@ -11,12 +11,9 @@ public class PermissionQueryDTO {
     @JsonProperty(value = "roles", required = true)
     public String roles;
 
-    @JsonProperty(value = "port", required = true)
-    public String port;
-
     @JsonProperty(value = "uri", required = true)
     public String uri;
 
-    @JsonProperty(value = "method", required = true)
-    public String method;
+    @JsonProperty(value = "verb", required = true)
+    public String verb;
 }

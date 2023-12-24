@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
 import sanity.nil.order.domain.common.event.BaseEventElement;
 import sanity.nil.order.domain.order.events.OrderProductReservedEvent;
+import sanity.nil.order.domain.order.events.OrderUpdatedProductQuantityEvent;
 
 import java.io.IOException;
 
@@ -28,6 +29,21 @@ public class ProductSubscribers {
                     productDAO.decreaseQuantity(reservedProduct.uniqueAggregateID(), reservedProduct.getQuantity());
                     log.info("Message consumed: {}, aggregate id = {}", baseEvent.getBaseEvent().getEventType(),
                             reservedProduct.uniqueAggregateID().toString());
+
+                    break;
+                case "OrderUpdatedProductQuantity":
+                    OrderUpdatedProductQuantityEvent updatedProductQuantityEvent = objectMapper.readValue(message, OrderUpdatedProductQuantityEvent.class);
+                    if (updatedProductQuantityEvent.getUpdatedQuantity() > updatedProductQuantityEvent.getQuantity()) {
+                        productDAO.decreaseQuantity(updatedProductQuantityEvent.getProductID(),
+                                updatedProductQuantityEvent.getUpdatedQuantity() - updatedProductQuantityEvent.getQuantity());
+                    } else {
+                        productDAO.increaseQuantity(updatedProductQuantityEvent.getProductID(),
+                                updatedProductQuantityEvent.getQuantity() - updatedProductQuantityEvent.getUpdatedQuantity());
+                    }
+                    log.info("Message consumed: {}, aggregate id = {}", baseEvent.getBaseEvent().getEventType(),
+                            updatedProductQuantityEvent.uniqueAggregateID().toString());
+
+                    break;
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

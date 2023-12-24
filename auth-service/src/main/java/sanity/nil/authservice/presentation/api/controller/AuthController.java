@@ -7,14 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sanity.nil.authservice.application.dto.boundary.RefreshTokenDTO;
-import sanity.nil.authservice.application.dto.command.AccessCommandDTO;
-import sanity.nil.authservice.application.dto.command.CreateRefreshTokenDTO;
-import sanity.nil.authservice.application.dto.command.LoginCommandDTO;
+import sanity.nil.authservice.application.dto.command.*;
 import sanity.nil.authservice.application.dto.interactor.LoginInteractorDTO;
 import sanity.nil.authservice.application.dto.interactor.RefreshTokenInteractorDTO;
+import sanity.nil.authservice.application.dto.interactor.RegisterInteractorDTO;
 import sanity.nil.authservice.application.dto.response.AccessDTO;
 import sanity.nil.authservice.application.dto.response.LoginDTO;
 import sanity.nil.authservice.application.dto.response.NewRefreshTokenDTO;
+import sanity.nil.authservice.application.dto.response.RegisterSuccessDTO;
 import sanity.nil.authservice.application.exceptions.RefreshTokenIsEmptyException;
 import sanity.nil.authservice.application.service.AuthService;
 
@@ -50,6 +50,9 @@ public class AuthController {
     @GetMapping("/refresh-token")
     public ResponseEntity<NewRefreshTokenDTO> refreshToken(HttpServletRequest request,
                                                            HttpServletResponse response) {
+        if (request.getCookies() == null) {
+           throw new RefreshTokenIsEmptyException();
+        }
         Cookie cookie = Arrays.stream(request.getCookies())
                 .filter(c -> c.getName().equals("REFRESH_TOKEN"))
                 .findFirst()
@@ -92,5 +95,22 @@ public class AuthController {
         return ResponseEntity
                 .status(204)
                 .build();
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<RegisterSuccessDTO> register(@RequestBody RegisterCommandDTO registerCommandDTO,
+                                                       HttpServletRequest request,
+                                                       HttpServletResponse response) {
+        RegisterInteractorDTO registerInteractorDTO = authService.registerCommand.handle(
+                    new CreateAuthorityCommandDTO(registerCommandDTO,
+                request.getHeader("User-Agent"), request.getRemoteAddr()));
+        Cookie cookie = new Cookie("REFRESH_TOKEN",registerInteractorDTO.refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api/v1/auth");
+        cookie.setMaxAge(registerInteractorDTO.refreshMaxAge);
+        response.addCookie(cookie);
+        return ResponseEntity
+                .status(201)
+                .body(new RegisterSuccessDTO(registerInteractorDTO.accessToken));
     }
 }

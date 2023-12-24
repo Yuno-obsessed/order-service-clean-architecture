@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface PermissionORM extends JpaRepository<PermissionModel, Integer> {
 
-    Optional<PermissionModel> findByServiceNameAndUriAndVerb(String serviceName, String uri, String verb);
+    Optional<PermissionModel> findByUriAndVerb(String uri, String verb);
 }

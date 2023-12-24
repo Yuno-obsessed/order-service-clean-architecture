@@ -9,12 +9,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
-import sanity.nil.order.application.common.interfaces.broker.MessageBroker;
+import sanity.nil.order.application.common.interfaces.storage.FileStorage;
 import sanity.nil.order.application.common.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.application.order.cache.OrderCacheImpl;
-import sanity.nil.order.application.order.command.CreateAddressCommand;
-import sanity.nil.order.application.order.command.CreateOrderCommand;
-import sanity.nil.order.application.order.command.UpdateAddressCommand;
+import sanity.nil.order.application.order.command.*;
 import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
 import sanity.nil.order.application.order.interfaces.cache.OrderCache;
 import sanity.nil.order.application.order.interfaces.cache.OrderCacheDAO;
@@ -22,12 +20,14 @@ import sanity.nil.order.application.order.interfaces.cache.OrderCacheReader;
 import sanity.nil.order.application.order.interfaces.persistence.AddressDAO;
 import sanity.nil.order.application.order.interfaces.persistence.AddressReader;
 import sanity.nil.order.application.order.interfaces.persistence.OrderDAO;
+import sanity.nil.order.application.order.interfaces.persistence.OrderReader;
 import sanity.nil.order.application.order.query.GetAddressQuery;
 import sanity.nil.order.application.order.query.GetAllOrdersQuery;
 import sanity.nil.order.application.order.service.AddressCommandService;
 import sanity.nil.order.application.order.service.AddressQueryService;
 import sanity.nil.order.application.order.service.OrderCommandService;
 import sanity.nil.order.application.order.service.OrderQueryService;
+import sanity.nil.order.application.product.interfaces.persistence.ProductImageReader;
 import sanity.nil.order.domain.order.services.AddressService;
 import sanity.nil.order.domain.order.services.OrderService;
 import sanity.nil.order.infrastructure.cache.impl.OrderCacheDAOImpl;
@@ -37,7 +37,6 @@ import sanity.nil.order.infrastructure.database.impl.OrderDaoImpl;
 import sanity.nil.order.infrastructure.database.orm.AddressORM;
 import sanity.nil.order.infrastructure.database.orm.OrderORM;
 import sanity.nil.order.infrastructure.database.orm.ProductORM;
-import sanity.nil.order.infrastructure.database.orm.UserORM;
 import sanity.nil.order.infrastructure.messageBroker.config.RabbitConfig;
 import sanity.nil.order.presentation.consumer.subscribers.OrderSubscribers;
 
@@ -56,8 +55,13 @@ public class OrderBeanCreator {
     }
 
     @Bean
-    public OrderDAO orderDAO(ProductORM productORM, OrderORM orderORM, AddressORM addressORM, UserORM userORM) {
-        return new OrderDaoImpl(productORM, orderORM, addressORM, userORM);
+    public OrderDAO orderDAO(ProductORM productORM, OrderORM orderORM, AddressORM addressORM) {
+        return new OrderDaoImpl(productORM, orderORM, addressORM);
+    }
+
+    @Bean
+    public OrderReader orderReader(ProductORM productORM, OrderORM orderORM, AddressORM addressORM) {
+        return new OrderDaoImpl(productORM, orderORM, addressORM);
     }
 
     @Bean
@@ -98,9 +102,8 @@ public class OrderBeanCreator {
     }
 
     @Bean
-    public OrderCacheDAO orderCacheDAO(@Qualifier("orderRedisTemplate") RedisTemplate<String, OrderQueryDTO> redisTemplate,
-                                       @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
-        return new OrderCacheDAOImpl(redisTemplate, objectMapper);
+    public OrderCacheDAO orderCacheDAO(@Qualifier("orderRedisTemplate") RedisTemplate<String, OrderQueryDTO> redisTemplate) {
+        return new OrderCacheDAOImpl(redisTemplate);
     }
 
     @Bean
@@ -110,8 +113,8 @@ public class OrderBeanCreator {
     }
 
     @Bean
-    public OrderCache orderCache(OrderCacheDAO orderCacheDAO) {
-        return new OrderCacheImpl(orderCacheDAO);
+    public OrderCache orderCache(OrderCacheDAO orderCacheDAO, OrderCacheReader orderCacheReader) {
+        return new OrderCacheImpl(orderCacheDAO, orderCacheReader);
     }
 
     @Bean
@@ -131,9 +134,15 @@ public class OrderBeanCreator {
 
     @Bean
     public OrderCommandService orderCommandService(OrderDAO orderDAO, OutboxDAO outboxDAO,
-                                                   MessageBroker messageBroker) {
+                                                   OrderReader orderReader, FileStorage fileStorage,
+                                                   ProductImageReader productImageReader) {
+        OrderService orderService = new OrderService();
         return new OrderCommandService(
-                new CreateOrderCommand(orderDAO, outboxDAO, new OrderService(), messageBroker)
+                new CreateOrderCommand(orderDAO, orderReader, orderService, outboxDAO),
+                new AddOrderProductCommand(orderDAO, orderReader, orderService, outboxDAO, fileStorage, productImageReader),
+                new UpdateProductQuantityCommand(orderDAO, orderReader, orderService, outboxDAO),
+                new RemoveOrderProductCommand(orderDAO, orderReader, orderService, outboxDAO),
+                new UpdateOrderAddressCommand(orderDAO, orderReader, orderService, outboxDAO)
         );
     }
 

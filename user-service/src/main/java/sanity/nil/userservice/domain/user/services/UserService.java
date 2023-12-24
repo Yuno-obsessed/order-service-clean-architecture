@@ -12,7 +12,11 @@ public class UserService {
     public User create(Set<Role> roles, String firstName, String lastName, String username,
                        String email, String password) {
         User createdUser = new User(new UserID(), roles, firstName, lastName, username, email, false, password);
-        createdUser.recordEvent(new UserCreatedEvent());
+        createdUser.validate();
+        createdUser.recordEvent(
+                new UserCreatedEvent(createdUser.getID(), username,
+                        firstName, lastName, email)
+        );
         return createdUser;
     }
 }

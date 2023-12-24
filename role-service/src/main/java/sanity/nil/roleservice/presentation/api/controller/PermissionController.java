@@ -15,12 +15,11 @@ public class PermissionController {
     private final PermissionQueryService permissionQueryService;
 
     @GetMapping("/permission")
-    public ResponseEntity<RolePermissionDTO> hasPermission(@RequestParam String port,
-                                                           @RequestParam String uri,
-                                                           @RequestParam String method,
+    public ResponseEntity<RolePermissionDTO> hasPermission(@RequestParam String uri,
+                                                           @RequestParam String verb,
                                                            @RequestParam(required = false) String roles) {
         return ResponseEntity
                 .status(200)
-                .body(permissionQueryService.getPermissionQuery.handle(port, uri, method, roles));
+                .body(permissionQueryService.getPermissionQuery.handle(uri, verb, roles));
     }
 }

@@ -13,9 +13,6 @@ public class RemoveOrderProductCommandDTO {
     @JsonProperty(value = "id")
     public UUID orderID;
 
-    @JsonProperty(value = "user_id")
-    public UUID userID;
-
     @JsonProperty(value = "product_id")
     public UUID productID;
 }

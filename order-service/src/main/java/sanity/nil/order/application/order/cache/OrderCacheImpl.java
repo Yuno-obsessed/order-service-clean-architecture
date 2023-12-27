@@ -6,10 +6,8 @@ import sanity.nil.order.application.order.dto.query.OrderQueryDTO;
 import sanity.nil.order.application.order.dto.query.ProductQueryDTO;
 import sanity.nil.order.application.order.interfaces.cache.OrderCache;
 import sanity.nil.order.application.order.interfaces.cache.OrderCacheDAO;
-import sanity.nil.order.domain.order.events.OrderAddedProductEvent;
-import sanity.nil.order.domain.order.events.OrderCreatedEvent;
-import sanity.nil.order.domain.order.events.OrderDeletedEvent;
-import sanity.nil.order.domain.order.events.OrderProductCreate;
+import sanity.nil.order.domain.order.events.*;
+import sanity.nil.order.domain.order.exceptions.ProductNotInOrderException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +30,7 @@ public class OrderCacheImpl implements OrderCache {
         orderDTO.paymentMethod = event.getPaymentMethod();
         orderDTO.paymentOption = event.getPaymentOption();
         orderDTO.orderStatus = event.getOrderStatus();
+        orderDTO.totalPrice = event.getTotalPrice();
         List<ProductQueryDTO> products = new ArrayList<>();
         for (OrderProductCreate productEvent : event.getProducts()) {
             ProductQueryDTO product = new ProductQueryDTO();
@@ -50,7 +49,52 @@ public class OrderCacheImpl implements OrderCache {
 
     @Override
     public void orderAddProductEvent(OrderAddedProductEvent event) {
-        OrderQueryDTO orderDTO = orderCacheDAO.getOrder(event.getOrderID());
+        OrderQueryDTO orderDTO = orderCacheDAO.deleteOrder(event.getClientID(), event.uniqueAggregateID());
+        ProductQueryDTO product = new ProductQueryDTO(
+                event.getProductID(), event.getProductName(), event.getQuantity(), event.getPrice());
+        orderDTO.products.add(product);
+        orderDTO.totalPrice = orderDTO.totalPrice.add(product.actualPrice);
+        orderDTO.updatedAt = event.getBaseEvent().getEventTimestamp();
+
+        orderCacheDAO.saveOrder(orderDTO);
+    }
+
+    @Override
+    public void orderRemoveProductEvent(OrderRemovedProductEvent event) {
+        OrderQueryDTO orderDTO = orderCacheDAO.deleteOrder(event.getClientID(), event.uniqueAggregateID());
+        orderDTO.products.removeIf(e -> e.productID.equals(event.getProductID()));
+        orderDTO.totalPrice = orderDTO.totalPrice.subtract(event.getTotalPrice());
+        orderDTO.updatedAt = event.getBaseEvent().getEventTimestamp();
+
+        orderCacheDAO.saveOrder(orderDTO);
+    }
+
+    @Override
+    public void orderUpdateProductQuantityEvent(OrderUpdatedProductQuantityEvent event) {
+        OrderQueryDTO orderDTO = orderCacheDAO.deleteOrder(event.getClientID(), event.uniqueAggregateID());
+        ProductQueryDTO productQueryDTO = orderDTO.products.stream()
+                .findFirst()
+                .filter(e -> e.productID.equals(event.getProductID())).orElseThrow(
+                        () -> new ProductNotInOrderException(event.getProductID())
+                );
+        productQueryDTO.quantity = event.getQuantity();
+        orderDTO.totalPrice = event.getUpdatedOrderPrice();
+        orderDTO.updatedAt = event.getBaseEvent().getEventTimestamp();
+
+        orderCacheDAO.saveOrder(orderDTO);
+    }
+
+    @Override
+    public void orderUpdateAddressEvent(OrderUpdatedAddressEvent event) {
+        OrderQueryDTO orderDTO = orderCacheDAO.deleteOrder(event.getClientID(), event.uniqueAggregateID());
+        AddressQueryDTO addressQueryDTO = new AddressQueryDTO(
+                event.getAddressID(), event.getCountry(), event.getCity(),
+                event.getStreetName(), event.getBuildingNumber(), event.getPostalCode()
+        );
+        orderDTO.address = addressQueryDTO;
+        orderDTO.updatedAt = event.getBaseEvent().getEventTimestamp();
+
+        orderCacheDAO.saveOrder(orderDTO);
     }
 
     @Override

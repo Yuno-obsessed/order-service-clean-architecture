@@ -75,7 +75,7 @@ public class EntityGenerator {
     }
 
     public static Address generateAddress(UUID id) {
-        return new Address(new AddressID(id), "Italy", "Rome",
+        return new Address(new AddressID(id), UUID.randomUUID(), "Italy", "Rome",
                 "via Venezia", 3, "00183");
     }
 
@@ -89,7 +89,7 @@ public class EntityGenerator {
 
     public static OrderQueryDTO generateOrderQueryDTO(UUID clientID) {
         return new OrderQueryDTO(UUID.randomUUID(), generateAddressQueryDTO(), clientID, List.of(generateProductQueryDTO()),
-                "CASH", "ONE_TRANSFER", "CREATED", LocalDateTime.now(), LocalDateTime.now());
+                "CASH", "ONE_TRANSFER", "CREATED", BigDecimal.valueOf(1500) ,LocalDateTime.now(), LocalDateTime.now());
     }
 
 }

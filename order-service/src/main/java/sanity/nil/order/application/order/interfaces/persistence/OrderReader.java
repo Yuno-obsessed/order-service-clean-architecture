@@ -13,7 +13,7 @@ public interface OrderReader {
 
     OrderProduct getOrderProduct(UUID id);
 
-    Order getOrderById(UUID id);
+    Order getOrderById(UUID orderID, UUID userID);
 
     Address getAddress(UUID id);
 

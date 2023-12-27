@@ -8,6 +8,6 @@ public interface OrderCacheDAO {
 
     void saveOrder(OrderQueryDTO orderQueryDTO);
 
-    void deleteOrder(UUID id);
+    OrderQueryDTO deleteOrder(UUID clientID, UUID orderID);
 
 }

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import sanity.nil.order.application.product.interfaces.persistence.ProductDAO;
 import sanity.nil.order.domain.common.event.BaseEventElement;
+import sanity.nil.order.domain.order.events.OrderProductReleasedEvent;
 import sanity.nil.order.domain.order.events.OrderProductReservedEvent;
 import sanity.nil.order.domain.order.events.OrderUpdatedProductQuantityEvent;
 
@@ -32,16 +33,23 @@ public class ProductSubscribers {
 
                     break;
                 case "OrderUpdatedProductQuantity":
-                    OrderUpdatedProductQuantityEvent updatedProductQuantityEvent = objectMapper.readValue(message, OrderUpdatedProductQuantityEvent.class);
-                    if (updatedProductQuantityEvent.getUpdatedQuantity() > updatedProductQuantityEvent.getQuantity()) {
-                        productDAO.decreaseQuantity(updatedProductQuantityEvent.getProductID(),
-                                updatedProductQuantityEvent.getUpdatedQuantity() - updatedProductQuantityEvent.getQuantity());
+                    OrderUpdatedProductQuantityEvent updatedProductQuantity = objectMapper.readValue(message, OrderUpdatedProductQuantityEvent.class);
+                    if (updatedProductQuantity.getUpdatedQuantity() > updatedProductQuantity.getQuantity()) {
+                        productDAO.decreaseQuantity(updatedProductQuantity.getProductID(),
+                                updatedProductQuantity.getUpdatedQuantity() - updatedProductQuantity.getQuantity());
                     } else {
-                        productDAO.increaseQuantity(updatedProductQuantityEvent.getProductID(),
-                                updatedProductQuantityEvent.getQuantity() - updatedProductQuantityEvent.getUpdatedQuantity());
+                        productDAO.increaseQuantity(updatedProductQuantity.getProductID(),
+                                updatedProductQuantity.getQuantity() - updatedProductQuantity.getUpdatedQuantity());
                     }
                     log.info("Message consumed: {}, aggregate id = {}", baseEvent.getBaseEvent().getEventType(),
-                            updatedProductQuantityEvent.uniqueAggregateID().toString());
+                            updatedProductQuantity.uniqueAggregateID().toString());
+
+                    break;
+                case "OrderProductReleased":
+                    OrderProductReleasedEvent releasedProduct = objectMapper.readValue(message, OrderProductReleasedEvent.class);
+                    productDAO.increaseQuantity(releasedProduct.uniqueAggregateID(), releasedProduct.getQuantity());
+                    log.info("Message consumed: {}, aggregate id = {}", baseEvent.getBaseEvent().getEventType(),
+                            releasedProduct.uniqueAggregateID().toString());
 
                     break;
             }

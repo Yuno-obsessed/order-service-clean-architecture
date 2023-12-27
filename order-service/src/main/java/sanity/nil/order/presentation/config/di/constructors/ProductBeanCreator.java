@@ -81,6 +81,13 @@ public class ProductBeanCreator {
     }
 
     @Bean
+    public Binding productRemovedBinding(@Qualifier("productQueue") Queue queue,
+                                       @Qualifier("topicExchange") TopicExchange topicExchange,
+                                       RabbitConfig rabbitConfig) {
+        return BindingBuilder.bind(queue).to(topicExchange).with(rabbitConfig.getOrderRemovedProductRK());
+    }
+
+    @Bean
     public ProductSubscribers productSubscribers(ProductDAO productDAO,
                                                  @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
         return new ProductSubscribers(productDAO, objectMapper);

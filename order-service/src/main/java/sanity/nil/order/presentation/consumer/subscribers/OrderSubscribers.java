@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import sanity.nil.order.application.order.interfaces.cache.OrderCache;
 import sanity.nil.order.domain.common.event.BaseEventElement;
-import sanity.nil.order.domain.order.events.OrderAddedProductEvent;
-import sanity.nil.order.domain.order.events.OrderCreatedEvent;
-import sanity.nil.order.domain.order.events.OrderUpdatedAddressEvent;
+import sanity.nil.order.domain.order.events.*;
 
 import java.io.IOException;
 
@@ -33,24 +31,31 @@ public class OrderSubscribers {
 
                     break;
                 case "OrderAddedProduct":
-                    OrderAddedProductEvent orderAddedProductEvent = objectMapper.readValue(message, OrderAddedProductEvent.class);
-                    orderCache.orderAddProductEvent(orderAddedProductEvent);
+                    OrderAddedProductEvent orderAddedProduct = objectMapper.readValue(message, OrderAddedProductEvent.class);
+                    orderCache.orderAddProductEvent(orderAddedProduct);
                     log.info("Message consumed: {}, aggregate id = {}", baseEvent.getBaseEvent().getEventType(),
-                            orderAddedProductEvent.uniqueAggregateID().toString());
+                            orderAddedProduct.uniqueAggregateID().toString());
 
                     break;
                 case "OrderUpdatedAddress":
-                    OrderUpdatedAddressEvent orderUpdatedAddressEvent = objectMapper.readValue(message, OrderUpdatedAddressEvent.class);
-                    orderCache.orderUpdateAddressEvent(orderUpdatedAddressEvent);
+                    OrderUpdatedAddressEvent orderUpdatedAddress = objectMapper.readValue(message, OrderUpdatedAddressEvent.class);
+                    orderCache.orderUpdateAddressEvent(orderUpdatedAddress);
                     log.info("Message consumed: {}, aggregate id = {}", baseEvent.getBaseEvent().getEventType(),
-                            orderUpdatedAddressEvent.uniqueAggregateID().toString());
+                            orderUpdatedAddress.uniqueAggregateID().toString());
 
                     break;
                 case "OrderRemovedProduct":
+                    OrderRemovedProductEvent orderRemovedProduct = objectMapper.readValue(message, OrderRemovedProductEvent.class);
+                    orderCache.orderRemoveProductEvent(orderRemovedProduct);
+                    log.info("Message consumed: {}, aggregate id = {}", baseEvent.getBaseEvent().getEventType(),
+                            orderRemovedProduct.uniqueAggregateID().toString());
 
                     break;
-
                 case "OrderUpdatedProductQuantity":
+                    OrderUpdatedProductQuantityEvent orderUpdatedProductQuantity = objectMapper.readValue(message, OrderUpdatedProductQuantityEvent.class);
+                    orderCache.orderUpdateProductQuantityEvent(orderUpdatedProductQuantity);
+                    log.info("Message consumed: {}, aggregate id = {}", baseEvent.getBaseEvent().getEventType(),
+                            orderUpdatedProductQuantity.uniqueAggregateID().toString());
 
                     break;
             }

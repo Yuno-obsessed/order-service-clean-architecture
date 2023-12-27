@@ -13,11 +13,11 @@ import java.util.UUID;
 public class OrderWebTemplate implements WebTemplate<List<ProductImageDTO>, UUID> {
 
     private final WebClient webClient = WebClient.builder()
-            .baseUrl("http://order-service:8080/api/v1").build();
+            .baseUrl("http://localhost:80/order-service/product").build();
 
     public Flux<ProductImageDTO> resolveApi(UUID productID) {
         return webClient.get()
-                .uri(String.format("/product/images/%s?onlyMain=true", productID.toString()))
+                .uri(String.format("/images/%s?onlyMain=true", productID.toString()))
                 .retrieve()
                 .bodyToFlux(ProductImageDTO.class);
     }

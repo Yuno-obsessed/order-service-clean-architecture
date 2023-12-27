@@ -1,6 +1,8 @@
 package sanity.nil.order.application.order.command;
 
 import lombok.RequiredArgsConstructor;
+import sanity.nil.library.services.data.Identity;
+import sanity.nil.library.services.interfaces.IdentityProvider;
 import sanity.nil.order.application.common.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.application.order.dto.command.RemoveOrderProductCommandDTO;
 import sanity.nil.order.application.order.dto.response.RemovedOrderProductDTO;
@@ -17,9 +19,11 @@ public class RemoveOrderProductCommand {
     private final OrderReader orderReader;
     private final OrderService orderService;
     private final OutboxDAO outboxDAO;
+    private final IdentityProvider identityProvider;
 
     public RemovedOrderProductDTO handle(RemoveOrderProductCommandDTO dto) {
-        Order order = orderReader.getOrderById(dto.orderID);
+        Identity identity = identityProvider.getCurrentIdentity();
+        Order order = orderReader.getOrderById(dto.orderID, identity.userID);
         OrderProduct orderProduct = orderReader.getOrderProduct(dto.productID);
         order = orderService.removeProduct(order, orderProduct);
         outboxDAO.addEvents(order.pullEvents());

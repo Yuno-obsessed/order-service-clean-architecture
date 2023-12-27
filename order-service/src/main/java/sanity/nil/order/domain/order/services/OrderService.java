@@ -71,6 +71,9 @@ public class OrderService {
                 updatedOrder.getOrderID().getId(), updatedOrder.getClientID(), product.getId(),
                 product.getTotalPrice()
         ));
+        updatedOrder.recordEvent(new OrderProductReleasedEvent(
+               product.getId(), product.getQuantity()
+        ));
 
         return updatedOrder;
     }
@@ -80,7 +83,9 @@ public class OrderService {
         if (!order.getAddress().equals(address)) {
             updatedOrder.setAddress(address);
             updatedOrder.recordEvent(new OrderUpdatedAddressEvent(
-                    order.getOrderID().getId(), order.getClientID(), address
+                    order.getOrderID().getId(), order.getClientID(), address.getAddressID().getId(),
+                    address.getCountry(), address.getCity(), address.getStreetName(), address.getBuildingNumber(),
+                    address.getPostalCode()
             ));
         }
 

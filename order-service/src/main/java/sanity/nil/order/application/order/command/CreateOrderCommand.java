@@ -1,6 +1,8 @@
 package sanity.nil.order.application.order.command;
 
 import lombok.RequiredArgsConstructor;
+import sanity.nil.library.services.data.Identity;
+import sanity.nil.library.services.interfaces.IdentityProvider;
 import sanity.nil.order.application.common.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.application.order.dto.command.CreateOrderCommandDTO;
 import sanity.nil.order.application.order.dto.response.OrderDTO;
@@ -23,8 +25,10 @@ public class CreateOrderCommand {
     private final OrderReader orderReader;
     private final OrderService orderService;
     private final OutboxDAO outboxDAO;
+    private final IdentityProvider identityProvider;
 
     public OrderDTO handle(CreateOrderCommandDTO dto) {
+        Identity identity = identityProvider.getCurrentIdentity();
         List<UUID> productIDs = dto.products.stream().map(p -> p.productID).toList();
         Address address = orderReader.getAddress(dto.addressID);
         List<OrderProduct> orderProducts = orderReader.getProductsOfOrder(productIDs);
@@ -41,7 +45,7 @@ public class CreateOrderCommand {
                         }
                     });
         }
-        Order order = orderService.create(address, dto.userID, orderProducts, dto.paymentMethod, dto.paymentOption);
+        Order order = orderService.create(address, identity.userID, orderProducts, dto.paymentMethod, dto.paymentOption);
         Order createdOrder = orderDAO.create(order);
         List<Event> events = order.pullEvents();
         outboxDAO.addEvents(events);

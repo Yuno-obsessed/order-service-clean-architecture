@@ -21,14 +21,14 @@ public class OrderCacheDAOImpl implements OrderCacheDAO {
     }
 
     @Override
-    public void deleteOrder(UUID id) {
-        String matchingKey = redisTemplate.keys(orderKey(null, id.toString()))
+    public OrderQueryDTO deleteOrder(UUID clientID, UUID orderID) {
+        String matchingKey = redisTemplate.keys(orderKey(clientID.toString(), orderID.toString()))
                 .stream()
                 .findFirst()
                 .orElseThrow(
-                        () -> OrderNotFoundException.throwEx(id)
+                        () -> OrderNotFoundException.throwEx(orderID)
                 );
-        redisTemplate.opsForValue().getAndDelete(matchingKey);
+        return redisTemplate.opsForValue().getAndDelete(matchingKey);
     }
 
     private String orderKey(String client, String order) {

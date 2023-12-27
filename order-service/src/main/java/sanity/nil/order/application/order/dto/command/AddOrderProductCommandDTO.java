@@ -13,9 +13,6 @@ public class AddOrderProductCommandDTO {
     @JsonProperty(value = "order_id", required = true)
     public UUID orderID;
 
-    @JsonProperty(value = "user_id", required = true)
-    public UUID userID;
-
     @JsonProperty(value = "product_id")
     public UUID productID;
 

@@ -14,9 +14,6 @@ public class CreateOrderCommandDTO {
     @JsonProperty(value = "address_id", required = true)
     public UUID addressID;
 
-    @JsonProperty(value = "user_id", required = true)
-    public UUID userID;
-
     @JsonProperty(value = "products")
     public List<ProductCommandDTO> products;
 

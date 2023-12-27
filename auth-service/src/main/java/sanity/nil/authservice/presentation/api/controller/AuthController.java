@@ -38,7 +38,7 @@ public class AuthController {
                 request.getHeader("User-Agent"), request.getRemoteAddr()));
         Cookie cookie = new Cookie("REFRESH_TOKEN", loginInteractorDTO.refreshToken);
         cookie.setHttpOnly(true);
-        cookie.setPath("/api/v1/auth");
+        cookie.setPath("/auth-service/auth/");
         cookie.setMaxAge(loginInteractorDTO.refreshMaxAge);
         response.addCookie(cookie);
         return ResponseEntity
@@ -63,7 +63,7 @@ public class AuthController {
                         request.getRemoteAddr()));
         cookie = new Cookie("REFRESH_TOKEN", refreshTokenInteractorDTO.refreshToken);
         cookie.setHttpOnly(true);
-        cookie.setPath("/api/v1/auth");
+        cookie.setPath("/auth-service/auth/");
         cookie.setMaxAge(refreshTokenInteractorDTO.maxAge);
         response.addCookie(cookie);
         return ResponseEntity

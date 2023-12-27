@@ -44,9 +44,9 @@ public class OrderDaoImpl implements OrderDAO, OrderReader {
     }
 
     @Override
-    public Order getOrderById(UUID id) {
-        OrderModel maybeModel = orderORM.findById(id).orElseThrow(() ->
-                OrderNotFoundException.throwEx(id));
+    public Order getOrderById(UUID orderID, UUID userID) {
+        OrderModel maybeModel = orderORM.findByIdAndUserID(orderID, userID).orElseThrow(() ->
+                OrderNotFoundException.throwEx(orderID));
         List<ProductModel> products = productORM.getAllByIdIn(maybeModel.getProducts().stream()
                 .map(e -> e.getProduct().getId()).toList());
         return OrderMapper.modelToEntity(maybeModel, products);

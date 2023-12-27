@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import sanity.nil.library.services.interfaces.IdentityProvider;
 import sanity.nil.order.application.common.interfaces.storage.FileStorage;
 import sanity.nil.order.application.common.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.application.order.cache.OrderCacheImpl;
@@ -23,6 +24,7 @@ import sanity.nil.order.application.order.interfaces.persistence.OrderDAO;
 import sanity.nil.order.application.order.interfaces.persistence.OrderReader;
 import sanity.nil.order.application.order.query.GetAddressQuery;
 import sanity.nil.order.application.order.query.GetAllOrdersQuery;
+import sanity.nil.order.application.order.query.GetOrderByIDQuery;
 import sanity.nil.order.application.order.service.AddressCommandService;
 import sanity.nil.order.application.order.service.AddressQueryService;
 import sanity.nil.order.application.order.service.OrderCommandService;
@@ -91,6 +93,34 @@ public class OrderBeanCreator {
     }
 
     @Bean
+    public Binding orderRemovedProductBinding(@Qualifier("orderQueue") Queue queue,
+                                       @Qualifier("topicExchange") TopicExchange topicExchange,
+                                       RabbitConfig rabbitConfig) {
+        return BindingBuilder.bind(queue).to(topicExchange).with(rabbitConfig.getOrderRemovedProductRK());
+    }
+
+    @Bean
+    public Binding orderUpdatedProductQuantity(@Qualifier("orderQueue") Queue queue,
+                                            @Qualifier("fanoutExchange") FanoutExchange fanoutExchange,
+                                            RabbitConfig rabbitConfig) {
+        return BindingBuilder.bind(queue).to(fanoutExchange);
+    }
+
+    @Bean
+    public Binding orderUpdatedAddressBinding(@Qualifier("orderQueue") Queue queue,
+                                            @Qualifier("topicExchange") TopicExchange topicExchange,
+                                            RabbitConfig rabbitConfig) {
+        return BindingBuilder.bind(queue).to(topicExchange).with(rabbitConfig.getOrderUpdatedAddressRK());
+    }
+
+    @Bean
+    public Binding orderAddedProductBinding(@Qualifier("orderQueue") Queue queue,
+                                            @Qualifier("topicExchange") TopicExchange topicExchange,
+                                            RabbitConfig rabbitConfig) {
+        return BindingBuilder.bind(queue).to(topicExchange).with(rabbitConfig.getOrderAddedProductRK());
+    }
+
+    @Bean
     public OrderSubscribers orderSubscribers(OrderCache orderCache,
                                              @Qualifier("myObjectMapper") ObjectMapper objectMapper) {
         return new OrderSubscribers(orderCache, objectMapper);
@@ -113,15 +143,15 @@ public class OrderBeanCreator {
     }
 
     @Bean
-    public OrderCache orderCache(OrderCacheDAO orderCacheDAO, OrderCacheReader orderCacheReader) {
-        return new OrderCacheImpl(orderCacheDAO, orderCacheReader);
+    public OrderCache orderCache(OrderCacheDAO orderCacheDAO) {
+        return new OrderCacheImpl(orderCacheDAO);
     }
 
     @Bean
-    public AddressCommandService addressCommandService(AddressDAO addressDAO) {
+    public AddressCommandService addressCommandService(AddressDAO addressDAO, IdentityProvider identityProvider) {
         return new AddressCommandService(
-                new CreateAddressCommand(addressDAO, new AddressService()),
-                new UpdateAddressCommand(addressDAO, new AddressService())
+                new CreateAddressCommand(addressDAO, new AddressService(), identityProvider),
+                new UpdateAddressCommand(addressDAO, new AddressService(), identityProvider)
         );
     }
 
@@ -135,21 +165,23 @@ public class OrderBeanCreator {
     @Bean
     public OrderCommandService orderCommandService(OrderDAO orderDAO, OutboxDAO outboxDAO,
                                                    OrderReader orderReader, FileStorage fileStorage,
-                                                   ProductImageReader productImageReader) {
+                                                   ProductImageReader productImageReader,
+                                                   IdentityProvider identityProvider) {
         OrderService orderService = new OrderService();
         return new OrderCommandService(
-                new CreateOrderCommand(orderDAO, orderReader, orderService, outboxDAO),
-                new AddOrderProductCommand(orderDAO, orderReader, orderService, outboxDAO, fileStorage, productImageReader),
-                new UpdateProductQuantityCommand(orderDAO, orderReader, orderService, outboxDAO),
-                new RemoveOrderProductCommand(orderDAO, orderReader, orderService, outboxDAO),
-                new UpdateOrderAddressCommand(orderDAO, orderReader, orderService, outboxDAO)
+                new CreateOrderCommand(orderDAO, orderReader, orderService, outboxDAO, identityProvider),
+                new AddOrderProductCommand(orderDAO, orderReader, orderService, outboxDAO, fileStorage, productImageReader, identityProvider),
+                new UpdateProductQuantityCommand(orderDAO, orderReader, orderService, outboxDAO, identityProvider),
+                new RemoveOrderProductCommand(orderDAO, orderReader, orderService, outboxDAO, identityProvider),
+                new UpdateOrderAddressCommand(orderDAO, orderReader, orderService, outboxDAO, identityProvider)
         );
     }
 
     @Bean
-    public OrderQueryService orderQueryService(OrderCacheReader orderCacheReader) {
+    public OrderQueryService orderQueryService(OrderCacheReader orderCacheReader, IdentityProvider identityProvider) {
         return new OrderQueryService(
-                new GetAllOrdersQuery(orderCacheReader)
+                new GetAllOrdersQuery(orderCacheReader),
+                new GetOrderByIDQuery(orderCacheReader, identityProvider)
         );
     }
 }

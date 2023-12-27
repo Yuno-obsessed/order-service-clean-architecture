@@ -45,12 +45,12 @@ public class OrderCacheReaderImpl implements OrderCacheReader {
     }
 
     @Override
-    public OrderQueryDTO getOrder(UUID id, UUID clientID) {
-        String matchingKey = redisTemplate.keys(orderKey(clientID.toString(), id.toString()))
+    public OrderQueryDTO getOrder(UUID clientID, UUID orderID) {
+        String matchingKey = redisTemplate.keys(orderKey(clientID.toString(), orderID.toString()))
                 .stream()
                 .findFirst()
                 .orElseThrow(
-                        () -> OrderNotFoundException.throwEx(id)
+                        () -> OrderNotFoundException.throwEx(orderID)
                 );
         Object object = redisTemplate.opsForValue().get(matchingKey);
         return objectMapper.convertValue(object, OrderQueryDTO.class);

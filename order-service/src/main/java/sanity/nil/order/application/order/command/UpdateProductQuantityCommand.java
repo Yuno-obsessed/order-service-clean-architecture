@@ -1,6 +1,8 @@
 package sanity.nil.order.application.order.command;
 
 import lombok.RequiredArgsConstructor;
+import sanity.nil.library.services.data.Identity;
+import sanity.nil.library.services.interfaces.IdentityProvider;
 import sanity.nil.order.application.common.relay.interfaces.persistence.OutboxDAO;
 import sanity.nil.order.application.order.dto.command.UpdateOrderProductQuantityCommandDTO;
 import sanity.nil.order.application.order.dto.response.UpdatedOrderProductQuantityDTO;
@@ -18,9 +20,11 @@ public class UpdateProductQuantityCommand {
     private final OrderReader orderReader;
     private final OrderService orderService;
     private final OutboxDAO outboxDAO;
+    private final IdentityProvider identityProvider;
 
     public UpdatedOrderProductQuantityDTO handle(UpdateOrderProductQuantityCommandDTO dto) {
-        Order order = orderReader.getOrderById(dto.orderID);
+        Identity identity = identityProvider.getCurrentIdentity();
+        Order order = orderReader.getOrderById(dto.orderID, identity.userID);
         OrderProduct orderProduct = orderReader.getOrderProduct(dto.productID);
         if (orderProduct.getQuantity() < dto.quantity) {
             throw ProductQuantityMismatch

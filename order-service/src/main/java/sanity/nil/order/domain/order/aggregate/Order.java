@@ -80,7 +80,7 @@ public class Order extends BaseAggregate{
         this.orderID = orderID;
         this.address = address;
         this.clientID = clientID;
-        this.products = products;
+        this.products = new ArrayList<>(products);
         this.orderStatus = orderStatus;
         this.paymentMethod = paymentMethod;
         this.paymentOption = paymentOption;

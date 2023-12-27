@@ -34,7 +34,7 @@ public class ProductController {
     private final ProductCommandService productCommandService;
     private final ProductQueryService productQueryService;
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ProductQueryDTO> getProductById(@PathVariable UUID id){
         return ResponseEntity
                 .status(200)
@@ -75,7 +75,7 @@ public class ProductController {
                 .body(ProductMapper.convertEntityToBoundary(product));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<UUID> deleteProduct(@PathVariable UUID id) {
        return ResponseEntity
                .status(204)

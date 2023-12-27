@@ -37,10 +37,10 @@ public class CreatedOrderMailInteractor {
         orderMailDTO.totalPrice = event.getTotalPrice();
         List<OrderProductMailDTO> productList = new ArrayList<>();
         for (OrderProductCreate product : event.getProducts()) {
-            ProductImageDTO productImage = webTemplate.get(product.getProductID()).get(0);
+//            ProductImageDTO productImage = webTemplate.get(product.getProductID()).get(0);
             OrderProductMailDTO productMailDTO = new OrderProductMailDTO();
-            productMailDTO.link = "http://localhost:8080/api/v1/product/" + product.getProductID();
-            productMailDTO.imageURL = productImage.imageURL;
+            productMailDTO.link = "http://localhost:80/order-service/product/" + product.getProductID();
+//            productMailDTO.imageURL = productImage.imageURL;
             productMailDTO.name = product.getName();
             productMailDTO.price = product.getPrice();
             productMailDTO.quantity = product.getQuantity();

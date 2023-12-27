@@ -8,8 +8,8 @@ services:
       dockerfile: order-service/Dockerfile
     expose:
       - 8080
-    ports:
-      - "8080:8080"
+#    ports:
+#      - "8080:8080"
     networks:
       - adapters-network
 

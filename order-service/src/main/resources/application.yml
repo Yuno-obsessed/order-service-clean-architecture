@@ -54,4 +54,6 @@ application:
       rk-updated-address: Order.UpdatedAddress
       rk-updated-product-quantity: Order.UpdatedProductQuantity
     product:
+      rk-product-released: Product.Released
+      rk-product-reserved: Product.Reserved
       queue: product
